@@ -100,6 +100,15 @@ make loso-systems
 
 Trains on 11 `system_id` values, tests on the held-out system (12 folds). Writes `loso_system_results.md`, `loso_system_summary.md`, and `loso_system_heatmap.png`, with explicit comparison to random CV.
 
+### Pre-oracle prediction
+
+```bash
+make pre-oracle
+# requires model_performance.md from make model-correctness
+```
+
+Strict feature allowlist (gates, requirement coverage, basic FSM counts only). Writes `pre_oracle_model_performance.md`, `pre_oracle_feature_importance.md`, and ROC/PR figures; compares against `A_gate_only` and `B_basic_structural` from random CV.
+
 ### Figures
 
 ```bash
