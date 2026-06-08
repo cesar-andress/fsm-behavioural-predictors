@@ -12,6 +12,7 @@ Complete this checklist before publishing the artefact on **GitHub** or depositi
 ## Reproducibility
 
 - [ ] **All scripts run from frozen data** — `make reproduce` completes without LLM API calls or network access to generation endpoints.
+- [ ] **Risk toolkit tested** — `make risk-toolkit` completes; `risk_toolkit_validation.md` matches published triage audit.
 - [ ] **Reproducibility command tested** — `make check-env` and `make reproduce` run cleanly on a fresh clone in a clean environment.
 - [ ] Regenerated outputs under `results/` match the tables and figures cited in the paper (or deviations are documented).
 

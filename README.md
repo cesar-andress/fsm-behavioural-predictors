@@ -58,6 +58,7 @@ The released version will contain the following component classes:
 | Frozen campaign records | `data/raw/` | Immutable primary inputs: generated FSM serialisations, campaign metadata, and oracle labels. |
 | Processed analysis tables | `data/processed/` | Derived structural metrics and analysis-ready feature matrices. |
 | Reproduction scripts | `scripts/` | Command-line tools for descriptive and predictive analyses; table and figure generation. |
+| Behavioural risk toolkit | `scripts/risk_toolkit.py`, `docs/risk_toolkit.md` | Pre-oracle BRS scoring, AutoReject triage, and FSM health reports. |
 | Supplementary notebooks | `notebooks/` | Optional exploratory or supplementary material (not on the critical reproduction path unless stated otherwise). |
 | Generated outputs | `results/tables/`, `results/figures/` | Publication-ready tables and figures reproducible from frozen data. |
 | Documentation | `docs/` | Data dictionary, reproducibility guide, and structural conventions. |
@@ -170,6 +171,7 @@ make model-correctness  # exploratory CV models for full behavioural pass
 make loso-systems       # leave-one-system-out generalization by system_id
 make pre-oracle         # pre-oracle prediction (strict feature allowlist)
 make lomo-models        # leave-one-model-out cross-LLM generalization
+make risk-toolkit       # pre-oracle BRS triage (see docs/risk_toolkit.md)
 make figures            # figures only
 make clean            # remove generated outputs under results/ (preserves data/)
 ```
@@ -182,6 +184,7 @@ make clean            # remove generated outputs under results/ (preserves data/
 | `make loso-systems` | `scripts/loso_system_evaluation.py` | `results/tables/`, `results/figures/` |
 | `make pre-oracle` | `scripts/pre_oracle_prediction.py` | `results/tables/`, `results/figures/` |
 | `make lomo-models` | `scripts/lomo_model_evaluation.py` | `results/tables/`, `results/figures/` |
+| `make risk-toolkit` | `scripts/risk_toolkit.py` | `results/tables/` |
 | `make figures` | `scripts/generate_figures.py` | `results/figures/` |
 
 These scripts will read from `data/processed/` (and `data/raw/` where required). They will **not** call LLM APIs or regenerate FSMs from prompts. Descriptive and predictive analyses executed by the scripts will be documented in `docs/reproducibility.md` as they are finalised.

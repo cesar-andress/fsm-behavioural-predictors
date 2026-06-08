@@ -118,6 +118,14 @@ make lomo-models
 
 Trains on three LLM families, tests on the held-out fourth (`model` grouping). Writes `lomo_results.md`, `lomo_summary.md`, and `lomo_heatmap.png`, with comparison to random CV.
 
+### Behavioural risk toolkit
+
+```bash
+make risk-toolkit
+```
+
+Pre-oracle triage implementation: Behavioural Risk Score (BRS), AutoReject decisions, and FSM health reports. See [risk_toolkit.md](risk_toolkit.md). Writes `risk_toolkit_predictions.csv`, `risk_toolkit_validation.md`, and `risk_toolkit_examples.md`.
+
 ### Figures
 
 ```bash

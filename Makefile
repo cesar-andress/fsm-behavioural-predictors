@@ -4,7 +4,7 @@
 PYTHON ?= python3.11
 SCRIPTS = scripts
 
-.PHONY: all check-env build-master reproduce tables figures profile-signals model-correctness loso-systems pre-oracle lomo-models clean help
+.PHONY: all check-env build-master reproduce tables figures profile-signals model-correctness loso-systems pre-oracle lomo-models risk-toolkit clean help
 
 all: reproduce
 
@@ -19,6 +19,7 @@ help:
 	@echo "  make loso-systems       Leave-one-system-out generalization study"
 	@echo "  make pre-oracle         Pre-oracle behavioural prediction (strict features)"
 	@echo "  make lomo-models        Leave-one-model-out cross-LLM generalization"
+	@echo "  make risk-toolkit       Pre-oracle BRS triage and health reports"
 	@echo "  make figures            Regenerate figures only"
 	@echo "  make clean       Remove generated outputs under results/"
 
@@ -58,6 +59,12 @@ pre-oracle: build-master model-correctness
 lomo-models: build-master model-correctness
 	@echo "Running leave-one-model-out evaluation..."
 	@$(PYTHON) $(SCRIPTS)/lomo_model_evaluation.py
+
+risk-toolkit: build-master
+	@echo "Running behavioural risk toolkit..."
+	@$(PYTHON) $(SCRIPTS)/risk_toolkit.py \
+		--input data/processed/master_analysis_dataset.csv \
+		--output results/tables/risk_toolkit_predictions.csv
 
 clean:
 	rm -rf results/tables/*
