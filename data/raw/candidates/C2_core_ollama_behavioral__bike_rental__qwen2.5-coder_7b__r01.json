@@ -1,0 +1,50 @@
+{
+  "system_name": "Bike Rental",
+  "domain": "micromobility rental",
+  "states": [
+    "Available",
+    "Reserved",
+    "Rented",
+    "Maintenance"
+  ],
+  "initial_state": "Available",
+  "events": [
+    "reserve",
+    "confirm_pickup",
+    "return",
+    "report_fault",
+    "repair_complete"
+  ],
+  "transitions": [
+    {
+      "source": "Available",
+      "event": "reserve",
+      "target": "Reserved",
+      "requirement": "R2"
+    },
+    {
+      "source": "Reserved",
+      "event": "confirm_pickup",
+      "target": "Rented",
+      "requirement": "R3"
+    },
+    {
+      "source": "Rented",
+      "event": "return",
+      "target": "Available",
+      "requirement": "R4"
+    },
+    {
+      "source": "Rented",
+      "event": "report_fault",
+      "target": "Maintenance",
+      "requirement": "R5"
+    },
+    {
+      "source": "Maintenance",
+      "event": "repair_complete",
+      "target": "Available",
+      "requirement": "R6"
+    }
+  ]
+}

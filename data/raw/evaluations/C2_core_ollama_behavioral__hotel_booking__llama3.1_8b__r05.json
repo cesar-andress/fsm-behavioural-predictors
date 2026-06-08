@@ -1,0 +1,634 @@
+{
+  "system_name": "Hotel Booking",
+  "candidate_label": "C2_core_ollama_behavioral__hotel_booking__llama3.1_8b__r05",
+  "structural": {
+    "schema_valid": true,
+    "referential_valid": true,
+    "errors": [],
+    "warnings": []
+  },
+  "determinism": {
+    "strict_deterministic": false,
+    "guard_aware_deterministic": true,
+    "duplicate_source_event_pairs": 2,
+    "duplicate_source_event_guard_triples": 2,
+    "guard_aware_conflicts": [],
+    "unreachable_states": []
+  },
+  "traceability": {
+    "covered_requirements": [
+      "R2",
+      "R3",
+      "R4",
+      "R5",
+      "R6",
+      "R7",
+      "R8"
+    ],
+    "missing_requirements": [
+      "R1"
+    ],
+    "unsupported_transitions": 0,
+    "empty_requirement_transitions": 0
+  },
+  "behavioral": {
+    "oracle_pass_rate": 0.875,
+    "tests_passed": 14,
+    "tests_total": 16,
+    "test_results": [
+      {
+        "test_id": "confirmed_booking",
+        "passed": true,
+        "evaluable": true,
+        "message": "passed",
+        "simulation": {
+          "success": true,
+          "trace": [
+            {
+              "event": "search",
+              "source": "NoBooking",
+              "target": "SearchResults",
+              "guard": ""
+            },
+            {
+              "event": "select_room",
+              "source": "SearchResults",
+              "target": "BookingHeld",
+              "guard": ""
+            },
+            {
+              "event": "confirm_payment",
+              "source": "BookingHeld",
+              "target": "Confirmed",
+              "guard": ""
+            }
+          ],
+          "state_trace": [
+            "NoBooking",
+            "SearchResults",
+            "BookingHeld",
+            "Confirmed"
+          ],
+          "final_state": "Confirmed",
+          "error": null
+        },
+        "kind": "oracle",
+        "final_state_matched": true,
+        "trace_matched": true,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "search_only",
+        "passed": true,
+        "evaluable": true,
+        "message": "passed",
+        "simulation": {
+          "success": true,
+          "trace": [
+            {
+              "event": "search",
+              "source": "NoBooking",
+              "target": "SearchResults",
+              "guard": ""
+            }
+          ],
+          "state_trace": [
+            "NoBooking",
+            "SearchResults"
+          ],
+          "final_state": "SearchResults",
+          "error": null
+        },
+        "kind": "oracle",
+        "final_state_matched": true,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "hold_booking",
+        "passed": true,
+        "evaluable": true,
+        "message": "passed",
+        "simulation": {
+          "success": true,
+          "trace": [
+            {
+              "event": "search",
+              "source": "NoBooking",
+              "target": "SearchResults",
+              "guard": ""
+            },
+            {
+              "event": "select_room",
+              "source": "SearchResults",
+              "target": "BookingHeld",
+              "guard": ""
+            }
+          ],
+          "state_trace": [
+            "NoBooking",
+            "SearchResults",
+            "BookingHeld"
+          ],
+          "final_state": "BookingHeld",
+          "error": null
+        },
+        "kind": "oracle",
+        "final_state_matched": true,
+        "trace_matched": true,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "initial_no_booking",
+        "passed": true,
+        "evaluable": true,
+        "message": "passed",
+        "simulation": {
+          "success": true,
+          "trace": [],
+          "state_trace": [
+            "NoBooking"
+          ],
+          "final_state": "NoBooking",
+          "error": null
+        },
+        "kind": "oracle",
+        "final_state_matched": true,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "cancel_from_held",
+        "passed": true,
+        "evaluable": true,
+        "message": "passed",
+        "simulation": {
+          "success": true,
+          "trace": [
+            {
+              "event": "search",
+              "source": "NoBooking",
+              "target": "SearchResults",
+              "guard": ""
+            },
+            {
+              "event": "select_room",
+              "source": "SearchResults",
+              "target": "BookingHeld",
+              "guard": ""
+            },
+            {
+              "event": "cancel",
+              "source": "BookingHeld",
+              "target": "NoBooking",
+              "guard": ""
+            }
+          ],
+          "state_trace": [
+            "NoBooking",
+            "SearchResults",
+            "BookingHeld",
+            "NoBooking"
+          ],
+          "final_state": "NoBooking",
+          "error": null
+        },
+        "kind": "oracle",
+        "final_state_matched": true,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "cancel_from_confirmed",
+        "passed": true,
+        "evaluable": true,
+        "message": "passed",
+        "simulation": {
+          "success": true,
+          "trace": [
+            {
+              "event": "search",
+              "source": "NoBooking",
+              "target": "SearchResults",
+              "guard": ""
+            },
+            {
+              "event": "select_room",
+              "source": "SearchResults",
+              "target": "BookingHeld",
+              "guard": ""
+            },
+            {
+              "event": "confirm_payment",
+              "source": "BookingHeld",
+              "target": "Confirmed",
+              "guard": ""
+            },
+            {
+              "event": "cancel",
+              "source": "Confirmed",
+              "target": "NoBooking",
+              "guard": ""
+            }
+          ],
+          "state_trace": [
+            "NoBooking",
+            "SearchResults",
+            "BookingHeld",
+            "Confirmed",
+            "NoBooking"
+          ],
+          "final_state": "NoBooking",
+          "error": null
+        },
+        "kind": "oracle",
+        "final_state_matched": true,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "confirm_payment_step",
+        "passed": true,
+        "evaluable": true,
+        "message": "passed",
+        "simulation": {
+          "success": true,
+          "trace": [
+            {
+              "event": "search",
+              "source": "NoBooking",
+              "target": "SearchResults",
+              "guard": ""
+            },
+            {
+              "event": "select_room",
+              "source": "SearchResults",
+              "target": "BookingHeld",
+              "guard": ""
+            },
+            {
+              "event": "confirm_payment",
+              "source": "BookingHeld",
+              "target": "Confirmed",
+              "guard": ""
+            }
+          ],
+          "state_trace": [
+            "NoBooking",
+            "SearchResults",
+            "BookingHeld",
+            "Confirmed"
+          ],
+          "final_state": "Confirmed",
+          "error": null
+        },
+        "kind": "oracle",
+        "final_state_matched": true,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "search_results_state",
+        "passed": true,
+        "evaluable": true,
+        "message": "passed",
+        "simulation": {
+          "success": true,
+          "trace": [
+            {
+              "event": "search",
+              "source": "NoBooking",
+              "target": "SearchResults",
+              "guard": ""
+            }
+          ],
+          "state_trace": [
+            "NoBooking",
+            "SearchResults"
+          ],
+          "final_state": "SearchResults",
+          "error": null
+        },
+        "kind": "oracle",
+        "final_state_matched": true,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "reject_confirm_search",
+        "passed": false,
+        "evaluable": true,
+        "message": "expected rejection but simulation succeeded",
+        "simulation": {
+          "success": true,
+          "trace": [
+            {
+              "event": "search",
+              "source": "NoBooking",
+              "target": "SearchResults",
+              "guard": ""
+            },
+            {
+              "event": "confirm_payment",
+              "source": "SearchResults",
+              "target": "NoBooking",
+              "guard": ""
+            }
+          ],
+          "state_trace": [
+            "NoBooking",
+            "SearchResults",
+            "NoBooking"
+          ],
+          "final_state": "NoBooking",
+          "error": null
+        },
+        "kind": "negative",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": false
+      },
+      {
+        "test_id": "reject_select_no_search",
+        "passed": false,
+        "evaluable": true,
+        "message": "expected rejection but simulation succeeded",
+        "simulation": {
+          "success": true,
+          "trace": [
+            {
+              "event": "select_room",
+              "source": "NoBooking",
+              "target": "SearchResults",
+              "guard": ""
+            }
+          ],
+          "state_trace": [
+            "NoBooking",
+            "SearchResults"
+          ],
+          "final_state": "SearchResults",
+          "error": null
+        },
+        "kind": "negative",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": false
+      },
+      {
+        "test_id": "path_search",
+        "passed": true,
+        "evaluable": true,
+        "message": "passed",
+        "simulation": {
+          "success": true,
+          "trace": [
+            {
+              "event": "search",
+              "source": "NoBooking",
+              "target": "SearchResults",
+              "guard": ""
+            }
+          ],
+          "state_trace": [
+            "NoBooking",
+            "SearchResults"
+          ],
+          "final_state": "SearchResults",
+          "error": null
+        },
+        "kind": "path",
+        "final_state_matched": true,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "path_held",
+        "passed": true,
+        "evaluable": true,
+        "message": "passed",
+        "simulation": {
+          "success": true,
+          "trace": [
+            {
+              "event": "search",
+              "source": "NoBooking",
+              "target": "SearchResults",
+              "guard": ""
+            },
+            {
+              "event": "select_room",
+              "source": "SearchResults",
+              "target": "BookingHeld",
+              "guard": ""
+            }
+          ],
+          "state_trace": [
+            "NoBooking",
+            "SearchResults",
+            "BookingHeld"
+          ],
+          "final_state": "BookingHeld",
+          "error": null
+        },
+        "kind": "path",
+        "final_state_matched": true,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "path_confirmed",
+        "passed": true,
+        "evaluable": true,
+        "message": "passed",
+        "simulation": {
+          "success": true,
+          "trace": [
+            {
+              "event": "search",
+              "source": "NoBooking",
+              "target": "SearchResults",
+              "guard": ""
+            },
+            {
+              "event": "select_room",
+              "source": "SearchResults",
+              "target": "BookingHeld",
+              "guard": ""
+            },
+            {
+              "event": "confirm_payment",
+              "source": "BookingHeld",
+              "target": "Confirmed",
+              "guard": ""
+            }
+          ],
+          "state_trace": [
+            "NoBooking",
+            "SearchResults",
+            "BookingHeld",
+            "Confirmed"
+          ],
+          "final_state": "Confirmed",
+          "error": null
+        },
+        "kind": "path",
+        "final_state_matched": true,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "path_cancel_held",
+        "passed": true,
+        "evaluable": true,
+        "message": "passed",
+        "simulation": {
+          "success": true,
+          "trace": [
+            {
+              "event": "search",
+              "source": "NoBooking",
+              "target": "SearchResults",
+              "guard": ""
+            },
+            {
+              "event": "select_room",
+              "source": "SearchResults",
+              "target": "BookingHeld",
+              "guard": ""
+            },
+            {
+              "event": "cancel",
+              "source": "BookingHeld",
+              "target": "NoBooking",
+              "guard": ""
+            }
+          ],
+          "state_trace": [
+            "NoBooking",
+            "SearchResults",
+            "BookingHeld",
+            "NoBooking"
+          ],
+          "final_state": "NoBooking",
+          "error": null
+        },
+        "kind": "path",
+        "final_state_matched": true,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "path_initial",
+        "passed": true,
+        "evaluable": true,
+        "message": "passed",
+        "simulation": {
+          "success": true,
+          "trace": [],
+          "state_trace": [
+            "NoBooking"
+          ],
+          "final_state": "NoBooking",
+          "error": null
+        },
+        "kind": "path",
+        "final_state_matched": true,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "path_cancel_confirmed",
+        "passed": true,
+        "evaluable": true,
+        "message": "passed",
+        "simulation": {
+          "success": true,
+          "trace": [
+            {
+              "event": "search",
+              "source": "NoBooking",
+              "target": "SearchResults",
+              "guard": ""
+            },
+            {
+              "event": "select_room",
+              "source": "SearchResults",
+              "target": "BookingHeld",
+              "guard": ""
+            },
+            {
+              "event": "confirm_payment",
+              "source": "BookingHeld",
+              "target": "Confirmed",
+              "guard": ""
+            },
+            {
+              "event": "cancel",
+              "source": "Confirmed",
+              "target": "NoBooking",
+              "guard": ""
+            }
+          ],
+          "state_trace": [
+            "NoBooking",
+            "SearchResults",
+            "BookingHeld",
+            "Confirmed",
+            "NoBooking"
+          ],
+          "final_state": "NoBooking",
+          "error": null
+        },
+        "kind": "path",
+        "final_state_matched": true,
+        "trace_matched": null,
+        "rejection_matched": null
+      }
+    ],
+    "behavioral_pass_rate": 0.875,
+    "final_state_agreement_rate": 1.0,
+    "trace_agreement_rate": 1.0,
+    "rejected_event_agreement_rate": 0.0,
+    "final_state_tests": 14,
+    "final_state_matches": 14,
+    "trace_tests": 2,
+    "trace_matches": 2,
+    "negative_tests": 2,
+    "rejection_matches": 0
+  },
+  "equivalence": {
+    "exact_transition_match_rate": 1.0,
+    "state_overlap_rate": 1.0,
+    "event_overlap_rate": 1.0,
+    "missing_transitions": [],
+    "extra_transitions": [
+      "NoBooking -> select_room -> SearchResults -> _",
+      "SearchResults -> confirm_payment -> NoBooking -> _"
+    ],
+    "unsupported_transitions": 0,
+    "behavioral_agreement_rate": 0.875
+  },
+  "coverage": {
+    "requirement_coverage": 0.875,
+    "transition_coverage_exact": 1.0,
+    "transition_coverage_relaxed": 1.0,
+    "path_coverage": 0.875,
+    "covered_requirements": [
+      "R2",
+      "R3",
+      "R4",
+      "R5",
+      "R6",
+      "R7",
+      "R8"
+    ],
+    "missing_requirements": [
+      "R1"
+    ]
+  },
+  "run_status": "passed",
+  "failure_stage": "none",
+  "failure_category": "none",
+  "failure_reason": ""
+}

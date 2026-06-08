@@ -1,0 +1,66 @@
+{
+  "system_name": "Package Locker",
+  "domain": "parcel pickup locker",
+  "states": [
+    "Empty",
+    "Loaded",
+    "ReadyForPickup",
+    "Completed"
+  ],
+  "initial_state": "Empty",
+  "events": [
+    "LoadPackage",
+    "SendNotification",
+    "EnterCode",
+    "CollectPackage",
+    "LoadRejected",
+    "NotificationRejected",
+    "InvalidCode"
+  ],
+  "transitions": [
+    {
+      "source": "Empty",
+      "event": "LoadPackage",
+      "target": "Loaded",
+      "requirement": "R2"
+    },
+    {
+      "source": "Loaded",
+      "event": "SendNotification",
+      "target": "ReadyForPickup",
+      "requirement": "R3"
+    },
+    {
+      "source": "ReadyForPickup",
+      "event": "EnterCode",
+      "target": "Completed",
+      "requirement": "R4"
+    },
+    {
+      "source": "Completed",
+      "event": "CollectPackage",
+      "target": "Empty",
+      "requirement": "R5"
+    },
+    {
+      "source": "Loaded",
+      "event": "LoadRejected",
+      "target": "Empty",
+      "requirement": "R6"
+    },
+    {
+      "source": "Empty",
+      "event": "SendNotification",
+      "target": "Empty",
+      "requirement": "R7",
+      "guard": "notification_rejected"
+    },
+    {
+      "source": "ReadyForPickup",
+      "event": "EnterCode",
+      "target": "ReadyForPickup",
+      "requirement": "R8",
+      "guard": "invalid_code"
+    }
+  ]
+}

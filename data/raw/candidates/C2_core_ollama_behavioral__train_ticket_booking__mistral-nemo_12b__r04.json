@@ -1,0 +1,63 @@
+{
+  "system_name": "Train Ticket Booking",
+  "domain": "rail ticketing",
+  "states": [
+    "Start",
+    "RouteSelected",
+    "SeatHeld",
+    "TicketIssued"
+  ],
+  "initial_state": "Start",
+  "events": [
+    "SelectRoute",
+    "ChooseSeat",
+    "Pay",
+    "Cancel"
+  ],
+  "transitions": [
+    {
+      "source": "Start",
+      "event": "SelectRoute",
+      "target": "RouteSelected",
+      "requirement": "R2"
+    },
+    {
+      "source": "RouteSelected",
+      "event": "ChooseSeat",
+      "target": "SeatHeld",
+      "requirement": "R3"
+    },
+    {
+      "source": "SeatHeld",
+      "event": "Pay",
+      "target": "TicketIssued",
+      "requirement": "R4"
+    },
+    {
+      "source": "SeatHeld",
+      "event": "Cancel",
+      "target": "Start",
+      "requirement": "R5"
+    },
+    {
+      "source": "TicketIssued",
+      "event": "Cancel",
+      "target": "Start",
+      "requirement": "R6"
+    },
+    {
+      "source": "RouteSelected",
+      "event": "Pay",
+      "target": "RouteSelected",
+      "requirement": "R7",
+      "guard": "payment_rejected"
+    },
+    {
+      "source": "Start",
+      "event": "ChooseSeat",
+      "target": "Start",
+      "requirement": "R8",
+      "guard": "route_not_selected"
+    }
+  ]
+}

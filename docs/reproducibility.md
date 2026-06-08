@@ -83,6 +83,25 @@ If regenerated outputs differ from those archived at publication time, document 
 
 Re-execution outputs from local Ollama campaigns are **not** merged into `data/raw/` until a new freeze is explicitly documented and checked.
 
+## Master dataset provenance
+
+The canonical analysis table `data/processed/master_analysis_dataset.csv` is built by `scripts/build_master_dataset.py` from the following **frozen** inputs (no LLM inference):
+
+| Artefact | Path in this repository | Upstream origin |
+|----------|-------------------------|-----------------|
+| Combined per-run metrics | `data/raw/metrics_combined.csv` | EMSE 2026 paper campaign ingest (C1+C2; 240 runs) |
+| Parsed FSM serialisations | `data/raw/candidates/{run_id}.json` | `C1_pilot_ollama_behavioral/20260603T003118Z/candidates/` and `C2_core_ollama_behavioral/20260603T080817Z/candidates/` |
+| Oracle evaluation records | `data/raw/evaluations/{run_id}.json` | Matching `evaluations/` directories from the same C1/C2 freezes |
+| Provenance metadata | `data/raw/frozen_campaign_manifest.json` | Authored at SQJ ingest |
+
+**Build command:**
+
+```bash
+python scripts/build_master_dataset.py
+```
+
+Validation output is written to `results/tables/master_dataset_validation.md`.
+
 ## Computational requirements
 
 | Path | Hardware | Typical runtime |

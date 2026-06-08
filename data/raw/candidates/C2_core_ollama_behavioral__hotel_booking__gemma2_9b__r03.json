@@ -1,0 +1,55 @@
+{
+  "system_name": "hotel_booking",
+  "domain": "hospitality reservation",
+  "states": [
+    "NoBooking",
+    "SearchResults",
+    "BookingHeld",
+    "Confirmed"
+  ],
+  "initial_state": "NoBooking",
+  "events": [
+    "Search",
+    "SelectRoom",
+    "ConfirmPayment",
+    "Cancel"
+  ],
+  "transitions": [
+    {
+      "source": "NoBooking",
+      "event": "Search",
+      "target": "SearchResults",
+      "requirement": "R2"
+    },
+    {
+      "source": "SearchResults",
+      "event": "SelectRoom",
+      "target": "BookingHeld",
+      "requirement": "R3"
+    },
+    {
+      "source": "SearchResults",
+      "event": "ConfirmPayment",
+      "target": "",
+      "requirement": "R7"
+    },
+    {
+      "source": "BookingHeld",
+      "event": "ConfirmPayment",
+      "target": "Confirmed",
+      "requirement": "R4"
+    },
+    {
+      "source": "BookingHeld",
+      "event": "Cancel",
+      "target": "NoBooking",
+      "requirement": "R5"
+    },
+    {
+      "source": "Confirmed",
+      "event": "Cancel",
+      "target": "NoBooking",
+      "requirement": "R6"
+    }
+  ]
+}

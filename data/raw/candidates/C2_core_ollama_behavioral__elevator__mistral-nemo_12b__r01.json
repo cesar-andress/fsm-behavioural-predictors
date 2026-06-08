@@ -1,0 +1,43 @@
+{
+  "system_name": "elevator",
+  "domain": "vertical transport",
+  "states": [
+    "Idle",
+    "Moving",
+    "DoorOpen",
+    "Closing"
+  ],
+  "initial_state": "Idle",
+  "events": [
+    "Call",
+    "Arrival",
+    "Close_door",
+    "Door_sealed"
+  ],
+  "transitions": [
+    {
+      "source": "Idle",
+      "event": "Call",
+      "target": "Moving",
+      "requirement": "R2"
+    },
+    {
+      "source": "Moving",
+      "event": "Arrival",
+      "target": "DoorOpen",
+      "requirement": "R3"
+    },
+    {
+      "source": "DoorOpen",
+      "event": "Close_door",
+      "target": "Closing",
+      "requirement": "R4"
+    },
+    {
+      "source": "Closing",
+      "event": "Door_sealed",
+      "target": "Idle",
+      "requirement": "R5"
+    }
+  ]
+}

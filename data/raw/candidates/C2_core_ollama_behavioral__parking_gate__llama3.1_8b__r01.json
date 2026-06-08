@@ -1,0 +1,57 @@
+{
+  "system_name": "Parking Gate",
+  "domain": "parking automation",
+  "states": [
+    "Closed",
+    "Opening",
+    "Open",
+    "Closing"
+  ],
+  "initial_state": "Closed",
+  "events": [
+    "vehicle_detected",
+    "completion_signal",
+    "close_command",
+    "gate_closed_signal"
+  ],
+  "transitions": [
+    {
+      "source": "Closed",
+      "event": "vehicle_detected",
+      "target": "Opening",
+      "requirement": "R2"
+    },
+    {
+      "source": "Opening",
+      "event": "completion_signal",
+      "target": "Open",
+      "requirement": "R3"
+    },
+    {
+      "source": "Open",
+      "event": "close_command",
+      "target": "Closing",
+      "requirement": "R4"
+    },
+    {
+      "source": "Closing",
+      "event": "gate_closed_signal",
+      "target": "Closed",
+      "requirement": "R5"
+    }
+  ],
+  "forbidden_behaviours": [
+    {
+      "source": "Open",
+      "event": "vehicle_detected",
+      "target": null,
+      "requirement": "R6"
+    },
+    {
+      "source": "Closed",
+      "event": "close_command",
+      "target": null,
+      "requirement": "R7"
+    }
+  ]
+}

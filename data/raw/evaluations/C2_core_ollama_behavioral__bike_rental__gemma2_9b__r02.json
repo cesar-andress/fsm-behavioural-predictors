@@ -1,0 +1,15 @@
+{
+  "run_status": "failed",
+  "failure_stage": "schema_validation",
+  "failure_category": "schema_error",
+  "failure_reason": "forbidden_behaviours.0: Additional properties are not allowed ('events', 'state' were unexpected); forbidden_behaviours.1: Additional properties are not allowed ('events', 'state' were unexpected)",
+  "structural": {
+    "schema_valid": false,
+    "referential_valid": false,
+    "errors": [
+      "forbidden_behaviours.0: Additional properties are not allowed ('events', 'state' were unexpected)",
+      "forbidden_behaviours.1: Additional properties are not allowed ('events', 'state' were unexpected)"
+    ],
+    "warnings": []
+  }
+}

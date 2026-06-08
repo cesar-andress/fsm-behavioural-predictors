@@ -1,0 +1,69 @@
+{
+  "system_name": "Elevator",
+  "domain": "vertical transport",
+  "states": [
+    "Idle",
+    "Moving",
+    "DoorOpen",
+    "Closing"
+  ],
+  "initial_state": "Idle",
+  "events": [
+    "call",
+    "close_door",
+    "door_sealed",
+    "coin_inserted"
+  ],
+  "transitions": [
+    {
+      "source": "Idle",
+      "event": "call",
+      "target": "Moving",
+      "requirement": "R2"
+    },
+    {
+      "source": "Moving",
+      "event": "arrival",
+      "target": "DoorOpen",
+      "requirement": "R3"
+    },
+    {
+      "source": "DoorOpen",
+      "event": "close_door",
+      "target": "Closing",
+      "requirement": "R4"
+    },
+    {
+      "source": "Closing",
+      "event": "door_sealed",
+      "target": "Idle",
+      "requirement": "R5"
+    },
+    {
+      "source": "Moving",
+      "event": "call",
+      "target": "Moving",
+      "requirement": "R6"
+    },
+    {
+      "source": "Idle",
+      "event": "close_door",
+      "target": "Idle",
+      "requirement": "R7"
+    }
+  ],
+  "forbidden_behaviours": [
+    {
+      "source": "Moving",
+      "event": "coin_inserted",
+      "target": "HasCredit",
+      "requirement": "R6"
+    },
+    {
+      "source": "Idle",
+      "event": "close_door",
+      "target": "Closing",
+      "requirement": "R7"
+    }
+  ]
+}

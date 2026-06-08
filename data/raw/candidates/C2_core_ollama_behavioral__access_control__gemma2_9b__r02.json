@@ -1,0 +1,40 @@
+{
+  "system_name": "Access Control",
+  "domain": "physical access control",
+  "states": [
+    "Locked",
+    "Unlocked"
+  ],
+  "initial_state": "Locked",
+  "events": [
+    "BadgeScan",
+    "LockCommand"
+  ],
+  "transitions": [
+    {
+      "source": "Locked",
+      "event": "BadgeScan",
+      "target": "Unlocked",
+      "requirement": "R2"
+    },
+    {
+      "source": "Locked",
+      "event": "LockCommand",
+      "target": "Locked",
+      "requirement": "R5"
+    },
+    {
+      "source": "Unlocked",
+      "event": "LockCommand",
+      "target": "Locked",
+      "requirement": "R3"
+    },
+    {
+      "source": "Unlocked",
+      "event": "BadgeScan",
+      "target": "Unlocked",
+      "requirement": "R6"
+    }
+  ],
+  "forbidden_behaviours": []
+}

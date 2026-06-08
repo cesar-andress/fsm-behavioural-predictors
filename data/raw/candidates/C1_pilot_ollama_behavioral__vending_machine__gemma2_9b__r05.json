@@ -1,0 +1,35 @@
+{
+  "system_name": "vending_machine",
+  "domain": "vending machine",
+  "states": [
+    "Idle",
+    "CreditAvailable",
+    "Dispensing"
+  ],
+  "initial_state": "Idle",
+  "events": [
+    "coin_inserted",
+    "coffee_pressed",
+    "dispense_complete"
+  ],
+  "transitions": [
+    {
+      "source": "Idle",
+      "event": "coin_inserted",
+      "target": "CreditAvailable",
+      "requirement": "R2"
+    },
+    {
+      "source": "CreditAvailable",
+      "event": "coffee_pressed",
+      "target": "Dispensing",
+      "requirement": "R3"
+    },
+    {
+      "source": "Dispensing",
+      "event": "dispense_complete",
+      "target": "Idle",
+      "requirement": "R5"
+    }
+  ]
+}

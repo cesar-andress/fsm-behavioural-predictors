@@ -1,0 +1,14 @@
+{
+  "run_status": "failed",
+  "failure_stage": "parsing",
+  "failure_category": "parse_error",
+  "failure_reason": "fsm parse error: 'target'",
+  "structural": {
+    "schema_valid": false,
+    "referential_valid": false,
+    "errors": [
+      "transitions.6: 'target' is a required property"
+    ],
+    "warnings": []
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "study": "SQJ 2026 — Predicting Behavioural Correctness from Structural Signals in LLM-Generated Finite State Machines",
+  "ingestion_policy": "frozen-data-first; no LLM re-inference",
+  "upstream_repository": "emse2026/behavioral-fsm-benchmark",
+  "campaigns": [
+    {
+      "campaign_id": "C1_pilot_ollama_behavioral",
+      "freeze_timestamp": "20260603T003118Z",
+      "runs": 60,
+      "upstream_path": "experiments/runs/C1_pilot_ollama_behavioral/20260603T003118Z"
+    },
+    {
+      "campaign_id": "C2_core_ollama_behavioral",
+      "freeze_timestamp": "20260603T080817Z",
+      "runs": 180,
+      "upstream_path": "experiments/runs/C2_core_ollama_behavioral/20260603T080817Z"
+    }
+  ],
+  "files_in_this_artefact": {
+    "metrics_combined.csv": "Combined per-run metrics (240 rows); sourced from emse2026/paper/data/campaign/metrics_combined.csv",
+    "candidates/*.json": "Parsed FSM serialisations (240 files) from C1+C2 freeze directories",
+    "evaluations/*.json": "Oracle evaluation records (240 files) from C1+C2 freeze directories",
+    "frozen_ingestion_manifest.json": "Upstream ingestion pointers from EMSE paper build"
+  },
+  "combined_run_count": 240,
+  "temperature": 0.0,
+  "inference_mode": "local Ollama (frozen at collection; not re-run by SQJ artefact scripts)"
+}

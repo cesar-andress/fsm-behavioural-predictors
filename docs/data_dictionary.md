@@ -1,60 +1,69 @@
 # Data Dictionary
 
-This document defines files, variables, and semantics for datasets in the SQJ 2026 replication package.
-
-**Status:** Placeholder structure. Entries will be completed when datasets are frozen for publication.
+Variable and file semantics for the SQJ 2026 replication package.
 
 ## Directory overview
 
 ### `data/raw/`
 
-Immutable source data collected during the study. No script in this repository modifies files in this directory.
+Immutable frozen campaign inputs. Scripts in this repository **do not modify** these files.
 
-| File / pattern | Description | Format | Notes |
-|----------------|-------------|--------|-------|
-| *(to be added)* | LLM-generated FSM serialisations | TBD | One record per generated model |
-| *(to be added)* | Oracle correctness labels | TBD | Independent behavioural assessment |
-| *(to be added)* | Study metadata | TBD | Model ID, prompt template, timestamp, etc. |
+| File / pattern | Description | Format | Rows / count |
+|----------------|-------------|--------|--------------|
+| `metrics_combined.csv` | Per-run campaign metrics (C1 pilot + C2 core) | CSV | 240 |
+| `candidates/{run_id}.json` | Parsed FSM serialisation per run | JSON | 240 |
+| `evaluations/{run_id}.json` | Structural, determinism, traceability, and behavioural oracle output | JSON | 240 |
+| `frozen_campaign_manifest.json` | Provenance and upstream freeze metadata | JSON | — |
+| `frozen_ingestion_manifest.json` | EMSE paper ingestion pointers | JSON | — |
 
 ### `data/processed/`
 
-Derived datasets produced by preprocessing scripts (run once before freezing; not part of the default `make reproduce` path unless documented otherwise).
+Analysis-ready tables derived from `data/raw/` by `scripts/build_master_dataset.py`.
 
-| File / pattern | Description | Format | Notes |
-|----------------|-------------|--------|-------|
-| *(to be added)* | Structural feature matrix | TBD | Features used in predictive analyses |
-| *(to be added)* | Train/test partition index | TBD | Ensures reproducible evaluation splits |
+| File | Description | Format | Rows |
+|------|-------------|--------|-----:|
+| `master_analysis_dataset.csv` | Canonical one-row-per-run dataset for SQJ analyses | CSV | 240 |
 
-## Variable definitions
+## `master_analysis_dataset.csv` — column definitions
 
-### Identifier variables
+One row per LLM-generated FSM run (`run_id`). Boolean columns use `true` / `false`; absent values are empty cells (not imputed).
 
-| Variable | Type | Description |
-|----------|------|-------------|
-| `model_id` | string | Unique identifier for each generated FSM |
-| `spec_id` | string | Identifier of the originating specification |
+| Column | Type | Description | Source |
+|--------|------|-------------|--------|
+| `run_id` | string | Unique run identifier | `metrics_combined.csv` |
+| `model` | string | Ollama model identifier (e.g. `qwen2.5-coder:7b`) | `metrics_combined.csv` |
+| `system_id` | string | Study system / specification identifier | `metrics_combined.csv` |
+| `replicate` | integer | Replicate index within model–system cell | `metrics_combined.csv` |
+| `g1_pass` | boolean | G1 gate: JSON extraction succeeded (`failure_stage` not in `parsing`, `json_extraction`, `generation`) | Derived (EMSE gate rule) |
+| `g2_pass` | boolean | G2 gate: `schema_valid` and `referential_valid` both true | Derived from `metrics_combined.csv` |
+| `g3_pass` | boolean | Strict `(source, event)` determinism | `metrics_combined.csv` → `strict_deterministic` |
+| `g3a_pass` | boolean | Guard-aware determinism | `metrics_combined.csv` → `guard_aware_deterministic` |
+| `requirement_coverage` | float | Fraction of requirements covered by generated transitions | `metrics_combined.csv` |
+| `n_states` | integer | Count of states in parsed FSM | Derived from `candidates/{run_id}.json` → `states` |
+| `n_events` | integer | Count of declared events | Derived from `candidates/{run_id}.json` → `events` |
+| `n_transitions` | integer | Count of transitions | Derived from `candidates/{run_id}.json` → `transitions` |
+| `n_unreachable_states` | integer | Count of unreachable states reported by determinism analysis | Derived from `evaluations/{run_id}.json` → `determinism.unreachable_states` |
+| `missing_transitions` | integer | Requirement transitions not supported by the FSM | `metrics_combined.csv` |
+| `extra_transitions` | integer | Transitions not required by the specification | `metrics_combined.csv` |
+| `behavioral_pass_rate` | float | Oracle behavioural pass rate (BPR); empty if behaviourally non-scored | `metrics_combined.csv` |
+| `full_behavioural_pass` | boolean | `true` if `behavioral_pass_rate == 1.0`; empty if non-scored | Derived |
+| `behaviourally_scored` | boolean | `true` if `behavioral_pass_rate` is non-null | Derived |
+| `failure_stage` | string | Pipeline failure stage (`none`, `schema_validation`, `parsing`, …) | `metrics_combined.csv` |
 
-### Outcome variables
+### Scoring strata (from upstream EMSE freeze)
 
-| Variable | Type | Description |
-|----------|------|-------------|
-| `behaviourally_correct` | boolean | Oracle verdict: model satisfies intended behaviour |
-| `oracle_notes` | string (optional) | Qualitative notes from oracle assessment |
-
-### Structural feature variables
-
-| Variable | Type | Description |
-|----------|------|-------------|
-| `n_states` | integer | Number of states in the FSM |
-| `n_transitions` | integer | Number of transitions |
-| *(additional features)* | TBD | To be defined in the methodology section of the paper |
+- **Behaviourally scored:** `behaviourally_scored == true` (209 runs).
+- **Behaviourally non-scored:** empty `behavioral_pass_rate` (31 runs); do **not** impute as zero.
+- **G2-pass:** `g2_pass == true` (189 runs).
 
 ## Provenance
 
-- **Collection period:** TBD
-- **LLM(s) used:** TBD (inference outputs frozen in `data/raw/`; not re-run during replication)
-- **Oracle construction:** TBD
+- **Campaigns:** C1 pilot (60 runs) + C2 core (180 runs), frozen June 2026.
+- **Models:** `qwen2.5-coder:7b`, `llama3.1:8b`, `gemma2:9b`, `mistral-nemo:12b`.
+- **Systems:** 12 specification IDs (see `metrics_combined.csv`).
+- **LLM inference:** frozen at collection via local Ollama; **not re-run** by this artefact.
+- **Build command:** `python scripts/build_master_dataset.py`
 
 ## Licence and redistribution
 
-Data files inherit the repository licence (MIT) unless otherwise noted. Update this section if any subset carries additional restrictions.
+Data files inherit the repository licence (MIT) unless otherwise noted.

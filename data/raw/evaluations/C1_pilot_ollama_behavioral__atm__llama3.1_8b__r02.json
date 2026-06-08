@@ -1,0 +1,394 @@
+{
+  "system_name": "ATM",
+  "candidate_label": "C1_pilot_ollama_behavioral__atm__llama3.1_8b__r02",
+  "structural": {
+    "schema_valid": true,
+    "referential_valid": true,
+    "errors": [],
+    "warnings": []
+  },
+  "determinism": {
+    "strict_deterministic": true,
+    "guard_aware_deterministic": true,
+    "duplicate_source_event_pairs": 0,
+    "duplicate_source_event_guard_triples": 0,
+    "guard_aware_conflicts": [],
+    "unreachable_states": []
+  },
+  "traceability": {
+    "covered_requirements": [
+      "R2",
+      "R3",
+      "R4",
+      "R5",
+      "R6",
+      "R7"
+    ],
+    "missing_requirements": [
+      "R1",
+      "R8"
+    ],
+    "unsupported_transitions": 0,
+    "empty_requirement_transitions": 0
+  },
+  "behavioral": {
+    "oracle_pass_rate": 0.3125,
+    "tests_passed": 5,
+    "tests_total": 16,
+    "test_results": [
+      {
+        "test_id": "happy_path_withdraw",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'insert_card' in state 'Idle'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'insert_card' in state 'Idle'"
+        },
+        "kind": "oracle",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "reject_insert_while_ready",
+        "passed": true,
+        "evaluable": true,
+        "message": "expected rejection occurred",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'insert_card' in state 'Idle'"
+        },
+        "kind": "negative",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": true
+      },
+      {
+        "test_id": "pin_fail_returns_idle",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'insert_card' in state 'Idle'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'insert_card' in state 'Idle'"
+        },
+        "kind": "oracle",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "insert_card_only",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'insert_card' in state 'Idle'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'insert_card' in state 'Idle'"
+        },
+        "kind": "oracle",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "reject_withdraw_from_idle",
+        "passed": true,
+        "evaluable": true,
+        "message": "expected rejection occurred",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'select_withdraw' in state 'Idle'"
+        },
+        "kind": "negative",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": true
+      },
+      {
+        "test_id": "path_to_dispensing",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'insert_card' in state 'Idle'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'insert_card' in state 'Idle'"
+        },
+        "kind": "path",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "initial_idle",
+        "passed": true,
+        "evaluable": true,
+        "message": "passed",
+        "simulation": {
+          "success": true,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": null
+        },
+        "kind": "oracle",
+        "final_state_matched": true,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "ready_after_pin",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'insert_card' in state 'Idle'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'insert_card' in state 'Idle'"
+        },
+        "kind": "oracle",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "dispense_returns_ready",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'insert_card' in state 'Idle'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'insert_card' in state 'Idle'"
+        },
+        "kind": "oracle",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "path_pin_fail",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'insert_card' in state 'Idle'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'insert_card' in state 'Idle'"
+        },
+        "kind": "path",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "path_eject",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'insert_card' in state 'Idle'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'insert_card' in state 'Idle'"
+        },
+        "kind": "path",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "path_authenticating",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'insert_card' in state 'Idle'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'insert_card' in state 'Idle'"
+        },
+        "kind": "path",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "path_ready",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'insert_card' in state 'Idle'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'insert_card' in state 'Idle'"
+        },
+        "kind": "path",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "path_full_cycle",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'insert_card' in state 'Idle'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'insert_card' in state 'Idle'"
+        },
+        "kind": "path",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "path_idle",
+        "passed": true,
+        "evaluable": true,
+        "message": "passed",
+        "simulation": {
+          "success": true,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": null
+        },
+        "kind": "path",
+        "final_state_matched": true,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "reject_eject_idle",
+        "passed": true,
+        "evaluable": true,
+        "message": "expected rejection occurred",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'eject_card' in state 'Idle'"
+        },
+        "kind": "negative",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": true
+      }
+    ],
+    "behavioral_pass_rate": 0.3125,
+    "final_state_agreement_rate": 0.15384615384615385,
+    "trace_agreement_rate": 0.0,
+    "rejected_event_agreement_rate": 1.0,
+    "final_state_tests": 13,
+    "final_state_matches": 2,
+    "trace_tests": 7,
+    "trace_matches": 0,
+    "negative_tests": 3,
+    "rejection_matches": 3
+  },
+  "equivalence": {
+    "exact_transition_match_rate": 0.5,
+    "state_overlap_rate": 1.0,
+    "event_overlap_rate": 0.5,
+    "missing_transitions": [
+      "Authenticating -> pin_fail -> Idle -> _",
+      "Authenticating -> pin_ok -> Ready -> _",
+      "Idle -> insert_card -> Authenticating -> _"
+    ],
+    "extra_transitions": [
+      "Authenticating -> invalid_PIN -> Idle -> _",
+      "Authenticating -> valid_PIN -> Ready -> _",
+      "Idle -> card_inserted -> Authenticating -> _"
+    ],
+    "unsupported_transitions": 0,
+    "behavioral_agreement_rate": 0.3125
+  },
+  "coverage": {
+    "requirement_coverage": 0.75,
+    "transition_coverage_exact": 0.5,
+    "transition_coverage_relaxed": 0.5,
+    "path_coverage": 0.3125,
+    "covered_requirements": [
+      "R2",
+      "R3",
+      "R4",
+      "R5",
+      "R6",
+      "R7"
+    ],
+    "missing_requirements": [
+      "R1",
+      "R8"
+    ]
+  },
+  "run_status": "passed",
+  "failure_stage": "none",
+  "failure_category": "none",
+  "failure_reason": ""
+}

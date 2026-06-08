@@ -1,0 +1,42 @@
+{
+  "system_name": "Login System",
+  "domain": "authentication",
+  "states": [
+    "LoggedOut",
+    "Authenticating",
+    "LoggedIn"
+  ],
+  "initial_state": "LoggedOut",
+  "events": [
+    "submit_credentials",
+    "login_successful",
+    "login_failed",
+    "logout"
+  ],
+  "transitions": [
+    {
+      "source": "LoggedOut",
+      "event": "submit_credentials",
+      "target": "Authenticating",
+      "requirement": "R2"
+    },
+    {
+      "source": "Authenticating",
+      "event": "login_successful",
+      "target": "LoggedIn",
+      "requirement": "R3"
+    },
+    {
+      "source": "Authenticating",
+      "event": "login_failed",
+      "target": "LoggedOut",
+      "requirement": "R4"
+    },
+    {
+      "source": "LoggedIn",
+      "event": "logout",
+      "target": "LoggedOut",
+      "requirement": "R5"
+    }
+  ]
+}

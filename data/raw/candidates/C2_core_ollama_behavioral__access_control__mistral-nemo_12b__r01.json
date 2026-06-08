@@ -1,0 +1,71 @@
+{
+  "system_name": "Access Control",
+  "domain": "physical access control",
+  "states": [
+    "Locked",
+    "Unlocked"
+  ],
+  "initial_state": "Locked",
+  "events": [
+    "ValidBadgeScan",
+    "LockCommand",
+    "InvalidBadgeScan",
+    "Entry"
+  ],
+  "transitions": [
+    {
+      "source": "Locked",
+      "event": "ValidBadgeScan",
+      "target": "Unlocked",
+      "requirement": "R2"
+    },
+    {
+      "source": "Unlocked",
+      "event": "LockCommand",
+      "target": "Locked",
+      "requirement": "R3"
+    },
+    {
+      "source": "Locked",
+      "event": "InvalidBadgeScan",
+      "target": "Locked",
+      "requirement": "R4"
+    },
+    {
+      "source": "Unlocked",
+      "event": "LockCommand",
+      "target": "Unlocked",
+      "requirement": "",
+      "guard": "already_locked"
+    },
+    {
+      "source": "Unlocked",
+      "event": "InvalidBadgeScan",
+      "target": "Unlocked",
+      "requirement": "",
+      "guard": "already_unlocked"
+    },
+    {
+      "source": "Unlocked",
+      "event": "Entry",
+      "target": "Locked",
+      "requirement": "R7"
+    }
+  ],
+  "forbidden_behaviours": [
+    {
+      "trace": [
+        "InvalidBadgeScan",
+        "ValidBadgeScan"
+      ],
+      "requirement": "R8"
+    },
+    {
+      "trace": [
+        "LockCommand",
+        "ValidBadgeScan"
+      ],
+      "requirement": "R5"
+    }
+  ]
+}

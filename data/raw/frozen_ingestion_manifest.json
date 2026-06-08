@@ -1,0 +1,17 @@
+{
+  "c1_metrics": "/home/cesar/papers/emse2026/behavioral-fsm-benchmark/experiments/runs/C1_pilot_ollama_behavioral/20260603T003118Z/metrics.csv",
+  "c2_metrics": "/home/cesar/papers/emse2026/behavioral-fsm-benchmark/experiments/runs/C2_core_ollama_behavioral/20260603T080817Z/metrics.csv",
+  "combined_rows": 240,
+  "failure_summary_non_evaluable": [
+    [
+      "schema_validation",
+      "schema_error",
+      26
+    ],
+    [
+      "parsing",
+      "parse_error",
+      5
+    ]
+  ]
+}

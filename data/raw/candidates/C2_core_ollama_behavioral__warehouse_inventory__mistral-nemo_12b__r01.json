@@ -1,0 +1,66 @@
+{
+  "system_name": "Warehouse Inventory",
+  "domain": "warehouse logistics",
+  "states": [
+    "Idle",
+    "Stocked",
+    "Allocated",
+    "Dispatched"
+  ],
+  "initial_state": "Idle",
+  "events": [
+    "Receive",
+    "Allocate",
+    "Dispatch",
+    "Cancel",
+    "Restock",
+    "Reject_Allocate",
+    "Reject_Dispatch"
+  ],
+  "transitions": [
+    {
+      "source": "Idle",
+      "event": "Receive",
+      "target": "Stocked",
+      "requirement": "R2"
+    },
+    {
+      "source": "Stocked",
+      "event": "Allocate",
+      "target": "Allocated",
+      "requirement": "R3"
+    },
+    {
+      "source": "Allocated",
+      "event": "Dispatch",
+      "target": "Dispatched",
+      "requirement": "R4"
+    },
+    {
+      "source": "Allocated",
+      "event": "Cancel",
+      "target": "Stocked",
+      "requirement": "R5"
+    },
+    {
+      "source": "Dispatched",
+      "event": "Restock",
+      "target": "Stocked",
+      "requirement": "R6"
+    },
+    {
+      "source": "Idle",
+      "event": "Allocate",
+      "target": "Idle",
+      "requirement": "R7",
+      "guard": "not Stocked"
+    },
+    {
+      "source": "Stocked",
+      "event": "Dispatch",
+      "target": "Stocked",
+      "requirement": "R8",
+      "guard": "not Allocated"
+    }
+  ]
+}

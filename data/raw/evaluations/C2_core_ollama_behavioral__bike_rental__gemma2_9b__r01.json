@@ -1,0 +1,14 @@
+{
+  "run_status": "failed",
+  "failure_stage": "schema_validation",
+  "failure_category": "schema_error",
+  "failure_reason": "transitions.4.event: None is not of type 'string'",
+  "structural": {
+    "schema_valid": false,
+    "referential_valid": false,
+    "errors": [
+      "transitions.4.event: None is not of type 'string'"
+    ],
+    "warnings": []
+  }
+}

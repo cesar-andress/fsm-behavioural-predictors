@@ -1,0 +1,401 @@
+{
+  "system_name": "Train Ticket Booking",
+  "candidate_label": "C2_core_ollama_behavioral__train_ticket_booking__llama3.1_8b__r05",
+  "structural": {
+    "schema_valid": true,
+    "referential_valid": true,
+    "errors": [],
+    "warnings": []
+  },
+  "determinism": {
+    "strict_deterministic": true,
+    "guard_aware_deterministic": true,
+    "duplicate_source_event_pairs": 0,
+    "duplicate_source_event_guard_triples": 0,
+    "guard_aware_conflicts": [],
+    "unreachable_states": []
+  },
+  "traceability": {
+    "covered_requirements": [
+      "R2",
+      "R3",
+      "R4",
+      "R5",
+      "R6",
+      "R7",
+      "R8"
+    ],
+    "missing_requirements": [
+      "R1"
+    ],
+    "unsupported_transitions": 0,
+    "empty_requirement_transitions": 0
+  },
+  "behavioral": {
+    "oracle_pass_rate": 0.25,
+    "tests_passed": 4,
+    "tests_total": 16,
+    "test_results": [
+      {
+        "test_id": "ticket_issued",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'select_route' in state 'Start'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Start"
+          ],
+          "final_state": "Start",
+          "error": "no enabled transition for event 'select_route' in state 'Start'"
+        },
+        "kind": "oracle",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "route_selected",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'select_route' in state 'Start'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Start"
+          ],
+          "final_state": "Start",
+          "error": "no enabled transition for event 'select_route' in state 'Start'"
+        },
+        "kind": "oracle",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "seat_held",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'select_route' in state 'Start'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Start"
+          ],
+          "final_state": "Start",
+          "error": "no enabled transition for event 'select_route' in state 'Start'"
+        },
+        "kind": "oracle",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "initial_start",
+        "passed": true,
+        "evaluable": true,
+        "message": "passed",
+        "simulation": {
+          "success": true,
+          "trace": [],
+          "state_trace": [
+            "Start"
+          ],
+          "final_state": "Start",
+          "error": null
+        },
+        "kind": "oracle",
+        "final_state_matched": true,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "cancel_seat_held",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'select_route' in state 'Start'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Start"
+          ],
+          "final_state": "Start",
+          "error": "no enabled transition for event 'select_route' in state 'Start'"
+        },
+        "kind": "oracle",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "cancel_issued",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'select_route' in state 'Start'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Start"
+          ],
+          "final_state": "Start",
+          "error": "no enabled transition for event 'select_route' in state 'Start'"
+        },
+        "kind": "oracle",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "pay_step",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'select_route' in state 'Start'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Start"
+          ],
+          "final_state": "Start",
+          "error": "no enabled transition for event 'select_route' in state 'Start'"
+        },
+        "kind": "oracle",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "route_state_reachable",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'select_route' in state 'Start'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Start"
+          ],
+          "final_state": "Start",
+          "error": "no enabled transition for event 'select_route' in state 'Start'"
+        },
+        "kind": "oracle",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "reject_pay_route",
+        "passed": true,
+        "evaluable": true,
+        "message": "expected rejection occurred",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Start"
+          ],
+          "final_state": "Start",
+          "error": "no enabled transition for event 'select_route' in state 'Start'"
+        },
+        "kind": "negative",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": true
+      },
+      {
+        "test_id": "reject_seat_start",
+        "passed": true,
+        "evaluable": true,
+        "message": "expected rejection occurred",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Start"
+          ],
+          "final_state": "Start",
+          "error": "no enabled transition for event 'choose_seat' in state 'Start'"
+        },
+        "kind": "negative",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": true
+      },
+      {
+        "test_id": "path_route",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'select_route' in state 'Start'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Start"
+          ],
+          "final_state": "Start",
+          "error": "no enabled transition for event 'select_route' in state 'Start'"
+        },
+        "kind": "path",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "path_seat",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'select_route' in state 'Start'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Start"
+          ],
+          "final_state": "Start",
+          "error": "no enabled transition for event 'select_route' in state 'Start'"
+        },
+        "kind": "path",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "path_ticket",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'select_route' in state 'Start'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Start"
+          ],
+          "final_state": "Start",
+          "error": "no enabled transition for event 'select_route' in state 'Start'"
+        },
+        "kind": "path",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "path_cancel_held",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'select_route' in state 'Start'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Start"
+          ],
+          "final_state": "Start",
+          "error": "no enabled transition for event 'select_route' in state 'Start'"
+        },
+        "kind": "path",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "path_initial",
+        "passed": true,
+        "evaluable": true,
+        "message": "passed",
+        "simulation": {
+          "success": true,
+          "trace": [],
+          "state_trace": [
+            "Start"
+          ],
+          "final_state": "Start",
+          "error": null
+        },
+        "kind": "path",
+        "final_state_matched": true,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "path_cancel_issued",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'select_route' in state 'Start'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Start"
+          ],
+          "final_state": "Start",
+          "error": "no enabled transition for event 'select_route' in state 'Start'"
+        },
+        "kind": "path",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      }
+    ],
+    "behavioral_pass_rate": 0.25,
+    "final_state_agreement_rate": 0.14285714285714285,
+    "trace_agreement_rate": 0.0,
+    "rejected_event_agreement_rate": 1.0,
+    "final_state_tests": 14,
+    "final_state_matches": 2,
+    "trace_tests": 2,
+    "trace_matches": 0,
+    "negative_tests": 2,
+    "rejection_matches": 2
+  },
+  "equivalence": {
+    "exact_transition_match_rate": 0.0,
+    "state_overlap_rate": 1.0,
+    "event_overlap_rate": 0.0,
+    "missing_transitions": [
+      "RouteSelected -> choose_seat -> SeatHeld -> _",
+      "SeatHeld -> cancel -> Start -> _",
+      "SeatHeld -> pay -> TicketIssued -> _",
+      "Start -> select_route -> RouteSelected -> _",
+      "TicketIssued -> cancel -> Start -> _"
+    ],
+    "extra_transitions": [
+      "RouteSelected ->  -> Start -> _",
+      "RouteSelected -> Choose seat -> SeatHeld -> _",
+      "RouteSelected -> Pay -> TicketIssued -> _",
+      "SeatHeld -> Cancel -> Start -> _",
+      "SeatHeld -> Pay -> TicketIssued -> _",
+      "Start ->  -> Start -> _",
+      "Start -> Select route -> RouteSelected -> _",
+      "TicketIssued -> Cancel -> Start -> _"
+    ],
+    "unsupported_transitions": 0,
+    "behavioral_agreement_rate": 0.25
+  },
+  "coverage": {
+    "requirement_coverage": 0.875,
+    "transition_coverage_exact": 0.0,
+    "transition_coverage_relaxed": 0.0,
+    "path_coverage": 0.25,
+    "covered_requirements": [
+      "R2",
+      "R3",
+      "R4",
+      "R5",
+      "R6",
+      "R7",
+      "R8"
+    ],
+    "missing_requirements": [
+      "R1"
+    ]
+  },
+  "run_status": "passed",
+  "failure_stage": "none",
+  "failure_category": "none",
+  "failure_reason": ""
+}

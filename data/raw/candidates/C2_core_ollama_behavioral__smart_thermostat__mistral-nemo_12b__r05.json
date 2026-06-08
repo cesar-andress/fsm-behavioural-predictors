@@ -1,0 +1,62 @@
+{
+  "system_name": "smart_thermostat",
+  "domain": "building climate control",
+  "states": [
+    "Off",
+    "Heating",
+    "Cooling"
+  ],
+  "initial_state": "Off",
+  "events": [
+    "power_on_heat",
+    "power_on_cool",
+    "power_off",
+    "target_reached",
+    "heat_command"
+  ],
+  "transitions": [
+    {
+      "source": "Off",
+      "event": "power_on_heat",
+      "target": "Heating",
+      "requirement": "R2"
+    },
+    {
+      "source": "Off",
+      "event": "power_on_cool",
+      "target": "Cooling",
+      "requirement": "R3"
+    },
+    {
+      "source": "Heating",
+      "event": "power_off",
+      "target": "Off",
+      "requirement": "R4"
+    },
+    {
+      "source": "Cooling",
+      "event": "power_off",
+      "target": "Off",
+      "requirement": "R5"
+    },
+    {
+      "source": "Heating",
+      "event": "target_reached",
+      "target": "Off",
+      "requirement": "R6"
+    },
+    {
+      "source": "Cooling",
+      "event": "target_reached",
+      "target": "Off",
+      "requirement": "R7"
+    },
+    {
+      "source": "Heating",
+      "event": "heat_command",
+      "guard": "false",
+      "target": "Heating",
+      "requirement": "R8"
+    }
+  ]
+}

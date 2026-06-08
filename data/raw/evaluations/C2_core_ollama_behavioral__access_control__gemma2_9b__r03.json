@@ -1,0 +1,432 @@
+{
+  "system_name": "Access Control",
+  "candidate_label": "C2_core_ollama_behavioral__access_control__gemma2_9b__r03",
+  "structural": {
+    "schema_valid": true,
+    "referential_valid": true,
+    "errors": [],
+    "warnings": []
+  },
+  "determinism": {
+    "strict_deterministic": true,
+    "guard_aware_deterministic": true,
+    "duplicate_source_event_pairs": 0,
+    "duplicate_source_event_guard_triples": 0,
+    "guard_aware_conflicts": [],
+    "unreachable_states": []
+  },
+  "traceability": {
+    "covered_requirements": [
+      "R2",
+      "R3",
+      "R5",
+      "R6"
+    ],
+    "missing_requirements": [
+      "R1",
+      "R4",
+      "R7",
+      "R8"
+    ],
+    "unsupported_transitions": 0,
+    "empty_requirement_transitions": 0
+  },
+  "behavioral": {
+    "oracle_pass_rate": 0.5,
+    "tests_passed": 9,
+    "tests_total": 18,
+    "test_results": [
+      {
+        "test_id": "unlock_with_valid_badge",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'badge_scan' in state 'Locked'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": "no enabled transition for event 'badge_scan' in state 'Locked'"
+        },
+        "kind": "oracle",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "lock_from_unlocked",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'badge_scan' in state 'Locked'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": "no enabled transition for event 'badge_scan' in state 'Locked'"
+        },
+        "kind": "oracle",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "unlock_lock_cycle",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'badge_scan' in state 'Locked'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": "no enabled transition for event 'badge_scan' in state 'Locked'"
+        },
+        "kind": "oracle",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "initial_locked",
+        "passed": true,
+        "evaluable": true,
+        "message": "passed",
+        "simulation": {
+          "success": true,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": null
+        },
+        "kind": "oracle",
+        "final_state_matched": true,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "unlocked_entry_state",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'badge_scan' in state 'Locked'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": "no enabled transition for event 'badge_scan' in state 'Locked'"
+        },
+        "kind": "oracle",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "lock_restores_secure",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'badge_scan' in state 'Locked'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": "no enabled transition for event 'badge_scan' in state 'Locked'"
+        },
+        "kind": "oracle",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "valid_badge_from_locked",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'badge_scan' in state 'Locked'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": "no enabled transition for event 'badge_scan' in state 'Locked'"
+        },
+        "kind": "oracle",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "reject_invalid_badge",
+        "passed": true,
+        "evaluable": true,
+        "message": "expected rejection occurred",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": "no enabled transition for event 'badge_scan' in state 'Locked'"
+        },
+        "kind": "negative",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": true
+      },
+      {
+        "test_id": "lock_without_unlock",
+        "passed": true,
+        "evaluable": true,
+        "message": "passed",
+        "simulation": {
+          "success": true,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": null
+        },
+        "kind": "oracle",
+        "final_state_matched": true,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "second_badge_while_unlocked",
+        "passed": true,
+        "evaluable": true,
+        "message": "expected rejection occurred",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": "no enabled transition for event 'badge_scan' in state 'Locked'"
+        },
+        "kind": "negative",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": true
+      },
+      {
+        "test_id": "reject_lock_when_locked",
+        "passed": true,
+        "evaluable": true,
+        "message": "expected rejection occurred",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": "no enabled transition for event 'lock_command' in state 'Locked'"
+        },
+        "kind": "negative",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": true
+      },
+      {
+        "test_id": "reject_badge_when_unlocked",
+        "passed": true,
+        "evaluable": true,
+        "message": "expected rejection occurred",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": "no enabled transition for event 'badge_scan' in state 'Locked'"
+        },
+        "kind": "negative",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": true
+      },
+      {
+        "test_id": "path_unlock",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'badge_scan' in state 'Locked'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": "no enabled transition for event 'badge_scan' in state 'Locked'"
+        },
+        "kind": "path",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "path_lock_after_unlock",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'badge_scan' in state 'Locked'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": "no enabled transition for event 'badge_scan' in state 'Locked'"
+        },
+        "kind": "path",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "path_initial",
+        "passed": true,
+        "evaluable": true,
+        "message": "passed",
+        "simulation": {
+          "success": true,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": null
+        },
+        "kind": "path",
+        "final_state_matched": true,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "path_invalid_scan",
+        "passed": true,
+        "evaluable": true,
+        "message": "expected rejection occurred",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": "no enabled transition for event 'badge_scan' in state 'Locked'"
+        },
+        "kind": "path",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": true
+      },
+      {
+        "test_id": "path_rejected_lock",
+        "passed": true,
+        "evaluable": true,
+        "message": "expected rejection occurred",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": "no enabled transition for event 'lock_command' in state 'Locked'"
+        },
+        "kind": "path",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": true
+      },
+      {
+        "test_id": "path_full_cycle",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'badge_scan' in state 'Locked'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": "no enabled transition for event 'badge_scan' in state 'Locked'"
+        },
+        "kind": "path",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      }
+    ],
+    "behavioral_pass_rate": 0.5,
+    "final_state_agreement_rate": 0.25,
+    "trace_agreement_rate": 0.0,
+    "rejected_event_agreement_rate": 1.0,
+    "final_state_tests": 12,
+    "final_state_matches": 3,
+    "trace_tests": 3,
+    "trace_matches": 0,
+    "negative_tests": 6,
+    "rejection_matches": 6
+  },
+  "equivalence": {
+    "exact_transition_match_rate": 0.0,
+    "state_overlap_rate": 1.0,
+    "event_overlap_rate": 0.0,
+    "missing_transitions": [
+      "Locked -> badge_scan -> Unlocked -> badge_valid",
+      "Unlocked -> lock_command -> Locked -> _"
+    ],
+    "extra_transitions": [
+      "Locked -> BadgeScan -> Unlocked -> _",
+      "Locked -> LockCommand -> Locked -> _",
+      "Unlocked -> BadgeScan -> Unlocked -> _",
+      "Unlocked -> LockCommand -> Locked -> _"
+    ],
+    "unsupported_transitions": 0,
+    "behavioral_agreement_rate": 0.5
+  },
+  "coverage": {
+    "requirement_coverage": 0.5,
+    "transition_coverage_exact": 0.0,
+    "transition_coverage_relaxed": 0.0,
+    "path_coverage": 0.5,
+    "covered_requirements": [
+      "R2",
+      "R3",
+      "R5",
+      "R6"
+    ],
+    "missing_requirements": [
+      "R1",
+      "R4",
+      "R7",
+      "R8"
+    ]
+  },
+  "run_status": "passed",
+  "failure_stage": "none",
+  "failure_category": "none",
+  "failure_reason": ""
+}

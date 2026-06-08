@@ -1,0 +1,259 @@
+{
+  "system_name": "login_system",
+  "candidate_label": "C1_pilot_ollama_behavioral__login_system__gemma2_9b__r01",
+  "structural": {
+    "schema_valid": true,
+    "referential_valid": true,
+    "errors": [],
+    "warnings": []
+  },
+  "determinism": {
+    "strict_deterministic": true,
+    "guard_aware_deterministic": true,
+    "duplicate_source_event_pairs": 0,
+    "duplicate_source_event_guard_triples": 0,
+    "guard_aware_conflicts": [],
+    "unreachable_states": []
+  },
+  "traceability": {
+    "covered_requirements": [
+      "R2",
+      "R3",
+      "R4",
+      "R5"
+    ],
+    "missing_requirements": [
+      "R1",
+      "R6"
+    ],
+    "unsupported_transitions": 0,
+    "empty_requirement_transitions": 0
+  },
+  "behavioral": {
+    "oracle_pass_rate": 1.0,
+    "tests_passed": 6,
+    "tests_total": 6,
+    "test_results": [
+      {
+        "test_id": "successful_login",
+        "passed": true,
+        "evaluable": true,
+        "message": "passed",
+        "simulation": {
+          "success": true,
+          "trace": [
+            {
+              "event": "submit_credentials",
+              "source": "LoggedOut",
+              "target": "Authenticating",
+              "guard": ""
+            },
+            {
+              "event": "login_success",
+              "source": "Authenticating",
+              "target": "LoggedIn",
+              "guard": ""
+            }
+          ],
+          "state_trace": [
+            "LoggedOut",
+            "Authenticating",
+            "LoggedIn"
+          ],
+          "final_state": "LoggedIn",
+          "error": null
+        },
+        "kind": "oracle",
+        "final_state_matched": true,
+        "trace_matched": true,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "failed_login",
+        "passed": true,
+        "evaluable": true,
+        "message": "passed",
+        "simulation": {
+          "success": true,
+          "trace": [
+            {
+              "event": "submit_credentials",
+              "source": "LoggedOut",
+              "target": "Authenticating",
+              "guard": ""
+            },
+            {
+              "event": "login_failure",
+              "source": "Authenticating",
+              "target": "LoggedOut",
+              "guard": ""
+            }
+          ],
+          "state_trace": [
+            "LoggedOut",
+            "Authenticating",
+            "LoggedOut"
+          ],
+          "final_state": "LoggedOut",
+          "error": null
+        },
+        "kind": "oracle",
+        "final_state_matched": true,
+        "trace_matched": true,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "logout_after_login",
+        "passed": true,
+        "evaluable": true,
+        "message": "passed",
+        "simulation": {
+          "success": true,
+          "trace": [
+            {
+              "event": "submit_credentials",
+              "source": "LoggedOut",
+              "target": "Authenticating",
+              "guard": ""
+            },
+            {
+              "event": "login_success",
+              "source": "Authenticating",
+              "target": "LoggedIn",
+              "guard": ""
+            },
+            {
+              "event": "logout",
+              "source": "LoggedIn",
+              "target": "LoggedOut",
+              "guard": ""
+            }
+          ],
+          "state_trace": [
+            "LoggedOut",
+            "Authenticating",
+            "LoggedIn",
+            "LoggedOut"
+          ],
+          "final_state": "LoggedOut",
+          "error": null
+        },
+        "kind": "path",
+        "final_state_matched": true,
+        "trace_matched": true,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "reject_logout_when_logged_out",
+        "passed": true,
+        "evaluable": true,
+        "message": "expected rejection occurred",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "LoggedOut"
+          ],
+          "final_state": "LoggedOut",
+          "error": "no enabled transition for event 'logout' in state 'LoggedOut'"
+        },
+        "kind": "negative",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": true
+      },
+      {
+        "test_id": "reject_login_success_from_logged_out",
+        "passed": true,
+        "evaluable": true,
+        "message": "expected rejection occurred",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "LoggedOut"
+          ],
+          "final_state": "LoggedOut",
+          "error": "no enabled transition for event 'login_success' in state 'LoggedOut'"
+        },
+        "kind": "negative",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": true
+      },
+      {
+        "test_id": "reject_submit_while_logged_in",
+        "passed": true,
+        "evaluable": true,
+        "message": "expected rejection occurred",
+        "simulation": {
+          "success": false,
+          "trace": [
+            {
+              "event": "submit_credentials",
+              "source": "LoggedOut",
+              "target": "Authenticating",
+              "guard": ""
+            },
+            {
+              "event": "login_success",
+              "source": "Authenticating",
+              "target": "LoggedIn",
+              "guard": ""
+            }
+          ],
+          "state_trace": [
+            "LoggedOut",
+            "Authenticating",
+            "LoggedIn"
+          ],
+          "final_state": "LoggedIn",
+          "error": "no enabled transition for event 'submit_credentials' in state 'LoggedIn'"
+        },
+        "kind": "negative",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": true
+      }
+    ],
+    "behavioral_pass_rate": 1.0,
+    "final_state_agreement_rate": 1.0,
+    "trace_agreement_rate": 1.0,
+    "rejected_event_agreement_rate": 1.0,
+    "final_state_tests": 3,
+    "final_state_matches": 3,
+    "trace_tests": 3,
+    "trace_matches": 3,
+    "negative_tests": 3,
+    "rejection_matches": 3
+  },
+  "equivalence": {
+    "exact_transition_match_rate": 1.0,
+    "state_overlap_rate": 1.0,
+    "event_overlap_rate": 1.0,
+    "missing_transitions": [],
+    "extra_transitions": [],
+    "unsupported_transitions": 0,
+    "behavioral_agreement_rate": 1.0
+  },
+  "coverage": {
+    "requirement_coverage": 0.6666666666666666,
+    "transition_coverage_exact": 1.0,
+    "transition_coverage_relaxed": 1.0,
+    "path_coverage": 1.0,
+    "covered_requirements": [
+      "R2",
+      "R3",
+      "R4",
+      "R5"
+    ],
+    "missing_requirements": [
+      "R1",
+      "R6"
+    ]
+  },
+  "run_status": "passed",
+  "failure_stage": "none",
+  "failure_category": "none",
+  "failure_reason": ""
+}

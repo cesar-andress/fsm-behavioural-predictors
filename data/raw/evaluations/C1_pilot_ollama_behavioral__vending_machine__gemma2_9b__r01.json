@@ -1,0 +1,198 @@
+{
+  "system_name": "vending_machine",
+  "candidate_label": "C1_pilot_ollama_behavioral__vending_machine__gemma2_9b__r01",
+  "structural": {
+    "schema_valid": true,
+    "referential_valid": true,
+    "errors": [],
+    "warnings": []
+  },
+  "determinism": {
+    "strict_deterministic": true,
+    "guard_aware_deterministic": true,
+    "duplicate_source_event_pairs": 0,
+    "duplicate_source_event_guard_triples": 0,
+    "guard_aware_conflicts": [],
+    "unreachable_states": []
+  },
+  "traceability": {
+    "covered_requirements": [
+      "R2",
+      "R3",
+      "R5"
+    ],
+    "missing_requirements": [
+      "R1",
+      "R4",
+      "R6"
+    ],
+    "unsupported_transitions": 0,
+    "empty_requirement_transitions": 0
+  },
+  "behavioral": {
+    "oracle_pass_rate": 0.5,
+    "tests_passed": 3,
+    "tests_total": 6,
+    "test_results": [
+      {
+        "test_id": "happy_path_coffee",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'insert_coin' in state 'Idle'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'insert_coin' in state 'Idle'"
+        },
+        "kind": "oracle",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "reject_coffee_from_idle",
+        "passed": true,
+        "evaluable": true,
+        "message": "expected rejection occurred",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'press_coffee' in state 'Idle'"
+        },
+        "kind": "negative",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": true
+      },
+      {
+        "test_id": "coin_insert_only",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'insert_coin' in state 'Idle'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'insert_coin' in state 'Idle'"
+        },
+        "kind": "oracle",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "reject_dispense_from_idle",
+        "passed": true,
+        "evaluable": true,
+        "message": "expected rejection occurred",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'dispense_complete' in state 'Idle'"
+        },
+        "kind": "negative",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": true
+      },
+      {
+        "test_id": "path_to_dispensing",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'insert_coin' in state 'Idle'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'insert_coin' in state 'Idle'"
+        },
+        "kind": "path",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "reject_coffee_during_dispensing",
+        "passed": true,
+        "evaluable": true,
+        "message": "expected rejection occurred",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'insert_coin' in state 'Idle'"
+        },
+        "kind": "negative",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": true
+      }
+    ],
+    "behavioral_pass_rate": 0.5,
+    "final_state_agreement_rate": 0.0,
+    "trace_agreement_rate": 0.0,
+    "rejected_event_agreement_rate": 1.0,
+    "final_state_tests": 3,
+    "final_state_matches": 0,
+    "trace_tests": 2,
+    "trace_matches": 0,
+    "negative_tests": 3,
+    "rejection_matches": 3
+  },
+  "equivalence": {
+    "exact_transition_match_rate": 0.3333333333333333,
+    "state_overlap_rate": 1.0,
+    "event_overlap_rate": 0.3333333333333333,
+    "missing_transitions": [
+      "CreditAvailable -> press_coffee -> Dispensing -> _",
+      "Idle -> insert_coin -> CreditAvailable -> _"
+    ],
+    "extra_transitions": [
+      "CreditAvailable -> coffee_pressed -> Dispensing -> _",
+      "Idle -> coin_inserted -> CreditAvailable -> _"
+    ],
+    "unsupported_transitions": 0,
+    "behavioral_agreement_rate": 0.5
+  },
+  "coverage": {
+    "requirement_coverage": 0.5,
+    "transition_coverage_exact": 0.3333333333333333,
+    "transition_coverage_relaxed": 0.3333333333333333,
+    "path_coverage": 0.5,
+    "covered_requirements": [
+      "R2",
+      "R3",
+      "R5"
+    ],
+    "missing_requirements": [
+      "R1",
+      "R4",
+      "R6"
+    ]
+  },
+  "run_status": "passed",
+  "failure_stage": "none",
+  "failure_category": "none",
+  "failure_reason": ""
+}

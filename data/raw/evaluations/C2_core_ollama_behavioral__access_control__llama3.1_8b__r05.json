@@ -1,0 +1,449 @@
+{
+  "system_name": "Access Control",
+  "candidate_label": "C2_core_ollama_behavioral__access_control__llama3.1_8b__r05",
+  "structural": {
+    "schema_valid": true,
+    "referential_valid": true,
+    "errors": [],
+    "warnings": []
+  },
+  "determinism": {
+    "strict_deterministic": false,
+    "guard_aware_deterministic": false,
+    "duplicate_source_event_pairs": 2,
+    "duplicate_source_event_guard_triples": 2,
+    "guard_aware_conflicts": [
+      "Locked/badge_scan: guards '' -> Unlocked and '' -> Locked may overlap"
+    ],
+    "unreachable_states": []
+  },
+  "traceability": {
+    "covered_requirements": [
+      "R2",
+      "R3",
+      "R4",
+      "R5",
+      "R6"
+    ],
+    "missing_requirements": [
+      "R1",
+      "R7",
+      "R8"
+    ],
+    "unsupported_transitions": 0,
+    "empty_requirement_transitions": 0
+  },
+  "behavioral": {
+    "oracle_pass_rate": 0.16666666666666666,
+    "tests_passed": 3,
+    "tests_total": 18,
+    "test_results": [
+      {
+        "test_id": "unlock_with_valid_badge",
+        "passed": false,
+        "evaluable": true,
+        "message": "nondeterministic choice for event 'badge_scan' in state 'Locked'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": "nondeterministic choice for event 'badge_scan' in state 'Locked'"
+        },
+        "kind": "oracle",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "lock_from_unlocked",
+        "passed": false,
+        "evaluable": true,
+        "message": "nondeterministic choice for event 'badge_scan' in state 'Locked'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": "nondeterministic choice for event 'badge_scan' in state 'Locked'"
+        },
+        "kind": "oracle",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "unlock_lock_cycle",
+        "passed": false,
+        "evaluable": true,
+        "message": "nondeterministic choice for event 'badge_scan' in state 'Locked'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": "nondeterministic choice for event 'badge_scan' in state 'Locked'"
+        },
+        "kind": "oracle",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "initial_locked",
+        "passed": true,
+        "evaluable": true,
+        "message": "passed",
+        "simulation": {
+          "success": true,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": null
+        },
+        "kind": "oracle",
+        "final_state_matched": true,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "unlocked_entry_state",
+        "passed": false,
+        "evaluable": true,
+        "message": "nondeterministic choice for event 'badge_scan' in state 'Locked'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": "nondeterministic choice for event 'badge_scan' in state 'Locked'"
+        },
+        "kind": "oracle",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "lock_restores_secure",
+        "passed": false,
+        "evaluable": true,
+        "message": "nondeterministic choice for event 'badge_scan' in state 'Locked'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": "nondeterministic choice for event 'badge_scan' in state 'Locked'"
+        },
+        "kind": "oracle",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "valid_badge_from_locked",
+        "passed": false,
+        "evaluable": true,
+        "message": "nondeterministic choice for event 'badge_scan' in state 'Locked'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": "nondeterministic choice for event 'badge_scan' in state 'Locked'"
+        },
+        "kind": "oracle",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "reject_invalid_badge",
+        "passed": false,
+        "evaluable": true,
+        "message": "nondeterministic choice for event 'badge_scan' in state 'Locked'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": "nondeterministic choice for event 'badge_scan' in state 'Locked'"
+        },
+        "kind": "negative",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": false
+      },
+      {
+        "test_id": "lock_without_unlock",
+        "passed": true,
+        "evaluable": true,
+        "message": "passed",
+        "simulation": {
+          "success": true,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": null
+        },
+        "kind": "oracle",
+        "final_state_matched": true,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "second_badge_while_unlocked",
+        "passed": false,
+        "evaluable": true,
+        "message": "nondeterministic choice for event 'badge_scan' in state 'Locked'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": "nondeterministic choice for event 'badge_scan' in state 'Locked'"
+        },
+        "kind": "negative",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": false
+      },
+      {
+        "test_id": "reject_lock_when_locked",
+        "passed": false,
+        "evaluable": true,
+        "message": "expected rejection but simulation succeeded",
+        "simulation": {
+          "success": true,
+          "trace": [
+            {
+              "event": "lock_command",
+              "source": "Locked",
+              "target": "Locked",
+              "guard": ""
+            }
+          ],
+          "state_trace": [
+            "Locked",
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": null
+        },
+        "kind": "negative",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": false
+      },
+      {
+        "test_id": "reject_badge_when_unlocked",
+        "passed": false,
+        "evaluable": true,
+        "message": "nondeterministic choice for event 'badge_scan' in state 'Locked'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": "nondeterministic choice for event 'badge_scan' in state 'Locked'"
+        },
+        "kind": "negative",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": false
+      },
+      {
+        "test_id": "path_unlock",
+        "passed": false,
+        "evaluable": true,
+        "message": "nondeterministic choice for event 'badge_scan' in state 'Locked'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": "nondeterministic choice for event 'badge_scan' in state 'Locked'"
+        },
+        "kind": "path",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "path_lock_after_unlock",
+        "passed": false,
+        "evaluable": true,
+        "message": "nondeterministic choice for event 'badge_scan' in state 'Locked'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": "nondeterministic choice for event 'badge_scan' in state 'Locked'"
+        },
+        "kind": "path",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "path_initial",
+        "passed": true,
+        "evaluable": true,
+        "message": "passed",
+        "simulation": {
+          "success": true,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": null
+        },
+        "kind": "path",
+        "final_state_matched": true,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "path_invalid_scan",
+        "passed": false,
+        "evaluable": true,
+        "message": "nondeterministic choice for event 'badge_scan' in state 'Locked'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": "nondeterministic choice for event 'badge_scan' in state 'Locked'"
+        },
+        "kind": "path",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": false
+      },
+      {
+        "test_id": "path_rejected_lock",
+        "passed": false,
+        "evaluable": true,
+        "message": "expected rejection but simulation succeeded",
+        "simulation": {
+          "success": true,
+          "trace": [
+            {
+              "event": "lock_command",
+              "source": "Locked",
+              "target": "Locked",
+              "guard": ""
+            }
+          ],
+          "state_trace": [
+            "Locked",
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": null
+        },
+        "kind": "path",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": false
+      },
+      {
+        "test_id": "path_full_cycle",
+        "passed": false,
+        "evaluable": true,
+        "message": "nondeterministic choice for event 'badge_scan' in state 'Locked'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Locked"
+          ],
+          "final_state": "Locked",
+          "error": "nondeterministic choice for event 'badge_scan' in state 'Locked'"
+        },
+        "kind": "path",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": null
+      }
+    ],
+    "behavioral_pass_rate": 0.16666666666666666,
+    "final_state_agreement_rate": 0.25,
+    "trace_agreement_rate": 0.0,
+    "rejected_event_agreement_rate": 0.0,
+    "final_state_tests": 12,
+    "final_state_matches": 3,
+    "trace_tests": 3,
+    "trace_matches": 0,
+    "negative_tests": 6,
+    "rejection_matches": 0
+  },
+  "equivalence": {
+    "exact_transition_match_rate": 0.5,
+    "state_overlap_rate": 1.0,
+    "event_overlap_rate": 1.0,
+    "missing_transitions": [
+      "Locked -> badge_scan -> Unlocked -> badge_valid"
+    ],
+    "extra_transitions": [
+      "Locked -> badge_scan -> Locked -> _",
+      "Locked -> badge_scan -> Unlocked -> _",
+      "Locked -> lock_command -> Locked -> _",
+      "Unlocked -> badge_scan -> Locked -> _"
+    ],
+    "unsupported_transitions": 0,
+    "behavioral_agreement_rate": 0.16666666666666666
+  },
+  "coverage": {
+    "requirement_coverage": 0.625,
+    "transition_coverage_exact": 0.5,
+    "transition_coverage_relaxed": 1.0,
+    "path_coverage": 0.16666666666666666,
+    "covered_requirements": [
+      "R2",
+      "R3",
+      "R4",
+      "R5",
+      "R6"
+    ],
+    "missing_requirements": [
+      "R1",
+      "R7",
+      "R8"
+    ]
+  },
+  "run_status": "passed",
+  "failure_stage": "none",
+  "failure_category": "none",
+  "failure_reason": ""
+}

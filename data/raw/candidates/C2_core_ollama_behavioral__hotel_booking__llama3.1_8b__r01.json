@@ -1,0 +1,77 @@
+{
+  "system_name": "Hotel Booking",
+  "domain": "hospitality reservation",
+  "states": [
+    "NoBooking",
+    "SearchResults",
+    "BookingHeld",
+    "Confirmed"
+  ],
+  "initial_state": "NoBooking",
+  "events": [
+    "search",
+    "select_room",
+    "confirm_payment",
+    "cancel"
+  ],
+  "transitions": [
+    {
+      "source": "NoBooking",
+      "event": "search",
+      "target": "SearchResults",
+      "requirement": "R2"
+    },
+    {
+      "source": "SearchResults",
+      "event": "select_room",
+      "target": "BookingHeld",
+      "requirement": "R3"
+    },
+    {
+      "source": "NoBooking",
+      "event": "search",
+      "guard": "",
+      "target": "SearchResults",
+      "requirement": "R2"
+    },
+    {
+      "source": "SearchResults",
+      "event": "select_room",
+      "guard": "",
+      "target": "BookingHeld",
+      "requirement": "R3"
+    },
+    {
+      "source": "BookingHeld",
+      "event": "confirm_payment",
+      "target": "Confirmed",
+      "requirement": "R4"
+    },
+    {
+      "source": "BookingHeld",
+      "event": "cancel",
+      "target": "NoBooking",
+      "requirement": "R5"
+    },
+    {
+      "source": "Confirmed",
+      "event": "cancel",
+      "target": "NoBooking",
+      "requirement": "R6"
+    },
+    {
+      "source": "SearchResults",
+      "event": "confirm_payment",
+      "guard": "",
+      "target": "NoBooking",
+      "requirement": "R7"
+    },
+    {
+      "source": "NoBooking",
+      "event": "select_room",
+      "guard": "",
+      "target": "NoBooking",
+      "requirement": "R8"
+    }
+  ]
+}

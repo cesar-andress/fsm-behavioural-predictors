@@ -1,0 +1,64 @@
+{
+  "system_name": "Package Locker",
+  "domain": "parcel pickup locker",
+  "states": [
+    "Empty",
+    "Loaded",
+    "ReadyForPickup",
+    "Completed"
+  ],
+  "initial_state": "Empty",
+  "events": [
+    "load_package",
+    "send_notification",
+    "enter_valid_code",
+    "collect_package",
+    "load_rejected",
+    "notification_rejected",
+    "invalid_code"
+  ],
+  "transitions": [
+    {
+      "source": "Empty",
+      "event": "load_package",
+      "target": "Loaded",
+      "requirement": "R2"
+    },
+    {
+      "source": "Loaded",
+      "event": "send_notification",
+      "target": "ReadyForPickup",
+      "requirement": "R3"
+    },
+    {
+      "source": "ReadyForPickup",
+      "event": "enter_valid_code",
+      "target": "Completed",
+      "requirement": "R4"
+    },
+    {
+      "source": "Loaded",
+      "event": "load_rejected",
+      "target": "Empty",
+      "requirement": "R6"
+    },
+    {
+      "source": "Empty",
+      "event": "notification_rejected",
+      "target": "Empty",
+      "requirement": "R7"
+    },
+    {
+      "source": "ReadyForPickup",
+      "event": "invalid_code",
+      "target": "Loaded",
+      "requirement": "R8"
+    },
+    {
+      "source": "Completed",
+      "event": "collect_package",
+      "target": "Empty",
+      "requirement": "R5"
+    }
+  ]
+}

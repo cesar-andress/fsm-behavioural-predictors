@@ -1,0 +1,63 @@
+{
+  "system_name": "ATM",
+  "domain": "automated teller machine",
+  "states": [
+    "Idle",
+    "Authenticating",
+    "Ready",
+    "Dispensing"
+  ],
+  "initial_state": "Idle",
+  "events": [
+    "card_inserted",
+    "pin_entered",
+    "withdraw_selected",
+    "dispense_complete",
+    "card_ejected"
+  ],
+  "transitions": [
+    {
+      "source": "Idle",
+      "event": "card_inserted",
+      "target": "Authenticating",
+      "requirement": "R2"
+    },
+    {
+      "source": "Authenticating",
+      "event": "pin_entered",
+      "target": "Ready",
+      "requirement": "R3"
+    },
+    {
+      "source": "Authenticating",
+      "event": "pin_entered",
+      "target": "Idle",
+      "requirement": "R4"
+    },
+    {
+      "source": "Ready",
+      "event": "withdraw_selected",
+      "target": "Dispensing",
+      "requirement": "R5"
+    },
+    {
+      "source": "Dispensing",
+      "event": "dispense_complete",
+      "target": "Ready",
+      "requirement": "R6"
+    },
+    {
+      "source": "Ready",
+      "event": "card_ejected",
+      "target": "Idle",
+      "requirement": "R7"
+    }
+  ],
+  "forbidden_behaviours": [
+    {
+      "source": "Ready",
+      "event": "card_inserted",
+      "requirement": "R8"
+    }
+  ]
+}

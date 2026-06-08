@@ -1,0 +1,398 @@
+{
+  "system_name": "Elevator",
+  "candidate_label": "C2_core_ollama_behavioral__elevator__gemma2_9b__r03",
+  "structural": {
+    "schema_valid": true,
+    "referential_valid": true,
+    "errors": [],
+    "warnings": [
+      "transitions[3].event 'DoorSealed' is not listed in events"
+    ]
+  },
+  "determinism": {
+    "strict_deterministic": true,
+    "guard_aware_deterministic": true,
+    "duplicate_source_event_pairs": 0,
+    "duplicate_source_event_guard_triples": 0,
+    "guard_aware_conflicts": [],
+    "unreachable_states": []
+  },
+  "traceability": {
+    "covered_requirements": [
+      "R2",
+      "R3",
+      "R4",
+      "R5"
+    ],
+    "missing_requirements": [
+      "R1",
+      "R6",
+      "R7",
+      "R8"
+    ],
+    "unsupported_transitions": 0,
+    "empty_requirement_transitions": 0
+  },
+  "behavioral": {
+    "oracle_pass_rate": 0.25,
+    "tests_passed": 4,
+    "tests_total": 16,
+    "test_results": [
+      {
+        "test_id": "full_ride_cycle",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'call_elevator' in state 'Idle'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'call_elevator' in state 'Idle'"
+        },
+        "kind": "oracle",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "call_to_moving",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'call_elevator' in state 'Idle'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'call_elevator' in state 'Idle'"
+        },
+        "kind": "oracle",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "arrive_open_doors",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'call_elevator' in state 'Idle'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'call_elevator' in state 'Idle'"
+        },
+        "kind": "oracle",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "initial_idle",
+        "passed": true,
+        "evaluable": true,
+        "message": "passed",
+        "simulation": {
+          "success": true,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": null
+        },
+        "kind": "oracle",
+        "final_state_matched": true,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "close_from_open",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'call_elevator' in state 'Idle'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'call_elevator' in state 'Idle'"
+        },
+        "kind": "oracle",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "sealed_to_idle",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'call_elevator' in state 'Idle'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'call_elevator' in state 'Idle'"
+        },
+        "kind": "oracle",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "door_open_reached",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'call_elevator' in state 'Idle'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'call_elevator' in state 'Idle'"
+        },
+        "kind": "oracle",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "moving_after_call",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'call_elevator' in state 'Idle'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'call_elevator' in state 'Idle'"
+        },
+        "kind": "oracle",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "reject_call_moving",
+        "passed": true,
+        "evaluable": true,
+        "message": "expected rejection occurred",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'call_elevator' in state 'Idle'"
+        },
+        "kind": "negative",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": true
+      },
+      {
+        "test_id": "reject_close_idle",
+        "passed": true,
+        "evaluable": true,
+        "message": "expected rejection occurred",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'close_door' in state 'Idle'"
+        },
+        "kind": "negative",
+        "final_state_matched": null,
+        "trace_matched": null,
+        "rejection_matched": true
+      },
+      {
+        "test_id": "path_moving",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'call_elevator' in state 'Idle'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'call_elevator' in state 'Idle'"
+        },
+        "kind": "path",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "path_door_open",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'call_elevator' in state 'Idle'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'call_elevator' in state 'Idle'"
+        },
+        "kind": "path",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "path_closing",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'call_elevator' in state 'Idle'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'call_elevator' in state 'Idle'"
+        },
+        "kind": "path",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "path_full_cycle",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'call_elevator' in state 'Idle'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'call_elevator' in state 'Idle'"
+        },
+        "kind": "path",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "path_initial",
+        "passed": true,
+        "evaluable": true,
+        "message": "passed",
+        "simulation": {
+          "success": true,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": null
+        },
+        "kind": "path",
+        "final_state_matched": true,
+        "trace_matched": null,
+        "rejection_matched": null
+      },
+      {
+        "test_id": "path_arrive_only",
+        "passed": false,
+        "evaluable": true,
+        "message": "no enabled transition for event 'call_elevator' in state 'Idle'",
+        "simulation": {
+          "success": false,
+          "trace": [],
+          "state_trace": [
+            "Idle"
+          ],
+          "final_state": "Idle",
+          "error": "no enabled transition for event 'call_elevator' in state 'Idle'"
+        },
+        "kind": "path",
+        "final_state_matched": false,
+        "trace_matched": null,
+        "rejection_matched": null
+      }
+    ],
+    "behavioral_pass_rate": 0.25,
+    "final_state_agreement_rate": 0.14285714285714285,
+    "trace_agreement_rate": 0.0,
+    "rejected_event_agreement_rate": 1.0,
+    "final_state_tests": 14,
+    "final_state_matches": 2,
+    "trace_tests": 4,
+    "trace_matches": 0,
+    "negative_tests": 2,
+    "rejection_matches": 2
+  },
+  "equivalence": {
+    "exact_transition_match_rate": 0.0,
+    "state_overlap_rate": 1.0,
+    "event_overlap_rate": 0.0,
+    "missing_transitions": [
+      "Closing -> door_sealed -> Idle -> _",
+      "DoorOpen -> close_door -> Closing -> _",
+      "Idle -> call_elevator -> Moving -> _",
+      "Moving -> arrived -> DoorOpen -> _"
+    ],
+    "extra_transitions": [
+      "Closing -> DoorSealed -> Idle -> _",
+      "DoorOpen -> CloseDoor -> Closing -> _",
+      "Idle -> Call -> Moving -> _",
+      "Moving -> Arrival -> DoorOpen -> _"
+    ],
+    "unsupported_transitions": 0,
+    "behavioral_agreement_rate": 0.25
+  },
+  "coverage": {
+    "requirement_coverage": 0.5,
+    "transition_coverage_exact": 0.0,
+    "transition_coverage_relaxed": 0.0,
+    "path_coverage": 0.25,
+    "covered_requirements": [
+      "R2",
+      "R3",
+      "R4",
+      "R5"
+    ],
+    "missing_requirements": [
+      "R1",
+      "R6",
+      "R7",
+      "R8"
+    ]
+  },
+  "run_status": "passed",
+  "failure_stage": "none",
+  "failure_category": "none",
+  "failure_reason": ""
+}
