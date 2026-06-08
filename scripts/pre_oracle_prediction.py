@@ -14,6 +14,8 @@ from typing import Any
 
 import matplotlib.pyplot as plt
 import numpy as np
+
+from figure_style import GRAY_DASH, GRAY_FILL_DARK, MODEL_STYLES, _gray, apply_figure_style, save_figure, style_axes
 import pandas as pd
 from sklearn.metrics import precision_recall_curve, roc_curve
 
@@ -268,21 +270,28 @@ def plot_curve(
     path: Path,
     is_roc: bool,
 ) -> None:
+    apply_figure_style()
     fig, ax = plt.subplots(figsize=(7, 6))
     for model_name, (x, y) in curve_data.items():
-        ax.plot(x, y, label=f"pre_oracle — {model_name}", linewidth=2)
-    for ref_name, (x, y) in reference_data.items():
-        ax.plot(x, y, label=ref_name, linestyle="--", linewidth=1.2, alpha=0.8)
+        style = MODEL_STYLES.get(model_name, {})
+        ax.plot(x, y, label=f"pre_oracle — {model_name.replace('_', ' ')}", **style)
+    for idx, (ref_name, (x, y)) in enumerate(reference_data.items()):
+        ax.plot(
+            x,
+            y,
+            label=ref_name,
+            linestyle="--",
+            color=_gray(GRAY_FILL_DARK if idx % 2 else GRAY_DASH),
+        )
     if is_roc:
-        ax.plot([0, 1], [0, 1], "k--", linewidth=0.8, alpha=0.5)
+        ax.plot([0, 1], [0, 1], linestyle="--", color=_gray(GRAY_DASH))
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
     ax.set_title(title)
-    ax.legend(fontsize=8, loc="best")
+    style_axes(ax)
+    ax.legend(loc="best")
     fig.tight_layout()
-    path.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(path, dpi=150, bbox_inches="tight")
-    plt.close(fig)
+    save_figure(fig, path)
 
 
 def build_comparison(

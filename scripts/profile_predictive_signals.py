@@ -15,8 +15,28 @@ from typing import Any
 
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.patches import Patch
 import pandas as pd
 from scipy.stats import pointbiserialr, spearmanr
+
+SCRIPTS_DIR = Path(__file__).resolve().parent
+if str(SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS_DIR))
+
+from figure_style import (  # noqa: E402
+    FIG_BASE_SIZE,
+    FIG_LEGEND_SIZE,
+    FIG_TICK_SIZE,
+    FIG_TITLE_SIZE,
+    GRAY_DASH,
+    GRAY_FILL_DARK,
+    GRAY_FILL_MID,
+    GRAY_STROKE,
+    _gray,
+    apply_figure_style,
+    save_figure,
+    style_axes,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 MASTER_CSV = ROOT / "data" / "processed" / "master_analysis_dataset.csv"
@@ -417,58 +437,94 @@ def write_predictive_signal_profile(df: pd.DataFrame, path: Path) -> None:
 
 
 def plot_bpr_by_gate(scored: pd.DataFrame, path: Path) -> None:
+    apply_figure_style()
     fig, axes = plt.subplots(1, 3, figsize=(12, 4), sharey=True)
     gates = ["g2_pass", "g3_pass", "g3a_pass"]
+    box_colors = [_gray(GRAY_FILL_MID), _gray(GRAY_STROKE)]
     for ax, gate in zip(axes, gates):
         subset = scored[scored[gate].notna()]
         data = [
             subset.loc[subset[gate] == False, "behavioral_pass_rate"].dropna(),  # noqa: E712
             subset.loc[subset[gate] == True, "behavioral_pass_rate"].dropna(),  # noqa: E712
         ]
-        ax.boxplot(data, tick_labels=["fail", "pass"], showfliers=True)
-        ax.set_title(gate)
-        ax.set_xlabel("Gate outcome")
+        bp = ax.boxplot(data, tick_labels=["fail", "pass"], showfliers=True, patch_artist=True)
+        for patch, color in zip(bp["boxes"], box_colors):
+            patch.set_facecolor(color)
+            patch.set_alpha(0.35)
+            patch.set_edgecolor(_gray(GRAY_STROKE))
+        for whisker in bp["whiskers"]:
+            whisker.set_color(_gray(GRAY_DASH))
+        for cap in bp["caps"]:
+            cap.set_color(_gray(GRAY_DASH))
+        for median in bp["medians"]:
+            median.set_color(_gray(0.0))
+        ax.set_title(gate, fontsize=FIG_TITLE_SIZE, fontweight="bold")
+        ax.set_xlabel("Gate outcome", fontsize=FIG_BASE_SIZE)
         ax.set_ylim(0, 1.05)
-    axes[0].set_ylabel("Behavioral pass rate (BPR)")
-    fig.suptitle("BPR by structural gate (scored runs)")
-    fig.tight_layout()
-    path.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(path, dpi=150, bbox_inches="tight")
-    plt.close(fig)
+        style_axes(ax)
+        ax.tick_params(labelsize=FIG_TICK_SIZE)
+    axes[0].set_ylabel("Behavioural pass rate (BPR)", fontsize=FIG_BASE_SIZE)
+    legend_handles = [
+        Patch(facecolor=_gray(GRAY_FILL_MID), edgecolor=_gray(GRAY_STROKE), alpha=0.50, label="Gate fail"),
+        Patch(facecolor=_gray(GRAY_STROKE), edgecolor=_gray(GRAY_STROKE), alpha=0.50, label="Gate pass"),
+    ]
+    fig.legend(
+        handles=legend_handles,
+        loc="lower center",
+        ncol=2,
+        bbox_to_anchor=(0.5, -0.02),
+        frameon=True,
+        fontsize=FIG_LEGEND_SIZE,
+    )
+    fig.suptitle("BPR by structural gate (scored runs, n=209)", fontsize=FIG_TITLE_SIZE, fontweight="bold")
+    fig.tight_layout(rect=(0, 0.06, 1, 0.96))
+    save_figure(fig, path)
 
 
 def plot_bpr_by_model(scored: pd.DataFrame, path: Path) -> None:
+    apply_figure_style()
     models = sorted(scored["model"].unique())
     data = [scored.loc[scored["model"] == m, "behavioral_pass_rate"].dropna() for m in models]
     fig, ax = plt.subplots(figsize=(10, 5))
-    ax.boxplot(data, tick_labels=models, showfliers=True)
-    ax.set_ylabel("Behavioral pass rate (BPR)")
-    ax.set_xlabel("Model")
-    ax.set_title("BPR by model (scored runs)")
+    bp = ax.boxplot(data, tick_labels=models, showfliers=True, patch_artist=True)
+    for patch in bp["boxes"]:
+        patch.set_facecolor(_gray(GRAY_FILL_MID))
+        patch.set_alpha(0.45)
+        patch.set_edgecolor(_gray(GRAY_STROKE))
+    ax.set_ylabel("Behavioural pass rate (BPR)", fontsize=FIG_BASE_SIZE)
+    ax.set_xlabel("LLM family (model)", fontsize=FIG_BASE_SIZE)
+    ax.set_title("BPR by LLM family (scored runs)", fontsize=FIG_TITLE_SIZE, fontweight="bold")
     ax.set_ylim(0, 1.05)
+    style_axes(ax)
+    ax.tick_params(labelsize=FIG_TICK_SIZE)
     plt.setp(ax.get_xticklabels(), rotation=20, ha="right")
     fig.tight_layout()
-    path.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(path, dpi=150, bbox_inches="tight")
-    plt.close(fig)
+    save_figure(fig, path)
 
 
 def plot_bpr_by_system(scored: pd.DataFrame, path: Path) -> None:
+    apply_figure_style()
     summary = (
         scored.groupby("system_id")["behavioral_pass_rate"]
         .median()
         .sort_values(ascending=True)
     )
     fig, ax = plt.subplots(figsize=(9, 7))
-    ax.barh(summary.index, summary.values, color="steelblue")
-    ax.set_xlabel("Median behavioral pass rate (BPR)")
-    ax.set_ylabel("system_id")
-    ax.set_title("Median BPR by system (scored runs)")
+    ax.barh(
+        summary.index,
+        summary.values,
+        color=_gray(GRAY_FILL_DARK),
+        edgecolor=_gray(GRAY_STROKE),
+        linewidth=0.8,
+    )
+    ax.set_xlabel("Median behavioural pass rate (BPR)", fontsize=FIG_BASE_SIZE)
+    ax.set_ylabel("system_id", fontsize=FIG_BASE_SIZE)
+    ax.set_title("Median BPR by system (scored runs)", fontsize=FIG_TITLE_SIZE, fontweight="bold")
     ax.set_xlim(0, 1.05)
+    style_axes(ax)
+    ax.tick_params(labelsize=FIG_TICK_SIZE)
     fig.tight_layout()
-    path.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(path, dpi=150, bbox_inches="tight")
-    plt.close(fig)
+    save_figure(fig, path)
 
 
 def write_validation_note(paths: list[Path]) -> None:

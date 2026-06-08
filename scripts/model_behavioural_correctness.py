@@ -16,7 +16,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from figure_style import (
+    FIG_BASE_SIZE,
+    FIG_CHANCE_LINEWIDTH,
+    FIG_LEGEND_SIZE,
+    FIG_TITLE_SIZE,
+    FIG_TICK_SIZE,
     GRAY_DASH,
+    MODEL_LEGEND_ORDER,
+    MODEL_PLOT_ORDER,
     MODEL_STYLES,
     PREDICTOR_SET_ORDER,
     _gray,
@@ -26,6 +33,7 @@ from figure_style import (
     save_figure,
     style_axes,
 )
+from matplotlib.lines import Line2D
 import pandas as pd
 from sklearn.base import clone
 from sklearn.dummy import DummyClassifier
@@ -47,13 +55,19 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.tree import DecisionTreeClassifier
 
+from repro_config import (
+    DT_MAX_DEPTH,
+    LR_MAX_ITER,
+    N_SPLITS,
+    RANDOM_STATE,
+    RF_MAX_DEPTH,
+    RF_N_ESTIMATORS,
+)
+
 ROOT = Path(__file__).resolve().parents[1]
 MASTER_CSV = ROOT / "data" / "processed" / "master_analysis_dataset.csv"
 TABLES_DIR = ROOT / "results" / "tables"
 FIGURES_DIR = ROOT / "results" / "figures"
-
-RANDOM_STATE = 42
-N_SPLITS = 5
 
 PREDICTOR_SETS: dict[str, list[str]] = {
     "A_gate_only": ["g2_pass", "g3_pass", "g3a_pass"],
@@ -144,7 +158,7 @@ def make_model(name: str) -> Pipeline | DummyClassifier:
                     "clf",
                     LogisticRegression(
                         class_weight="balanced",
-                        max_iter=2000,
+                        max_iter=LR_MAX_ITER,
                         random_state=RANDOM_STATE,
                     ),
                 ),
@@ -157,7 +171,7 @@ def make_model(name: str) -> Pipeline | DummyClassifier:
                 (
                     "clf",
                     DecisionTreeClassifier(
-                        max_depth=3,
+                        max_depth=DT_MAX_DEPTH,
                         class_weight="balanced",
                         random_state=RANDOM_STATE,
                     ),
@@ -171,8 +185,8 @@ def make_model(name: str) -> Pipeline | DummyClassifier:
                 (
                     "clf",
                     RandomForestClassifier(
-                        n_estimators=50,
-                        max_depth=5,
+                        n_estimators=RF_N_ESTIMATORS,
+                        max_depth=RF_MAX_DEPTH,
                         class_weight="balanced",
                         random_state=RANDOM_STATE,
                     ),
@@ -382,27 +396,62 @@ def plot_curves(
     path: Path,
 ) -> None:
     apply_figure_style()
-    fig, axes = plt.subplots(2, 2, figsize=(11.5, 9.5))
+    fig, axes = plt.subplots(2, 2, figsize=(12.0, 10.0))
     for ax, set_name in zip(axes.ravel(), PREDICTOR_SET_ORDER):
-        for model_name, (x, y) in curve_data[set_name].items():
+        for model_name in MODEL_PLOT_ORDER:
+            curves = curve_data[set_name]
+            if model_name not in curves:
+                continue
+            x, y = curves[model_name]
             style = MODEL_STYLES.get(model_name, {})
-            ax.plot(x, y, label=model_label(model_name), **style)
-        ax.set_title(predictor_set_label(set_name))
+            ax.plot(x, y, **style)
+        ax.set_title(predictor_set_label(set_name), fontsize=FIG_TITLE_SIZE, fontweight="bold", pad=10)
         if curve_fn is roc_curve:
-            ax.set_xlabel("False positive rate (FPR)")
-            ax.set_ylabel("True positive rate (TPR)")
+            ax.set_xlabel("False positive rate (FPR)", fontsize=FIG_BASE_SIZE)
+            ax.set_ylabel("True positive rate (TPR)", fontsize=FIG_BASE_SIZE)
         else:
-            ax.set_xlabel("Recall (true positives found)")
-            ax.set_ylabel("Precision (positive predictive value)")
+            ax.set_xlabel("Recall", fontsize=FIG_BASE_SIZE)
+            ax.set_ylabel("Precision", fontsize=FIG_BASE_SIZE)
         style_axes(ax)
-        ax.legend(loc="lower left" if curve_fn is roc_curve else "upper right", fontsize=8)
+        ax.tick_params(labelsize=FIG_TICK_SIZE)
+        ax.grid(True, linestyle=":", linewidth=0.6, alpha=0.25)
         ax.set_xlim(0, 1)
         ax.set_ylim(0, 1)
     if curve_fn is roc_curve:
         for ax in axes.ravel():
-            ax.plot([0, 1], [0, 1], linestyle="--", color=_gray(GRAY_DASH), label="Chance (0.5)")
-    fig.suptitle(title, y=0.98)
-    fig.tight_layout(rect=(0, 0, 1, 0.96))
+            ax.plot(
+                [0, 1],
+                [0, 1],
+                linestyle="--",
+                color=_gray(GRAY_DASH),
+                linewidth=FIG_CHANCE_LINEWIDTH,
+                alpha=0.75,
+                zorder=0,
+            )
+    legend_handles = [
+        Line2D([0], [0], label=model_label(model_name), **MODEL_STYLES[model_name])
+        for model_name in MODEL_LEGEND_ORDER
+    ]
+    if curve_fn is roc_curve:
+        legend_handles.append(
+            Line2D(
+                [0],
+                [0],
+                color=_gray(GRAY_DASH),
+                linestyle="--",
+                linewidth=FIG_CHANCE_LINEWIDTH,
+                label="Chance (ROC-AUC = 0.5)",
+            )
+        )
+    fig.legend(
+        handles=legend_handles,
+        loc="lower center",
+        ncol=len(legend_handles),
+        bbox_to_anchor=(0.5, 0.02),
+        frameon=True,
+        fontsize=FIG_LEGEND_SIZE,
+    )
+    fig.subplots_adjust(left=0.09, right=0.98, top=0.96, bottom=0.14, hspace=0.34, wspace=0.28)
     save_figure(fig, path)
 
 

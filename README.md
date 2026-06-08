@@ -167,8 +167,9 @@ Optional re-execution scripts must document GPU assumptions (e.g., RTX 4090, Oll
 From the repository root:
 
 ```bash
-make reproduce        # regenerate all tables and figures from frozen data
-make tables           # descriptive profiling tables (CSV)
+make reproduce          # full pipeline: all manuscript tables and figures from frozen data
+make verify-manuscript  # confirm Appendix table/figure paths exist
+make tables             # descriptive profiling tables (CSV) only
 make profile-signals    # target + predictor signal profiling (Markdown + figures)
 make model-correctness  # exploratory CV models for full behavioural pass
 make loso-systems       # leave-one-system-out generalization by system_id
@@ -188,7 +189,8 @@ make clean            # remove generated outputs under results/ (preserves data/
 | `make pre-oracle` | `scripts/pre_oracle_prediction.py` | `results/tables/`, `results/figures/` |
 | `make lomo-models` | `scripts/lomo_model_evaluation.py` | `results/tables/`, `results/figures/` |
 | `make risk-toolkit` | `scripts/risk_toolkit.py` | `results/tables/` |
-| `make figures` | `scripts/generate_figures.py` | `results/figures/` |
+| `make figures` | `scripts/generate_figures.py` | verifies `results/figures/` (figures are written by analysis scripts above) |
+| `make verify-manuscript` | `scripts/verify_manuscript_outputs.py` | exit 0 when all manuscript-mapped outputs exist |
 
 These scripts will read from `data/processed/` (and `data/raw/` where required). They will **not** call LLM APIs or regenerate FSMs from prompts. Descriptive and predictive analyses executed by the scripts will be documented in `docs/reproducibility.md` as they are finalised.
 

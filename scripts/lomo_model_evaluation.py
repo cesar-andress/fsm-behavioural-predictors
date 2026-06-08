@@ -12,17 +12,9 @@ import sys
 from pathlib import Path
 from typing import Any
 
-import matplotlib.pyplot as plt
 import numpy as np
 
-from figure_style import (
-    annotate_heatmap,
-    apply_figure_style,
-    heatmap_cmap,
-    predictor_set_label,
-    save_figure,
-    style_axes,
-)
+from figure_style import plot_transfer_heatmap
 import pandas as pd
 from sklearn.base import clone
 
@@ -324,30 +316,15 @@ def plot_heatmap(detail_df: pd.DataFrame, path: Path) -> None:
     col_order = [c for c in LOMO_PREDICTOR_SETS if c in pivot.columns]
     pivot = pivot[col_order]
 
-    apply_figure_style()
-    fig, ax = plt.subplots(figsize=(9.5, 5.5))
-    data = pivot.to_numpy(dtype=float)
-    im = ax.imshow(data, aspect="auto", vmin=0, vmax=1, cmap=heatmap_cmap())
-    ax.set_xticks(range(len(pivot.columns)))
-    ax.set_xticklabels(
-        [predictor_set_label(c) for c in pivot.columns],
-        rotation=20,
-        ha="right",
+    plot_transfer_heatmap(
+        pivot,
+        path,
+        title="LOMO ROC-AUC by held-out model",
+        subtitle="Cross-model transfer degrades less",
+        ylabel="Held-out LLM model",
+        annotation_note="Cell values: mean across LR and RF; n/a = single-class fold",
+        figsize=(9.5, 6.0),
     )
-    ax.set_yticks(range(len(pivot.index)))
-    ax.set_yticklabels(pivot.index)
-    ax.set_xlabel("Predictor family")
-    ax.set_ylabel("Held-out LLM model")
-    ax.set_title(
-        "LOMO ROC-AUC by held-out model\n"
-        "(mean across LR, DT, RF; n/a = single-class fold)"
-    )
-    style_axes(ax)
-    annotate_heatmap(ax, data)
-    cbar = fig.colorbar(im, ax=ax, fraction=0.03, pad=0.04)
-    cbar.set_label("ROC-AUC (0 = chance ranking, 1 = perfect)")
-    fig.tight_layout()
-    save_figure(fig, path)
 
 
 def main() -> None:

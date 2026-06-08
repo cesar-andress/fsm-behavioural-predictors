@@ -7,9 +7,9 @@ All outputs from `scripts/profile_predictive_signals.py` were checked after gene
 | `results/tables/target_distribution.md` | OK | 1031 |
 | `results/tables/descriptive_profile.md` | OK | 4091 |
 | `results/tables/predictive_signal_profile.md` | OK | 2101 |
-| `results/figures/bpr_by_gate.png` | OK | 41706 |
-| `results/figures/bpr_by_model.png` | OK | 54364 |
-| `results/figures/bpr_by_system.png` | OK | 67814 |
+| `results/figures/bpr_by_gate.png` | OK | 114766 |
+| `results/figures/bpr_by_model.png` | OK | 142972 |
+| `results/figures/bpr_by_system.png` | OK | 162316 |
 | `results/tables/profile_signals_validation.md` | OK | — |
 
 **Overall:** all outputs generated.

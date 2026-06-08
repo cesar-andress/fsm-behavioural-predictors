@@ -45,18 +45,44 @@ The author workstation has an **NVIDIA RTX 4090** and can run **local Ollama / L
 
 No Ollama installation, CUDA toolkit, or network access to LLM endpoints is required for `make reproduce`.
 
+## Random seeds and CV protocol
+
+All predictive scripts share constants in `scripts/repro_config.py`:
+
+| Parameter | Value | Used by |
+|-----------|-------|---------|
+| `RANDOM_STATE` | `42` | StratifiedKFold, logistic regression, decision tree, random forest, dummy baseline |
+| `N_SPLITS` | `5` | Stratified five-fold CV |
+| `RF_N_ESTIMATORS` / `RF_MAX_DEPTH` | `50` / `5` | Random forest (fixed; no tuning) |
+
+Bootstrap resampling is **not** used; fold-wise means and standard deviations report uncertainty. This matches the manuscript threats discussion.
+
 ## One-command reproduction
 
 ```bash
 make reproduce
 ```
 
-This executes, in order:
+This executes, in order (no LLM inference at any step):
 
-1. `scripts/generate_tables.py` → `results/tables/`
-2. `scripts/generate_figures.py` → `results/figures/`
+1. `scripts/build_master_dataset.py` → `data/processed/master_analysis_dataset.csv`
+2. `scripts/generate_tables.py` → descriptive `profile_*.csv` tables
+3. `scripts/profile_predictive_signals.py` → target/signal profiling tables and BPR boxplot figures
+4. `scripts/model_behavioural_correctness.py` → Families A–D CV tables and ROC/PR figures
+5. `scripts/loso_system_evaluation.py` → LOSO tables and heatmap
+6. `scripts/pre_oracle_prediction.py` → strict-allowlist tables and supplementary ROC/PR figures
+7. `scripts/lomo_model_evaluation.py` → LOMO tables and heatmap
+8. `scripts/risk_toolkit.py` → BRS triage audit tables
+9. `scripts/generate_figures.py` → verifies all manuscript-linked figures exist
+10. `scripts/verify_manuscript_outputs.py` → cross-checks paths in Appendix Table artifact-outputs
 
-Neither script invokes LLM inference.
+Verify outputs only (after a successful `make reproduce`):
+
+```bash
+make verify-manuscript
+```
+
+Manuscript anchor mapping: [manuscript_outputs.md](manuscript_outputs.md).
 
 ## Step-by-step reproduction
 

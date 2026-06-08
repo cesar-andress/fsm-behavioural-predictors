@@ -4,7 +4,7 @@
 PYTHON ?= python3.11
 SCRIPTS = scripts
 
-.PHONY: all check-env build-master reproduce tables figures profile-signals model-correctness loso-systems pre-oracle lomo-models risk-toolkit clean help
+.PHONY: all check-env build-master reproduce tables figures profile-signals model-correctness loso-systems pre-oracle lomo-models risk-toolkit verify-manuscript clean help
 
 all: reproduce
 
@@ -12,7 +12,8 @@ help:
 	@echo "Targets:"
 	@echo "  make check-env      Verify Python and core dependencies"
 	@echo "  make build-master   Build data/processed/master_analysis_dataset.csv"
-	@echo "  make reproduce        Regenerate all tables and figures from frozen data"
+	@echo "  make reproduce        Regenerate all manuscript tables and figures from frozen data"
+	@echo "  make verify-manuscript  Check manuscript table/figure paths exist"
 	@echo "  make tables           Regenerate descriptive profiling tables"
 	@echo "  make profile-signals    Descriptive and predictive-signal profiling"
 	@echo "  make model-correctness  Exploratory CV models for full behavioural pass"
@@ -29,7 +30,7 @@ check-env:
 build-master:
 	@$(PYTHON) $(SCRIPTS)/build_master_dataset.py
 
-reproduce: build-master tables figures
+reproduce: build-master tables profile-signals model-correctness loso-systems pre-oracle lomo-models risk-toolkit figures verify-manuscript
 	@echo "Reproduction complete. Outputs in results/"
 
 tables:
@@ -37,8 +38,11 @@ tables:
 	@$(PYTHON) $(SCRIPTS)/generate_tables.py
 
 figures:
-	@echo "Generating figures..."
+	@echo "Verifying manuscript figures..."
 	@$(PYTHON) $(SCRIPTS)/generate_figures.py
+
+verify-manuscript:
+	@$(PYTHON) $(SCRIPTS)/verify_manuscript_outputs.py
 
 profile-signals: build-master
 	@echo "Profiling predictive signals..."

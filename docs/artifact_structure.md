@@ -30,10 +30,19 @@ Command-line Python modules invoked by the `Makefile`:
 
 | Script | Output |
 |--------|--------|
-| `generate_tables.py` | `results/tables/` |
-| `generate_figures.py` | `results/figures/` |
+| `repro_config.py` | Shared `RANDOM_STATE=42`, CV splits, model defaults |
+| `build_master_dataset.py` | `data/processed/master_analysis_dataset.csv` |
+| `generate_tables.py` | Descriptive `profile_*.csv` under `results/tables/` |
+| `profile_predictive_signals.py` | Target/signal profiling tables and BPR figures |
+| `model_behavioural_correctness.py` | Families A–D CV tables and ROC/PR figures |
+| `loso_system_evaluation.py` | LOSO tables and heatmap |
+| `pre_oracle_prediction.py` | Strict-allowlist tables and supplementary figures |
+| `lomo_model_evaluation.py` | LOMO tables and heatmap |
+| `risk_toolkit.py` | BRS triage audit tables |
+| `generate_figures.py` | Verifies manuscript-linked figures exist |
+| `verify_manuscript_outputs.py` | Cross-checks Appendix mapping paths |
 
-Additional utility scripts (e.g., feature extraction from raw FSMs) may be added; they must not require live LLM API access for the published reproduction path.
+`make reproduce` runs the full chain above. Scripts must not require live LLM API access.
 
 ## `notebooks/`
 
