@@ -15,6 +15,20 @@ Complete this checklist before publishing the artefact on **GitHub** or depositi
 - [ ] **Reproducibility command tested** — `make check-env` and `make reproduce` run cleanly on a fresh clone in a clean environment.
 - [ ] Regenerated outputs under `results/` match the tables and figures cited in the paper (or deviations are documented).
 
+## LLM inference and local execution
+
+- [ ] **Frozen campaign records preferred** — `data/raw/` and `data/processed/` are complete; missing variables were reconstructed from archived artefacts where possible before any re-execution.
+- [ ] **No cloud LLM APIs** — published artefact and reproduction scripts do not call remote inference endpoints.
+- [ ] **No unpublished re-execution in public tree** — any local Ollama re-runs (RTX 4090 workstation) are excluded until this checklist passes.
+- [ ] **Re-execution policy** (if any re-run occurred during study development):
+  - [ ] local only (Ollama / Llama-style on author machine);
+  - [ ] temperature **0.0** unless protocol documents otherwise;
+  - [ ] per-run logs retained;
+  - [ ] campaign tied to `manifest.json` (models, prompts, timestamps, checksums);
+  - [ ] GPU assumptions documented (e.g., NVIDIA RTX 4090) but not required for `make reproduce`;
+  - [ ] privacy and reproducibility review completed before deposit.
+- [ ] **Optional re-execution scripts** (if present) document that cloud APIs are not required and are off the critical `make reproduce` path.
+
 ## Documentation and metadata
 
 - [ ] **Author metadata compliant** — names, affiliations, email, and ORCID match `~/papers/promts/author_identity_standardization.md`; no invented or duplicate author copies in project files.

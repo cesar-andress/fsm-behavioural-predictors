@@ -4,13 +4,37 @@ This document describes how to reproduce all tables and figures reported in the 
 
 ## Design principle
 
-**No LLM inference is required.** The replication pipeline reads pre-computed inputs from `data/raw/` and `data/processed/` and writes outputs to `results/`. This ensures that reviewers and readers can verify reported findings without API keys, GPU resources, or non-deterministic model calls.
+**No LLM inference is required.** The replication pipeline reads pre-computed inputs from `data/raw/` and `data/processed/` and writes outputs to `results/`. This ensures that reviewers and readers can verify reported findings without API keys, cloud APIs, GPU resources, or non-deterministic model calls.
+
+## Local execution constraint
+
+SQJ 2026 follows a **frozen-data-first** policy:
+
+1. **Prefer frozen existing campaign records** in `data/raw/` and `data/processed/`.
+2. **Do not re-run LLM inference** unless a specific missing variable cannot be reconstructed from archived artefacts (e.g., derived structural counts from frozen `candidates/*.json` rather than new generation).
+3. **If re-execution becomes necessary** (author workflow only, not the published `make reproduce` path), it must be:
+   - **local only** — Ollama or equivalent on the author workstation; **no cloud LLM APIs**;
+   - **reproducible** — scripted entry points, pinned model identifiers, documented prompts;
+   - **logged** — per-run logs stored alongside campaign exports;
+   - **temperature 0.0** unless the study protocol explicitly documents a different setting;
+   - **manifest-linked** — recorded in a campaign `manifest.json` with model IDs, config hashes, timestamps, and file checksums;
+   - **excluded from the public artefact** until privacy and reproducibility checks in [release_checklist.md](release_checklist.md) pass.
+
+### Hardware note (authors)
+
+The author workstation has an **NVIDIA RTX 4090** and can run **local Ollama / Llama-style models**. Optional re-execution scripts may document GPU assumptions for transparency, but:
+
+- the **published reproduction path does not require a GPU**;
+- readers reproducing from Zenodo/GitHub archives should not need Ollama installed;
+- no re-execution script in this repository may **require** cloud APIs.
 
 ## Prerequisites
 
 1. Clone this repository.
 2. Create the Python environment (Conda or pip; see root `README.md`).
 3. Confirm dependencies: `make check-env`
+
+No Ollama installation, CUDA toolkit, or network access to LLM endpoints is required for `make reproduce`.
 
 ## One-command reproduction
 
@@ -22,6 +46,8 @@ This executes, in order:
 
 1. `scripts/generate_tables.py` → `results/tables/`
 2. `scripts/generate_figures.py` → `results/figures/`
+
+Neither script invokes LLM inference.
 
 ## Step-by-step reproduction
 
@@ -55,9 +81,16 @@ Figure files are written to `results/figures/` in formats suitable for inclusion
 
 If regenerated outputs differ from those archived at publication time, document the cause (e.g., dependency version drift) in the release notes.
 
+Re-execution outputs from local Ollama campaigns are **not** merged into `data/raw/` until a new freeze is explicitly documented and checked.
+
 ## Computational requirements
 
-Replication from frozen data is intended to run on a standard laptop within minutes. Exact runtime will be reported once datasets and scripts are finalised.
+| Path | Hardware | Typical runtime |
+|------|----------|-----------------|
+| `make reproduce` (published) | Standard CPU laptop; no GPU | Minutes (once datasets are deposited) |
+| Optional author re-execution (not published) | NVIDIA RTX 4090 + local Ollama | Campaign-dependent; logged separately |
+
+Exact runtime for the frozen-data path will be reported once datasets and scripts are finalised.
 
 ## Troubleshooting
 
@@ -66,6 +99,7 @@ Replication from frozen data is intended to run on a standard laptop within minu
 | Import errors | Re-create the environment from `environment.yml` or `requirements.txt` |
 | Missing data files | Ensure `data/raw/` and `data/processed/` are fully checked out; see `.gitignore` for large-file notes |
 | Output mismatch | Compare package versions with those recorded in `environment.yml`; pin exact versions before Zenodo deposit |
+| Temptation to re-run Ollama | Reconstruct missing columns from archived `candidates/` or `evaluations/` JSON first; see data audit notes in the private study workspace |
 
 ## Contact
 

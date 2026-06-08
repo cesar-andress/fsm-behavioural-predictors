@@ -134,6 +134,28 @@ make check-env
 
 For a detailed walkthrough, see [docs/reproducibility.md](docs/reproducibility.md). Variable definitions and file formats are documented in [docs/data_dictionary.md](docs/data_dictionary.md).
 
+### Local execution and LLM inference policy
+
+**Default rule for SQJ 2026:** prefer **frozen existing campaign records**. The published reproduction path (`make reproduce`) does not call cloud APIs and does not require a GPU.
+
+| Priority | Rule |
+|----------|------|
+| 1 | Use archived campaign outputs in `data/raw/` and derived tables in `data/processed/`. |
+| 2 | Do **not** re-run LLM inference unless a specific missing variable cannot be reconstructed from archived artefacts. |
+| 3 | If re-execution becomes necessary, it is **out of scope** for the public artefact until privacy and reproducibility checks pass (see [docs/release_checklist.md](docs/release_checklist.md)). |
+
+**Hardware note (authors only):** the study workstation has an **NVIDIA RTX 4090** and **local Ollama / Llama-style inference** is available for optional re-execution during data preparation. That environment is **not** required for readers reproducing tables and figures from frozen data.
+
+Any optional re-execution during study development must be:
+
+- **Local only** — no cloud LLM APIs;
+- **Reproducible** — scripted, versioned, and documented;
+- **Logged** — per-run logs retained with the campaign export;
+- **Temperature 0.0** unless a protocol explicitly documents a different setting;
+- **Manifest-linked** — tied to a campaign `manifest.json` (model IDs, prompts, timestamps, checksums).
+
+Optional re-execution scripts must document GPU assumptions (e.g., RTX 4090, Ollama) but must **not** require cloud APIs. Outputs from re-execution remain **excluded from this public repository** until manifest review, privacy review, and reproducibility verification are complete.
+
 ---
 
 ## 6. How to regenerate tables and figures
@@ -184,7 +206,7 @@ The following materials are **deliberately excluded** from this public artefact:
 | Excluded material | Reason |
 |-------------------|--------|
 | LaTeX manuscript sources | Maintained privately at `~/papers/sqj2026/paper`; not part of this repository. |
-| Live LLM inference | All generation outputs are frozen; reproduction does not require API keys or model re-execution. |
+| Live LLM inference | All generation outputs are frozen; reproduction does not require API keys, cloud APIs, or model re-execution. Optional local Ollama re-runs (RTX 4090) are author-only and excluded until release checks pass. |
 | Raw private notes and working drafts | Internal research records with no replication value. |
 | Reviewer correspondence and submission metadata | Confidential peer-review materials. |
 | Credentials, API keys, or environment secrets | Must never be committed; see `.gitignore`. |
