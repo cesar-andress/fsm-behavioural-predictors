@@ -167,6 +167,7 @@ make reproduce        # regenerate all tables and figures from frozen data
 make tables           # descriptive profiling tables (CSV)
 make profile-signals    # target + predictor signal profiling (Markdown + figures)
 make model-correctness  # exploratory CV models for full behavioural pass
+make loso-systems       # leave-one-system-out generalization by system_id
 make figures            # figures only
 make clean            # remove generated outputs under results/ (preserves data/)
 ```
@@ -176,6 +177,7 @@ make clean            # remove generated outputs under results/ (preserves data/
 | `make tables` | `scripts/generate_tables.py` | `results/tables/` |
 | `make profile-signals` | `scripts/profile_predictive_signals.py` | `results/tables/`, `results/figures/` |
 | `make model-correctness` | `scripts/model_behavioural_correctness.py` | `results/tables/`, `results/figures/` |
+| `make loso-systems` | `scripts/loso_system_evaluation.py` | `results/tables/`, `results/figures/` |
 | `make figures` | `scripts/generate_figures.py` | `results/figures/` |
 
 These scripts will read from `data/processed/` (and `data/raw/` where required). They will **not** call LLM APIs or regenerate FSMs from prompts. Descriptive and predictive analyses executed by the scripts will be documented in `docs/reproducibility.md` as they are finalised.

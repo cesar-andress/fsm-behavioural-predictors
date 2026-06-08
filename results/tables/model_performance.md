@@ -26,3 +26,10 @@ Exploratory stratified 5-fold cross-validation predicting `full_behavioural_pass
 | D_combined | random_forest | 1.000 | 0.000 | 1.000 | 0.000 | 1.000 | 0.000 | 1.000 | 0.000 | 1.000 | 0.000 | 1.000 | 0.000 |
 | D_combined | dummy_stratified | 0.508 | 0.082 | 0.165 | 0.036 | 0.508 | 0.082 | 0.145 | 0.152 | 0.133 | 0.139 | 0.883 | 0.024 |
 | D_combined | dummy_majority | 0.500 | 0.000 | 0.144 | 0.002 | 0.500 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 | 1.000 | 0.000 |
+
+## Interpretation guardrails
+
+- Positive class prevalence is low (30/209); metrics can be unstable fold-to-fold.
+- Reference-difference predictors (`missing_transitions`, `extra_transitions`) are oracle-adjacent traceability counts and may admit near-separable splits in this frozen cohort — treat set **C** and **D** discrimination as descriptive, not causal.
+- Gate-only set **A** shows limited discrimination above stratified baselines.
+- Basic structural set **B** shows moderate out-of-fold signal without perfect separation.

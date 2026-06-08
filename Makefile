@@ -4,7 +4,7 @@
 PYTHON ?= python3.11
 SCRIPTS = scripts
 
-.PHONY: all check-env build-master reproduce tables figures profile-signals model-correctness clean help
+.PHONY: all check-env build-master reproduce tables figures profile-signals model-correctness loso-systems clean help
 
 all: reproduce
 
@@ -16,6 +16,7 @@ help:
 	@echo "  make tables           Regenerate descriptive profiling tables"
 	@echo "  make profile-signals    Descriptive and predictive-signal profiling"
 	@echo "  make model-correctness  Exploratory CV models for full behavioural pass"
+	@echo "  make loso-systems       Leave-one-system-out generalization study"
 	@echo "  make figures            Regenerate figures only"
 	@echo "  make clean       Remove generated outputs under results/"
 
@@ -43,6 +44,10 @@ profile-signals: build-master
 model-correctness: build-master
 	@echo "Modelling behavioural correctness..."
 	@$(PYTHON) $(SCRIPTS)/model_behavioural_correctness.py
+
+loso-systems: build-master model-correctness
+	@echo "Running leave-one-system-out evaluation..."
+	@$(PYTHON) $(SCRIPTS)/loso_system_evaluation.py
 
 clean:
 	rm -rf results/tables/*

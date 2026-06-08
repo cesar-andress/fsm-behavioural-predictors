@@ -91,6 +91,15 @@ python scripts/model_behavioural_correctness.py
 
 Writes `model_performance.md`, `model_feature_importance.md`, `model_validation.md`, and ROC/PR curve figures. Stratified 5-fold CV on behaviourally scored runs; not confirmatory.
 
+### Leave-one-system-out generalization
+
+```bash
+make loso-systems
+# requires model_performance.md from make model-correctness
+```
+
+Trains on 11 `system_id` values, tests on the held-out system (12 folds). Writes `loso_system_results.md`, `loso_system_summary.md`, and `loso_system_heatmap.png`, with explicit comparison to random CV.
+
 ### Figures
 
 ```bash
