@@ -123,3 +123,12 @@ See `results/tables/risk_toolkit_validation.md` after `make risk-toolkit`.
 - Calibrated on a single frozen EMSE 2026 cohort (four Ollama models, twelve systems).
 - Random cross-validation overstates cross-specification generalization (see LOSO study).
 - Accept decisions still include many eventual behavioural failures — expected for triage.
+
+## Availability
+
+The toolkit is part of the archived replication package:
+
+- **Zenodo:** [10.5281/zenodo.20598129](https://doi.org/10.5281/zenodo.20598129)
+- **GitHub:** https://github.com/cesar-andress/fsm-behavioural-predictors (tag `v0.1.0-pre-submission`)
+
+See [zenodo_record.md](zenodo_record.md) for citation and reproducibility scope.

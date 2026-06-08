@@ -1,8 +1,9 @@
 cff-version: 1.2.0
 message: "If you use this artefact, please cite it as below."
 title: "Replication Package: Predicting Behavioural Correctness from Structural Signals in LLM-Generated Finite State Machines"
-version: 0.1.0
-date-released: 2026-01-01
+version: v0.1.0-pre-submission
+date-released: 2026-06-08
+doi: 10.5281/zenodo.20598129
 authors:
   - family-names: "Andrés"
     given-names: "César"

@@ -2,6 +2,15 @@
 
 This document describes how to reproduce all tables and figures reported in the paper *Predicting Behavioural Correctness from Structural Signals in LLM-Generated Finite State Machines* using only the frozen data in this repository.
 
+## Obtaining the artefact
+
+| Source | Identifier |
+|--------|------------|
+| Zenodo (recommended for citation) | [10.5281/zenodo.20598129](https://doi.org/10.5281/zenodo.20598129) |
+| GitHub (tag `v0.1.0-pre-submission`) | https://github.com/cesar-andress/fsm-behavioural-predictors |
+
+Archive metadata and citation text: [zenodo_record.md](zenodo_record.md).
+
 ## Design principle
 
 **No LLM inference is required.** The replication pipeline reads pre-computed inputs from `data/raw/` and `data/processed/` and writes outputs to `results/`. This ensures that reviewers and readers can verify reported findings without API keys, cloud APIs, GPU resources, or non-deterministic model calls.
@@ -182,7 +191,7 @@ Exact runtime for the frozen-data path will be reported once datasets and script
 |-------|------------------|
 | Import errors | Re-create the environment from `environment.yml` or `requirements.txt` |
 | Missing data files | Ensure `data/raw/` and `data/processed/` are fully checked out; see `.gitignore` for large-file notes |
-| Output mismatch | Compare package versions with those recorded in `environment.yml`; pin exact versions before Zenodo deposit |
+| Output mismatch | Compare package versions with those recorded in `environment.yml`; compare against the archived Zenodo release ([10.5281/zenodo.20598129](https://doi.org/10.5281/zenodo.20598129)) |
 | Temptation to re-run Ollama | Reconstruct missing columns from archived `candidates/` or `evaluations/` JSON first; see data audit notes in the private study workspace |
 
 ## Contact

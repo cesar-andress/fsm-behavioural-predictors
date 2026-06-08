@@ -92,3 +92,7 @@ One row per LLM-generated FSM run (`run_id`). Boolean columns use `true` / `fals
 ## Licence and redistribution
 
 Data files inherit the repository licence (MIT) unless otherwise noted.
+
+## Data availability
+
+Frozen campaign records and derived analysis tables in `data/raw/` and `data/processed/` are archived with the replication package on Zenodo: [10.5281/zenodo.20598129](https://doi.org/10.5281/zenodo.20598129). See [zenodo_record.md](zenodo_record.md).

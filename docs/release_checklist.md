@@ -2,6 +2,16 @@
 
 Complete this checklist before publishing the artefact on **GitHub** or depositing it on **Zenodo**. Each item must be verified by a project author.
 
+## Zenodo deposit (v0.1.0-pre-submission)
+
+- [x] **Zenodo record published** — [10.5281/zenodo.20598129](https://doi.org/10.5281/zenodo.20598129) (2026-06-08).
+- [x] **zenodo_record.md created** — DOI, citation, version, and reproducibility scope documented.
+- [x] **CITATION.cff updated** — Zenodo DOI, release date, and version match the published record.
+- [x] **zenodo.json updated** — creators, version, publication date, and related identifiers align with the deposit.
+- [x] **README updated** — Zenodo DOI and data/code availability statements in place.
+
+Future releases should repeat the documentation and metadata checks below before publishing a new Zenodo version.
+
 ## Privacy and scope
 
 - [ ] **No private manuscript files** — no `.tex`, `main.pdf`, `sections/`, or other LaTeX sources from `paper/`.
@@ -34,9 +44,9 @@ Complete this checklist before publishing the artefact on **GitHub** or depositi
 
 - [ ] **Author metadata compliant** — names, affiliations, email, and ORCID match `~/papers/promts/author_identity_standardization.md`; no invented or duplicate author copies in project files.
 - [ ] **Editorial final pass** — `~/papers/promts/editorial_final_pass.md` checklist completed for the manuscript.
-- [ ] **README updated** — placeholders (DOIs, abstract) replaced; [Privacy and scope](../README.md#privacy-and-scope) section accurate; contact matches central author identity.
-- [ ] **CITATION.cff updated** — authors, title, version, date, and preferred citation match the published record.
-- [ ] **zenodo.json updated** — creators, keywords, related identifiers, and licence align with the Zenodo deposit.
+- [x] **README updated** — Zenodo DOI and availability statements in place; [Privacy and scope](../README.md#privacy-and-scope) section accurate; contact matches central author identity.
+- [x] **CITATION.cff updated** — authors, title, version, date, and Zenodo DOI match the published record.
+- [x] **zenodo.json updated** — creators, keywords, related identifiers, and licence align with the Zenodo deposit.
 - [ ] **License confirmed** — `LICENSE` file present; `MIT` (or chosen licence) consistent across README, `CITATION.cff`, and `zenodo.json`.
 - [ ] [data_dictionary.md](data_dictionary.md) complete for all files in `data/raw/` and `data/processed/`.
 
