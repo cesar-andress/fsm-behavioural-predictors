@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use this artefact, please cite it as below."
+title: "Replication Package: Predicting Behavioural Correctness from Structural Signals in LLM-Generated Finite State Machines"
+version: 0.1.0
+date-released: 2026-01-01
+authors:
+  - family-names: "Andrés"
+    given-names: "César"
+    affiliation: "CRIA-BDHS Research Group, Higher Polytechnic School of Technology and Science, Universidad Camilo José Cela, Madrid, Spain"
+    orcid: "https://orcid.org/0009-0001-8968-3404"
+repository-code: "https://github.com/cesar-andress/fsm-behavioural-predictors"
+license: MIT
+keywords:
+  - finite state machines
+  - large language models
+  - software quality
+  - behavioural correctness
+  - replication package
+preferred-citation:
+  type: article
+  title: "Predicting Behavioural Correctness from Structural Signals in LLM-Generated Finite State Machines"
+  authors:
+    - family-names: "Andrés"
+      given-names: "César"
+  journal: "Software Quality Journal"
+  year: 2026
+  doi: 10.1007/PLACEHOLDER

@@ -1,0 +1,42 @@
+{
+  "title": "Replication Package: Predicting Behavioural Correctness from Structural Signals in LLM-Generated Finite State Machines",
+  "description": "Frozen datasets, analysis scripts, and reproduction instructions for the Software Quality Journal (2026) paper on predicting behavioural correctness from structural signals in LLM-generated finite state machines. All tables and figures can be reproduced without re-running LLM inference.",
+  "upload_type": "software",
+  "publication_date": "2026-01-01",
+  "creators": [
+    {
+      "name": "César Andrés",
+      "affiliation": "CRIA-BDHS Research Group, Higher Polytechnic School of Technology and Science, Universidad Camilo José Cela, Madrid, Spain",
+      "orcid": "0009-0001-8968-3404"
+    }
+  ],
+  "keywords": [
+    "finite state machines",
+    "large language models",
+    "software quality",
+    "behavioural correctness",
+    "replication package"
+  ],
+  "license": "mit",
+  "access_right": "open",
+  "communities": [
+    {
+      "identifier": "software-quality"
+    }
+  ],
+  "related_identifiers": [
+    {
+      "relation": "isPublishedIn",
+      "identifier": "10.1007/PLACEHOLDER",
+      "resource_type": "publication-journal",
+      "scheme": "doi"
+    },
+    {
+      "relation": "isSupplementTo",
+      "identifier": "https://github.com/cesar-andress/fsm-behavioural-predictors",
+      "resource_type": "software",
+      "scheme": "url"
+    }
+  ],
+  "notes": "Author metadata follows ~/papers/promts/author_identity_standardization.md. Update DOIs and publication date before Zenodo deposit."
+}
