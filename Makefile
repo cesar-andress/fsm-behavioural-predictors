@@ -4,7 +4,7 @@
 PYTHON ?= python3.11
 SCRIPTS = scripts
 
-.PHONY: all check-env build-master reproduce tables figures profile-signals clean help
+.PHONY: all check-env build-master reproduce tables figures profile-signals model-correctness clean help
 
 all: reproduce
 
@@ -14,8 +14,9 @@ help:
 	@echo "  make build-master   Build data/processed/master_analysis_dataset.csv"
 	@echo "  make reproduce        Regenerate all tables and figures from frozen data"
 	@echo "  make tables           Regenerate descriptive profiling tables"
-	@echo "  make profile-signals  Descriptive and predictive-signal profiling"
-	@echo "  make figures          Regenerate figures only"
+	@echo "  make profile-signals    Descriptive and predictive-signal profiling"
+	@echo "  make model-correctness  Exploratory CV models for full behavioural pass"
+	@echo "  make figures            Regenerate figures only"
 	@echo "  make clean       Remove generated outputs under results/"
 
 check-env:
@@ -38,6 +39,10 @@ figures:
 profile-signals: build-master
 	@echo "Profiling predictive signals..."
 	@$(PYTHON) $(SCRIPTS)/profile_predictive_signals.py
+
+model-correctness: build-master
+	@echo "Modelling behavioural correctness..."
+	@$(PYTHON) $(SCRIPTS)/model_behavioural_correctness.py
 
 clean:
 	rm -rf results/tables/*

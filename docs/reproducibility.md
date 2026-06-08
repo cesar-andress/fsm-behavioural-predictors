@@ -80,6 +80,17 @@ Writes:
 
 Associations are descriptive only (no hypothesis tests, no ML models).
 
+### Exploratory predictive modelling
+
+```bash
+make model-correctness
+# equivalent to:
+python scripts/build_master_dataset.py
+python scripts/model_behavioural_correctness.py
+```
+
+Writes `model_performance.md`, `model_feature_importance.md`, `model_validation.md`, and ROC/PR curve figures. Stratified 5-fold CV on behaviourally scored runs; not confirmatory.
+
 ### Figures
 
 ```bash
