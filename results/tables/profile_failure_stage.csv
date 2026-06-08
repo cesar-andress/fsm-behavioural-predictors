@@ -1,0 +1,4 @@
+failure_stage,run_count,proportion
+none,209,0.8708333333333333
+schema_validation,26,0.10833333333333334
+parsing,5,0.020833333333333332

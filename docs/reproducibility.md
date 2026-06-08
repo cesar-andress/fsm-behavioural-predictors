@@ -61,6 +61,25 @@ python scripts/generate_tables.py
 
 Expected outputs (to be defined when analyses are finalised) will be listed in `docs/data_dictionary.md`.
 
+### Predictive-signal profiling
+
+```bash
+make profile-signals
+# equivalent to:
+python scripts/build_master_dataset.py
+python scripts/profile_predictive_signals.py
+```
+
+Writes:
+
+- `results/tables/target_distribution.md`
+- `results/tables/descriptive_profile.md`
+- `results/tables/predictive_signal_profile.md`
+- `results/tables/profile_signals_validation.md`
+- `results/figures/bpr_by_gate.png`, `bpr_by_model.png`, `bpr_by_system.png`
+
+Associations are descriptive only (no hypothesis tests, no ML models).
+
 ### Figures
 
 ```bash

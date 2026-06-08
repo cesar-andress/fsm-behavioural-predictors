@@ -1,0 +1,8 @@
+statistic,value,denominator,rate
+total_runs,240,240,1.0
+g1_pass,235,240,0.9791666666666666
+g2_pass,189,240,0.7875
+g3_pass,183,240,0.7625
+g3a_pass,188,240,0.7833333333333333
+behaviourally_scored,209,240,0.8708333333333333
+full_behavioural_pass,30,209,0.14354066985645933
