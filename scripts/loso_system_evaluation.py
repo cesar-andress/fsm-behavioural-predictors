@@ -14,6 +14,15 @@ from typing import Any
 
 import matplotlib.pyplot as plt
 import numpy as np
+
+from figure_style import (
+    annotate_heatmap,
+    apply_figure_style,
+    heatmap_cmap,
+    predictor_set_label,
+    save_figure,
+    style_axes,
+)
 import pandas as pd
 from sklearn.base import clone
 
@@ -273,24 +282,30 @@ def plot_heatmap(detail_df: pd.DataFrame, path: Path) -> None:
     col_order = list(PREDICTOR_SETS.keys())
     pivot = pivot[[c for c in col_order if c in pivot.columns]]
 
-    fig, ax = plt.subplots(figsize=(10, 8))
+    apply_figure_style()
+    fig, ax = plt.subplots(figsize=(10.5, 9))
     data = pivot.to_numpy(dtype=float)
-    im = ax.imshow(data, aspect="auto", vmin=0, vmax=1, cmap="viridis")
+    im = ax.imshow(data, aspect="auto", vmin=0, vmax=1, cmap=heatmap_cmap())
     ax.set_xticks(range(len(pivot.columns)))
-    ax.set_xticklabels(pivot.columns, rotation=25, ha="right")
+    ax.set_xticklabels(
+        [predictor_set_label(c) for c in pivot.columns],
+        rotation=20,
+        ha="right",
+    )
     ax.set_yticks(range(len(pivot.index)))
     ax.set_yticklabels(pivot.index)
-    ax.set_title("LOSO ROC-AUC by held-out system (mean across models)")
-    for i in range(data.shape[0]):
-        for j in range(data.shape[1]):
-            val = data[i, j]
-            text = "—" if np.isnan(val) else f"{val:.2f}"
-            ax.text(j, i, text, ha="center", va="center", color="white", fontsize=8)
-    fig.colorbar(im, ax=ax, fraction=0.03, pad=0.04)
+    ax.set_xlabel("Predictor family (A--D)")
+    ax.set_ylabel("Held-out requirement system")
+    ax.set_title(
+        "LOSO ROC-AUC by held-out system\n"
+        "(mean across LR, DT, RF; n/a = single-class fold)"
+    )
+    style_axes(ax)
+    annotate_heatmap(ax, data)
+    cbar = fig.colorbar(im, ax=ax, fraction=0.03, pad=0.04)
+    cbar.set_label("ROC-AUC (0 = chance ranking, 1 = perfect)")
     fig.tight_layout()
-    path.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(path, dpi=150, bbox_inches="tight")
-    plt.close(fig)
+    save_figure(fig, path)
 
 
 def main() -> None:

@@ -14,6 +14,18 @@ from typing import Any
 
 import matplotlib.pyplot as plt
 import numpy as np
+
+from figure_style import (
+    GRAY_DASH,
+    MODEL_STYLES,
+    PREDICTOR_SET_ORDER,
+    _gray,
+    apply_figure_style,
+    model_label,
+    predictor_set_label,
+    save_figure,
+    style_axes,
+)
 import pandas as pd
 from sklearn.base import clone
 from sklearn.dummy import DummyClassifier
@@ -369,26 +381,29 @@ def plot_curves(
     title: str,
     path: Path,
 ) -> None:
-    fig, axes = plt.subplots(2, 2, figsize=(11, 9))
-    set_names = list(PREDICTOR_SETS.keys())
-    for ax, set_name in zip(axes.ravel(), set_names):
+    apply_figure_style()
+    fig, axes = plt.subplots(2, 2, figsize=(11.5, 9.5))
+    for ax, set_name in zip(axes.ravel(), PREDICTOR_SET_ORDER):
         for model_name, (x, y) in curve_data[set_name].items():
-            ax.plot(x, y, label=model_name)
-        ax.set_title(set_name)
+            style = MODEL_STYLES.get(model_name, {})
+            ax.plot(x, y, label=model_label(model_name), **style)
+        ax.set_title(predictor_set_label(set_name))
         if curve_fn is roc_curve:
-            ax.set_xlabel("False positive rate")
+            ax.set_xlabel("False positive rate (FPR)")
+            ax.set_ylabel("True positive rate (TPR)")
         else:
-            ax.set_xlabel("Recall")
-        ax.set_ylabel(y_label)
-        ax.legend(fontsize=7, loc="best")
+            ax.set_xlabel("Recall (true positives found)")
+            ax.set_ylabel("Precision (positive predictive value)")
+        style_axes(ax)
+        ax.legend(loc="lower left" if curve_fn is roc_curve else "upper right", fontsize=8)
+        ax.set_xlim(0, 1)
+        ax.set_ylim(0, 1)
     if curve_fn is roc_curve:
         for ax in axes.ravel():
-            ax.plot([0, 1], [0, 1], "k--", linewidth=0.8)
-    fig.suptitle(title)
-    fig.tight_layout()
-    path.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(path, dpi=150, bbox_inches="tight")
-    plt.close(fig)
+            ax.plot([0, 1], [0, 1], linestyle="--", color=_gray(GRAY_DASH), label="Chance (0.5)")
+    fig.suptitle(title, y=0.98)
+    fig.tight_layout(rect=(0, 0, 1, 0.96))
+    save_figure(fig, path)
 
 
 def main() -> None:
