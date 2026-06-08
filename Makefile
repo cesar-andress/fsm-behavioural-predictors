@@ -4,7 +4,7 @@
 PYTHON ?= python3.11
 SCRIPTS = scripts
 
-.PHONY: all check-env build-master reproduce tables figures profile-signals model-correctness loso-systems pre-oracle clean help
+.PHONY: all check-env build-master reproduce tables figures profile-signals model-correctness loso-systems pre-oracle lomo-models clean help
 
 all: reproduce
 
@@ -18,6 +18,7 @@ help:
 	@echo "  make model-correctness  Exploratory CV models for full behavioural pass"
 	@echo "  make loso-systems       Leave-one-system-out generalization study"
 	@echo "  make pre-oracle         Pre-oracle behavioural prediction (strict features)"
+	@echo "  make lomo-models        Leave-one-model-out cross-LLM generalization"
 	@echo "  make figures            Regenerate figures only"
 	@echo "  make clean       Remove generated outputs under results/"
 
@@ -53,6 +54,10 @@ loso-systems: build-master model-correctness
 pre-oracle: build-master model-correctness
 	@echo "Running pre-oracle prediction study..."
 	@$(PYTHON) $(SCRIPTS)/pre_oracle_prediction.py
+
+lomo-models: build-master model-correctness
+	@echo "Running leave-one-model-out evaluation..."
+	@$(PYTHON) $(SCRIPTS)/lomo_model_evaluation.py
 
 clean:
 	rm -rf results/tables/*

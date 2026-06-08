@@ -169,6 +169,7 @@ make profile-signals    # target + predictor signal profiling (Markdown + figure
 make model-correctness  # exploratory CV models for full behavioural pass
 make loso-systems       # leave-one-system-out generalization by system_id
 make pre-oracle         # pre-oracle prediction (strict feature allowlist)
+make lomo-models        # leave-one-model-out cross-LLM generalization
 make figures            # figures only
 make clean            # remove generated outputs under results/ (preserves data/)
 ```
@@ -180,6 +181,7 @@ make clean            # remove generated outputs under results/ (preserves data/
 | `make model-correctness` | `scripts/model_behavioural_correctness.py` | `results/tables/`, `results/figures/` |
 | `make loso-systems` | `scripts/loso_system_evaluation.py` | `results/tables/`, `results/figures/` |
 | `make pre-oracle` | `scripts/pre_oracle_prediction.py` | `results/tables/`, `results/figures/` |
+| `make lomo-models` | `scripts/lomo_model_evaluation.py` | `results/tables/`, `results/figures/` |
 | `make figures` | `scripts/generate_figures.py` | `results/figures/` |
 
 These scripts will read from `data/processed/` (and `data/raw/` where required). They will **not** call LLM APIs or regenerate FSMs from prompts. Descriptive and predictive analyses executed by the scripts will be documented in `docs/reproducibility.md` as they are finalised.

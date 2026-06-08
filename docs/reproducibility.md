@@ -109,6 +109,15 @@ make pre-oracle
 
 Strict feature allowlist (gates, requirement coverage, basic FSM counts only). Writes `pre_oracle_model_performance.md`, `pre_oracle_feature_importance.md`, and ROC/PR figures; compares against `A_gate_only` and `B_basic_structural` from random CV.
 
+### Leave-one-model-out generalization
+
+```bash
+make lomo-models
+# requires model_performance.md from make model-correctness
+```
+
+Trains on three LLM families, tests on the held-out fourth (`model` grouping). Writes `lomo_results.md`, `lomo_summary.md`, and `lomo_heatmap.png`, with comparison to random CV.
+
 ### Figures
 
 ```bash
