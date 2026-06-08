@@ -1,0 +1,156 @@
+# =============================================================================
+# SQJ 2026 public artefact — .gitignore
+# Prevents private manuscript material and local-only files from being committed.
+# =============================================================================
+
+# --- Private manuscript and drafts (must never enter this repository) ---
+paper/
+manuscript/
+manuscripts/
+drafts/
+**/sections/
+main.tex
+*.tex
+references.bib
+refs.bib
+bibliography.bib
+*.bib
+*.latex
+*.ltx
+*_draft.*
+*_drafts/
+*draft*.pdf
+manuscript.pdf
+main.pdf
+sn-jnl.*
+
+# --- LaTeX auxiliary and build artefacts ---
+*.aux
+*.bbl
+*.blg
+*.bcf
+*.fdb_latexmk
+*.fls
+*.lof
+*.lot
+*.nav
+*.out
+*.run.xml
+*.snm
+*.synctex.gz
+*.toc
+*.vrb
+*.xdv
+latexmkrc
+missfont.log
+
+# --- Reviewer correspondence and submission metadata ---
+reviewer/
+reviewers/
+reviews/
+correspondence/
+rebuttal/
+rebuttals/
+*reviewer*
+*rebuttal*
+*decision_letter*
+*cover_letter*
+
+# --- Private notes and internal working files ---
+notes/
+private/
+internal/
+scratch/
+*_notes.*
+*_private.*
+NOTES.md
+SCRATCH.md
+TODO_PRIVATE.md
+README_PRIVATE.md
+
+# --- Temporary and backup files ---
+*.tmp
+*.temp
+*.bak
+*.backup
+*~
+*.swp
+*.swo
+tmp/
+temp/
+.cache/
+
+# --- Credentials and secrets ---
+.env
+.env.*
+.env.local
+*.key
+*.pem
+*.p12
+credentials/
+secrets/
+secrets.*
+api_keys/
+apikeys/
+*_token*
+*.credentials
+
+# --- Local Python environments ---
+.venv/
+venv/
+env/
+.envrc
+.python-version.local
+.conda/
+conda-meta/
+
+# --- Large cache and tool artefact directories ---
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+.ipynb_checkpoints/
+.wandb/
+mlruns/
+.huggingface/
+.torch/
+cache/
+caches/
+*.cache
+
+# --- Python build and packaging ---
+.Python
+*.so
+*.egg
+*.egg-info/
+.eggs/
+dist/
+build/
+pip-wheel-metadata/
+
+# --- OS and editor files ---
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/
+*.sublime-*
+
+# --- Local path and machine-specific files ---
+.local/
+local_config.*
+config.local.*
+paths.local.*
+
+# --- Large transient outputs (uncomment if not committing regenerated results) ---
+# results/tables/*
+# results/figures/*
+# !results/tables/.gitkeep
+# !results/figures/.gitkeep
+
+# --- Large data exceptions (adjust before release) ---
+# data/raw/*.zip
+# data/processed/*.parquet

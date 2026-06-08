@@ -1,0 +1,11 @@
+# SQJ 2026 replication package — Python dependencies
+# Pin versions before public release for full reproducibility.
+
+numpy>=1.24,<3
+pandas>=2.0,<3
+scipy>=1.10,<2
+scikit-learn>=1.3,<2
+matplotlib>=3.7,<4
+seaborn>=0.13,<1
+jupyter>=1.0,<2
+pyyaml>=6.0,<7
