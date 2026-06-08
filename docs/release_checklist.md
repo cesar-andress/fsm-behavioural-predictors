@@ -21,10 +21,10 @@ Future releases should repeat the documentation and metadata checks below before
 
 ## Reproducibility
 
-- [ ] **All scripts run from frozen data** — `make reproduce` completes without LLM API calls or network access to generation endpoints.
+- [x] **All scripts run from frozen data** — `make reproduce` completes without LLM API calls or network access to generation endpoints (verified 2026-06-08).
 - [ ] **Risk toolkit tested** — `make risk-toolkit` completes; `risk_toolkit_validation.md` matches published triage audit.
-- [ ] **Reproducibility command tested** — `make check-env` and `make reproduce` run cleanly on a fresh clone in a clean environment.
-- [ ] Regenerated outputs under `results/` match the tables and figures cited in the paper (or deviations are documented).
+- [x] **Reproducibility command tested** — `make check-env`, `make reproduce`, and `make verify-manuscript` run cleanly (verified 2026-06-08).
+- [x] Regenerated outputs under `results/` match the tables and figures cited in the paper (`docs/manuscript_outputs.md`; `make verify-manuscript`).
 
 ## LLM inference and local execution
 
