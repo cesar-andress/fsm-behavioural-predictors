@@ -51,11 +51,18 @@ All predictive scripts share constants in `scripts/repro_config.py`:
 
 | Parameter | Value | Used by |
 |-----------|-------|---------|
-| `RANDOM_STATE` | `42` | StratifiedKFold, logistic regression, decision tree, random forest, dummy baseline |
+| `RANDOM_STATE` | `42` | `StratifiedKFold`, logistic regression, decision tree, random forest, stratified dummy |
 | `N_SPLITS` | `5` | Stratified five-fold CV |
+| `SKLEARN_N_JOBS` | `1` | `cross_val_predict`, random forest (`n_jobs`) — single-threaded for stable outputs |
 | `RF_N_ESTIMATORS` / `RF_MAX_DEPTH` | `50` / `5` | Random forest (fixed; no tuning) |
+| `DT_MAX_DEPTH` | `3` | Decision tree |
+| `LR_MAX_ITER` | `2000` | Logistic regression |
+
+Predictive entry points call `apply_reproducibility()` (`np.random.seed(42)`) before fitting.
 
 Bootstrap resampling is **not** used; fold-wise means and standard deviations report uncertainty. This matches the manuscript threats discussion.
+
+Grouped hold-out scripts (LOSO/LOMO) use deterministic fold order (`sorted` held-out groups) and inherit `random_state=42` from `make_model()`; they do not reshuffle rows.
 
 ## One-command reproduction
 

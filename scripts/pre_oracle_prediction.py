@@ -23,6 +23,8 @@ SCRIPTS_DIR = Path(__file__).resolve().parent
 if str(SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPTS_DIR))
 
+from repro_config import apply_reproducibility  # noqa: E402
+
 from model_behavioural_correctness import (  # noqa: E402
     METRIC_NAMES,
     N_SPLITS,
@@ -330,6 +332,7 @@ def build_comparison(
 
 
 def main() -> None:
+    apply_reproducibility()
     TABLES_DIR.mkdir(parents=True, exist_ok=True)
     FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 

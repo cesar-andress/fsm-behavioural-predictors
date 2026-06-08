@@ -62,6 +62,8 @@ from repro_config import (
     RANDOM_STATE,
     RF_MAX_DEPTH,
     RF_N_ESTIMATORS,
+    SKLEARN_N_JOBS,
+    apply_reproducibility,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -221,7 +223,7 @@ def cross_validated_metrics(
     cv = StratifiedKFold(n_splits=N_SPLITS, shuffle=True, random_state=RANDOM_STATE)
     fold_rows: list[dict[str, Any]] = []
     y_prob = cross_val_predict(
-        model, X, y, cv=cv, method="predict_proba", n_jobs=None
+        model, X, y, cv=cv, method="predict_proba", n_jobs=SKLEARN_N_JOBS
     )[:, 1]
     y_pred = (y_prob >= 0.5).astype(int)
 
@@ -456,6 +458,7 @@ def plot_curves(
 
 
 def main() -> None:
+    apply_reproducibility()
     TABLES_DIR.mkdir(parents=True, exist_ok=True)
     FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 

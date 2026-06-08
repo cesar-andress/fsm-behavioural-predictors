@@ -25,12 +25,12 @@ if str(SCRIPTS_DIR) not in sys.path:
 from model_behavioural_correctness import (  # noqa: E402
     METRIC_NAMES,
     PREDICTOR_SETS,
-    RANDOM_STATE,
     fold_metrics,
     load_scored_frame,
     make_model,
     prepare_features,
 )
+from repro_config import apply_reproducibility  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 TABLES_DIR = ROOT / "results" / "tables"
@@ -328,6 +328,7 @@ def plot_heatmap(detail_df: pd.DataFrame, path: Path) -> None:
 
 
 def main() -> None:
+    apply_reproducibility()
     TABLES_DIR.mkdir(parents=True, exist_ok=True)
     FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 
