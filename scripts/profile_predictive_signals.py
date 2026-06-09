@@ -474,7 +474,7 @@ def plot_bpr_by_gate(scored: pd.DataFrame, path: Path) -> None:
             patch.set_edgecolor(_gray(GRAY_STROKE))
             patch.set_linewidth(1.0)
         ax.set_title(gate_label(gate), fontsize=FIG_TITLE_SIZE, fontweight="bold", pad=8)
-        ax.set_xlabel("Gate outcome", fontsize=FIG_BASE_SIZE)
+        ax.set_xlabel("Gate outcome (categorical: fail / pass)", fontsize=FIG_BASE_SIZE)
         ax.set_ylim(0, 1.05)
         ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
         style_axes(ax)
@@ -578,7 +578,7 @@ def plot_bpr_by_system(scored: pd.DataFrame, path: Path) -> None:
             fontsize=FIG_TICK_SIZE - 1,
             color=_gray(0.05),
         )
-    ax.set_xlabel("Median behavioral pass rate (BPR)", fontsize=FIG_BASE_SIZE)
+    ax.set_xlabel("Median behavioral pass rate, BPR (proportion; 0--1)", fontsize=FIG_BASE_SIZE)
     ax.set_ylabel("Requirement system (system_id)", fontsize=FIG_BASE_SIZE)
     ax.set_xlim(0, 1.08)
     ax.set_xticks([0, 0.25, 0.5, 0.75, 1.0])

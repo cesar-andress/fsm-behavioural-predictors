@@ -278,6 +278,10 @@ def plot_heatmap(detail_df: pd.DataFrame, path: Path) -> None:
         pivot,
         path,
         ylabel="Held-out requirement system (system_id)",
+        xlabel="Predictor family (A--D)",
+        subtitle="Cell value = mean held-out ROC-AUC across LR, DT, and RF",
+        annotation_note="Hatched n/a: undefined ROC-AUC (single-class held-out system).",
+        imbalance_note="Ten of twelve held-out systems are single-class for most families.",
         show_transfer_legend=True,
         figsize=(11.5, 10.8),
     )

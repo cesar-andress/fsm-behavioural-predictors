@@ -320,6 +320,10 @@ def plot_heatmap(detail_df: pd.DataFrame, path: Path) -> None:
         pivot,
         path,
         ylabel="Held-out synthesis source (model)",
+        xlabel="Predictor family (A, B, D)",
+        subtitle="Cell value = mean held-out ROC-AUC across LR and RF",
+        annotation_note="Hatched n/a: undefined ROC-AUC when the held-out fold lacks both outcome classes.",
+        show_transfer_legend=True,
         figsize=(10.0, 6.5),
     )
 

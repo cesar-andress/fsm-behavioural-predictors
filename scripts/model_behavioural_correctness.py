@@ -418,11 +418,11 @@ def plot_curves(
             color=_gray(0.08),
         )
         if curve_fn is roc_curve:
-            ax.set_xlabel("False positive rate among non-passes", fontsize=FIG_BASE_SIZE)
-            ax.set_ylabel("True positive rate among full passes", fontsize=FIG_BASE_SIZE)
+            ax.set_xlabel("False positive rate (proportion; 0--1)", fontsize=FIG_BASE_SIZE)
+            ax.set_ylabel("True positive rate (proportion; 0--1)", fontsize=FIG_BASE_SIZE)
         else:
-            ax.set_xlabel("Recall (fraction of full passes ranked above threshold)", fontsize=FIG_BASE_SIZE)
-            ax.set_ylabel("Precision (fraction flagged that full-pass)", fontsize=FIG_BASE_SIZE)
+            ax.set_xlabel("Recall (proportion of full passes; 0--1)", fontsize=FIG_BASE_SIZE)
+            ax.set_ylabel("Precision (proportion flagged full-pass; 0--1)", fontsize=FIG_BASE_SIZE)
         style_axes(ax)
         ax.tick_params(labelsize=FIG_TICK_SIZE)
         ax.grid(True, linestyle=":", linewidth=0.6, alpha=0.22)
@@ -441,8 +441,19 @@ def plot_curves(
                 alpha=0.75,
                 zorder=0,
             )
+    _legend_names = {
+        "logistic_regression": "LR (black solid)",
+        "decision_tree": "DT (gray dashed)",
+        "random_forest": "RF (gray dash-dot)",
+        "dummy_stratified": "Dummy strat. (gray dotted)",
+    }
     legend_handles = [
-        Line2D([0], [0], label=model_label(model_name), **MODEL_STYLES[model_name])
+        Line2D(
+            [0],
+            [0],
+            label=_legend_names.get(model_name, model_label(model_name)),
+            **MODEL_STYLES[model_name],
+        )
         for model_name in MODEL_LEGEND_ORDER
     ]
     if curve_fn is roc_curve:
@@ -453,7 +464,7 @@ def plot_curves(
                 color=_gray(GRAY_DASH),
                 linestyle="--",
                 linewidth=FIG_CHANCE_LINEWIDTH,
-                label="Chance (ROC-AUC = 0.5)",
+                label="Chance diagonal (AUC = 0.5)",
             )
         )
     fig.legend(
