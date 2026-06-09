@@ -29,11 +29,14 @@ from figure_style import (  # noqa: E402
     FIG_TICK_SIZE,
     FIG_TITLE_SIZE,
     GRAY_DASH,
-    GRAY_FILL_DARK,
     GRAY_FILL_MID,
     GRAY_STROKE,
     _gray,
+    add_panel_label,
     apply_figure_style,
+    gate_label,
+    heatmap_cmap,
+    model_display,
     save_figure,
     style_axes,
 )
@@ -438,66 +441,111 @@ def write_predictive_signal_profile(df: pd.DataFrame, path: Path) -> None:
 
 def plot_bpr_by_gate(scored: pd.DataFrame, path: Path) -> None:
     apply_figure_style()
-    fig, axes = plt.subplots(1, 3, figsize=(12, 4), sharey=True)
+    fig, axes = plt.subplots(1, 3, figsize=(12.5, 4.2), sharey=True)
     gates = ["g2_pass", "g3_pass", "g3a_pass"]
+    panel_labels = ["G2", "G3", "G3a"]
     box_colors = [_gray(GRAY_FILL_MID), _gray(GRAY_STROKE)]
-    for ax, gate in zip(axes, gates):
+    for ax, gate, panel in zip(axes, gates, panel_labels):
         subset = scored[scored[gate].notna()]
         data = [
             subset.loc[subset[gate] == False, "behavioral_pass_rate"].dropna(),  # noqa: E712
             subset.loc[subset[gate] == True, "behavioral_pass_rate"].dropna(),  # noqa: E712
         ]
-        bp = ax.boxplot(data, tick_labels=["fail", "pass"], showfliers=True, patch_artist=True)
+        bp = ax.boxplot(
+            data,
+            tick_labels=["fail", "pass"],
+            showfliers=True,
+            patch_artist=True,
+            widths=0.55,
+            medianprops={"color": _gray(0.0), "linewidth": 1.6},
+            whiskerprops={"color": _gray(GRAY_DASH), "linewidth": 1.0},
+            capprops={"color": _gray(GRAY_DASH), "linewidth": 1.0},
+            flierprops={
+                "marker": "o",
+                "markersize": 4,
+                "markerfacecolor": _gray(GRAY_STROKE),
+                "markeredgecolor": _gray(0.0),
+                "alpha": 0.55,
+            },
+        )
         for patch, color in zip(bp["boxes"], box_colors):
             patch.set_facecolor(color)
-            patch.set_alpha(0.35)
+            patch.set_alpha(0.45)
             patch.set_edgecolor(_gray(GRAY_STROKE))
-        for whisker in bp["whiskers"]:
-            whisker.set_color(_gray(GRAY_DASH))
-        for cap in bp["caps"]:
-            cap.set_color(_gray(GRAY_DASH))
-        for median in bp["medians"]:
-            median.set_color(_gray(0.0))
-        ax.set_title(gate, fontsize=FIG_TITLE_SIZE, fontweight="bold")
+            patch.set_linewidth(1.0)
+        ax.set_title(gate_label(gate), fontsize=FIG_TITLE_SIZE, fontweight="bold", pad=8)
         ax.set_xlabel("Gate outcome", fontsize=FIG_BASE_SIZE)
         ax.set_ylim(0, 1.05)
+        ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
         style_axes(ax)
         ax.tick_params(labelsize=FIG_TICK_SIZE)
-    axes[0].set_ylabel("Behavioural pass rate (BPR)", fontsize=FIG_BASE_SIZE)
+        add_panel_label(ax, panel)
+    axes[0].set_ylabel("Behavioral pass rate (BPR)", fontsize=FIG_BASE_SIZE)
     legend_handles = [
-        Patch(facecolor=_gray(GRAY_FILL_MID), edgecolor=_gray(GRAY_STROKE), alpha=0.50, label="Gate fail"),
-        Patch(facecolor=_gray(GRAY_STROKE), edgecolor=_gray(GRAY_STROKE), alpha=0.50, label="Gate pass"),
+        Patch(
+            facecolor=_gray(GRAY_FILL_MID),
+            edgecolor=_gray(0.18),
+            alpha=0.65,
+            linewidth=1.0,
+            label="Gate fail",
+        ),
+        Patch(
+            facecolor=_gray(GRAY_STROKE),
+            edgecolor=_gray(0.18),
+            alpha=0.65,
+            linewidth=1.0,
+            label="Gate pass",
+        ),
     ]
     fig.legend(
         handles=legend_handles,
         loc="lower center",
         ncol=2,
-        bbox_to_anchor=(0.5, -0.02),
+        bbox_to_anchor=(0.5, -0.01),
         frameon=True,
+        fancybox=False,
+        edgecolor=_gray(GRAY_DASH),
         fontsize=FIG_LEGEND_SIZE,
     )
-    fig.suptitle("BPR by structural gate (scored runs, n=209)", fontsize=FIG_TITLE_SIZE, fontweight="bold")
-    fig.tight_layout(rect=(0, 0.06, 1, 0.96))
+    fig.tight_layout(rect=(0, 0.08, 1, 1))
     save_figure(fig, path)
 
 
 def plot_bpr_by_model(scored: pd.DataFrame, path: Path) -> None:
     apply_figure_style()
     models = sorted(scored["model"].unique())
+    labels = [model_display(m) for m in models]
     data = [scored.loc[scored["model"] == m, "behavioral_pass_rate"].dropna() for m in models]
-    fig, ax = plt.subplots(figsize=(10, 5))
-    bp = ax.boxplot(data, tick_labels=models, showfliers=True, patch_artist=True)
+    fig, ax = plt.subplots(figsize=(10.5, 5.2))
+    bp = ax.boxplot(
+        data,
+        tick_labels=labels,
+        showfliers=True,
+        patch_artist=True,
+        widths=0.55,
+        medianprops={"color": _gray(0.0), "linewidth": 1.6},
+        whiskerprops={"color": _gray(GRAY_DASH), "linewidth": 1.0},
+        capprops={"color": _gray(GRAY_DASH), "linewidth": 1.0},
+        flierprops={
+            "marker": "o",
+            "markersize": 4,
+            "markerfacecolor": _gray(GRAY_STROKE),
+            "markeredgecolor": _gray(0.0),
+            "alpha": 0.55,
+        },
+    )
     for patch in bp["boxes"]:
         patch.set_facecolor(_gray(GRAY_FILL_MID))
-        patch.set_alpha(0.45)
+        patch.set_alpha(0.50)
         patch.set_edgecolor(_gray(GRAY_STROKE))
-    ax.set_ylabel("Behavioural pass rate (BPR)", fontsize=FIG_BASE_SIZE)
-    ax.set_xlabel("LLM family (model)", fontsize=FIG_BASE_SIZE)
-    ax.set_title("BPR by LLM family (scored runs)", fontsize=FIG_TITLE_SIZE, fontweight="bold")
+        patch.set_linewidth(1.0)
+    ax.set_ylabel("Behavioral pass rate (BPR)", fontsize=FIG_BASE_SIZE)
+    ax.set_xlabel("Synthesis source (model)", fontsize=FIG_BASE_SIZE)
     ax.set_ylim(0, 1.05)
+    ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
     style_axes(ax)
     ax.tick_params(labelsize=FIG_TICK_SIZE)
-    plt.setp(ax.get_xticklabels(), rotation=20, ha="right")
+    plt.setp(ax.get_xticklabels(), rotation=22, ha="right")
     fig.tight_layout()
     save_figure(fig, path)
 
@@ -509,20 +557,45 @@ def plot_bpr_by_system(scored: pd.DataFrame, path: Path) -> None:
         .median()
         .sort_values(ascending=True)
     )
-    fig, ax = plt.subplots(figsize=(9, 7))
-    ax.barh(
+    cmap = heatmap_cmap()
+    bar_colors = [cmap(val) for val in summary.values]
+    fig, ax = plt.subplots(figsize=(9.5, 7.5))
+    bars = ax.barh(
         summary.index,
         summary.values,
-        color=_gray(GRAY_FILL_DARK),
+        color=bar_colors,
         edgecolor=_gray(GRAY_STROKE),
-        linewidth=0.8,
+        linewidth=0.9,
+        height=0.72,
     )
-    ax.set_xlabel("Median behavioural pass rate (BPR)", fontsize=FIG_BASE_SIZE)
-    ax.set_ylabel("system_id", fontsize=FIG_BASE_SIZE)
-    ax.set_title("Median BPR by system (scored runs)", fontsize=FIG_TITLE_SIZE, fontweight="bold")
-    ax.set_xlim(0, 1.05)
+    for bar, val in zip(bars, summary.values):
+        ax.text(
+            min(val + 0.02, 0.98),
+            bar.get_y() + bar.get_height() / 2,
+            f"{val:.2f}",
+            va="center",
+            ha="left",
+            fontsize=FIG_TICK_SIZE - 1,
+            color=_gray(0.05),
+        )
+    ax.set_xlabel("Median behavioral pass rate (BPR)", fontsize=FIG_BASE_SIZE)
+    ax.set_ylabel("Requirement system (system_id)", fontsize=FIG_BASE_SIZE)
+    ax.set_xlim(0, 1.08)
+    ax.set_xticks([0, 0.25, 0.5, 0.75, 1.0])
     style_axes(ax)
     ax.tick_params(labelsize=FIG_TICK_SIZE)
+    sm = plt.cm.ScalarMappable(cmap=cmap, norm=plt.Normalize(vmin=0, vmax=1))
+    sm.set_array([])
+    cbar = fig.colorbar(sm, ax=ax, fraction=0.03, pad=0.02)
+    cbar.set_label(
+        "Median BPR (darker = higher)",
+        fontsize=FIG_TICK_SIZE,
+        labelpad=8,
+        color=_gray(0.02),
+    )
+    cbar.set_ticks([0, 0.5, 1.0])
+    cbar.ax.tick_params(labelsize=FIG_TICK_SIZE - 1, colors=_gray(0.08))
+    cbar.outline.set_edgecolor(_gray(0.18))
     fig.tight_layout()
     save_figure(fig, path)
 

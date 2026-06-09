@@ -22,18 +22,32 @@ GRAY_FILL_DARK = 0.22
 GRAY_FAIL = 0.30
 
 FIG_DPI = 300
-FIG_BASE_SIZE = 11
+FIG_BASE_SIZE = 12
 FIG_TITLE_SIZE = 12
-FIG_TICK_SIZE = 10
-FIG_LEGEND_SIZE = 10
-FIG_HEATMAP_CELL_SIZE = 11
-FIG_HEATMAP_NA_SIZE = 10
-FIG_HEATMAP_SUBTITLE_SIZE = 10.5
-FIG_HEATMAP_CBAR_SIZE = 10
-FIG_LINEWIDTH = 1.8
-FIG_CHANCE_LINEWIDTH = 1.0
+FIG_TICK_SIZE = 11
+FIG_LEGEND_SIZE = 11
+FIG_PANEL_LABEL_SIZE = 13
+FIG_HEATMAP_CELL_SIZE = 12
+FIG_HEATMAP_NA_SIZE = 11
+FIG_HEATMAP_SUBTITLE_SIZE = 11
+FIG_HEATMAP_CBAR_SIZE = 11
+FIG_LINEWIDTH = 2.0
+FIG_CHANCE_LINEWIDTH = 1.2
 FIG_AXES_LINEWIDTH = 1.0
-FIG_GRID_ALPHA = 0.25
+FIG_GRID_ALPHA = 0.22
+
+GATE_LABELS: dict[str, str] = {
+    "g2_pass": "G2 (schema)",
+    "g3_pass": "G3 (determinism)",
+    "g3a_pass": "G3a (guards)",
+}
+
+MODEL_DISPLAY: dict[str, str] = {
+    "gemma2:9b": "gemma2:9b",
+    "llama3.1:8b": "llama3.1:8b",
+    "mistral-nemo:12b": "mistral-nemo:12b",
+    "qwen2.5-coder:7b": "qwen2.5-coder:7b",
+}
 
 PREDICTOR_SET_ORDER = [
     "A_gate_only",
@@ -126,24 +140,61 @@ def apply_figure_style() -> None:
         {
             "figure.dpi": FIG_DPI,
             "savefig.dpi": FIG_DPI,
+            "font.family": "sans-serif",
+            "font.sans-serif": ["DejaVu Sans", "Helvetica", "Arial", "Liberation Sans"],
             "font.size": FIG_BASE_SIZE,
             "axes.titlesize": FIG_TITLE_SIZE,
             "axes.titleweight": "bold",
             "axes.labelsize": FIG_BASE_SIZE,
+            "axes.labelweight": "medium",
             "xtick.labelsize": FIG_TICK_SIZE,
             "ytick.labelsize": FIG_TICK_SIZE,
             "legend.fontsize": FIG_LEGEND_SIZE,
             "lines.linewidth": FIG_LINEWIDTH,
+            "lines.antialiased": True,
             "axes.linewidth": FIG_AXES_LINEWIDTH,
-            "axes.edgecolor": _gray(GRAY_STROKE),
-            "axes.labelcolor": _gray(GRAY_STROKE),
-            "xtick.color": _gray(GRAY_STROKE),
-            "ytick.color": _gray(GRAY_STROKE),
-            "text.color": _gray(GRAY_STROKE),
+            "axes.edgecolor": _gray(0.18),
+            "axes.labelcolor": _gray(0.02),
+            "xtick.color": _gray(0.08),
+            "ytick.color": _gray(0.08),
+            "text.color": _gray(0.02),
             "axes.prop_cycle": mpl.cycler(color=gray_scale),
             "grid.alpha": FIG_GRID_ALPHA,
             "grid.color": _gray(GRAY_DASH),
+            "savefig.bbox": "tight",
+            "savefig.pad_inches": 0.08,
         }
+    )
+
+
+def gate_label(column: str) -> str:
+    return GATE_LABELS.get(column, column)
+
+
+def model_display(name: str) -> str:
+    return MODEL_DISPLAY.get(name, name.replace("_", " "))
+
+
+def add_panel_label(ax: plt.Axes, label: str) -> None:
+    """Publication-style panel tag, e.g. (A), matching manuscript captions."""
+    ax.text(
+        0.03,
+        0.97,
+        f"({label})",
+        transform=ax.transAxes,
+        fontsize=FIG_PANEL_LABEL_SIZE,
+        fontweight="bold",
+        va="top",
+        ha="left",
+        color=_gray(0.03),
+        bbox={
+            "boxstyle": "round,pad=0.25",
+            "facecolor": "white",
+            "edgecolor": _gray(GRAY_DASH),
+            "linewidth": 0.6,
+            "alpha": 0.92,
+        },
+        zorder=10,
     )
 
 
@@ -159,7 +210,14 @@ def style_axes(ax: plt.Axes) -> None:
     ax.set_facecolor("white")
     for spine in ax.spines.values():
         spine.set_linewidth(FIG_AXES_LINEWIDTH)
-        spine.set_color(_gray(GRAY_STROKE))
+        spine.set_color(_gray(0.18))
+    ax.tick_params(axis="both", colors=_gray(0.08), labelsize=FIG_TICK_SIZE)
+    for label in ax.get_xticklabels() + ax.get_yticklabels():
+        label.set_color(_gray(0.08))
+    xlabel = ax.xaxis.get_label()
+    ylabel = ax.yaxis.get_label()
+    xlabel.set_color(_gray(0.02))
+    ylabel.set_color(_gray(0.02))
 
 
 def heatmap_text_color(value: float) -> str:
@@ -293,29 +351,31 @@ def _add_transfer_tier_legend(
             label=f"Strong transfer (ROC-AUC $\\geq$ {strong_threshold:.2f})",
         ),
     ]
-    ax.legend(
+    leg = ax.legend(
         handles=handles,
         loc="upper left",
         bbox_to_anchor=(0.0, -0.11),
         ncol=1,
         frameon=True,
         fancybox=False,
-        edgecolor=_gray(GRAY_DASH),
+        edgecolor=_gray(0.18),
         facecolor="white",
-        fontsize=FIG_HEATMAP_SUBTITLE_SIZE - 0.5,
+        fontsize=FIG_HEATMAP_SUBTITLE_SIZE,
         handlelength=1.6,
         handleheight=1.2,
         borderpad=0.6,
         labelspacing=0.45,
     )
+    for text in leg.get_texts():
+        text.set_color(_gray(0.05))
 
 
 def plot_transfer_heatmap(
     pivot,
     path,
     *,
-    title: str,
-    subtitle: str,
+    title: str = "",
+    subtitle: str = "",
     ylabel: str,
     xlabel: str = "Predictor family",
     annotation_note: str = "",
@@ -327,7 +387,8 @@ def plot_transfer_heatmap(
 ) -> None:
     """Shared LOSO/LOMO heatmap layout for manuscript figures."""
     apply_figure_style()
-    bottom_margin = 0.24 if show_transfer_legend else 0.16
+    bottom_margin = 0.26 if show_transfer_legend else 0.14
+    top_margin = 0.90 if imbalance_note else 0.94
     fig, ax = plt.subplots(figsize=figsize)
     data = pivot.to_numpy(dtype=float)
     cmap = heatmap_cmap()
@@ -345,18 +406,20 @@ def plot_transfer_heatmap(
     ax.set_yticklabels(pivot.index, fontsize=FIG_TICK_SIZE)
     ax.set_xlabel(xlabel, fontsize=FIG_BASE_SIZE, labelpad=8)
     ax.set_ylabel(ylabel, fontsize=FIG_BASE_SIZE, labelpad=8)
-    ax.set_title(title, fontsize=FIG_TITLE_SIZE, fontweight="bold", loc="left", pad=22)
-    ax.text(
-        0.0,
-        1.02,
-        subtitle,
-        transform=ax.transAxes,
-        fontsize=FIG_HEATMAP_SUBTITLE_SIZE,
-        fontstyle="italic",
-        color=_gray(GRAY_FAIL),
-        ha="left",
-        va="bottom",
-    )
+    if title:
+        ax.set_title(title, fontsize=FIG_TITLE_SIZE, fontweight="bold", loc="left", pad=22)
+    if subtitle:
+        ax.text(
+            0.0,
+            1.02,
+            subtitle,
+            transform=ax.transAxes,
+            fontsize=FIG_HEATMAP_SUBTITLE_SIZE,
+            fontstyle="italic",
+            color=_gray(GRAY_FAIL),
+            ha="left",
+            va="bottom",
+        )
     if imbalance_note:
         ax.text(
             0.5,
@@ -399,10 +462,12 @@ def plot_transfer_heatmap(
         "Held-out ROC-AUC (0 = chance, 1 = perfect)",
         fontsize=FIG_HEATMAP_CBAR_SIZE,
         labelpad=10,
+        color=_gray(0.02),
     )
     cbar.set_ticks([0.0, 0.5, 1.0])
     cbar.set_ticklabels(["0", "0.5\n(chance)", "1"])
-    cbar.ax.tick_params(labelsize=FIG_TICK_SIZE)
+    cbar.ax.tick_params(labelsize=FIG_TICK_SIZE, colors=_gray(0.08))
+    cbar.outline.set_edgecolor(_gray(0.18))
     if show_transfer_legend:
         _add_transfer_tier_legend(
             ax,
@@ -410,7 +475,7 @@ def plot_transfer_heatmap(
             poor_threshold=poor_threshold,
             strong_threshold=strong_threshold,
         )
-    fig.subplots_adjust(left=0.22, right=0.92, top=0.90, bottom=bottom_margin)
+    fig.subplots_adjust(left=0.24, right=0.90, top=top_margin, bottom=bottom_margin)
     save_figure(fig, path)
 
 

@@ -39,7 +39,7 @@ tables:
 
 figures:
 	@echo "Verifying manuscript figures..."
-	@$(PYTHON) $(SCRIPTS)/generate_figures.py
+	@$(PYTHON) $(SCRIPTS)/generate_figures.py --sync
 
 verify-manuscript:
 	@$(PYTHON) $(SCRIPTS)/verify_manuscript_outputs.py

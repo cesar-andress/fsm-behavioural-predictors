@@ -319,11 +319,8 @@ def plot_heatmap(detail_df: pd.DataFrame, path: Path) -> None:
     plot_transfer_heatmap(
         pivot,
         path,
-        title="LOMO ROC-AUC by held-out model",
-        subtitle="Cross-model transfer degrades less",
-        ylabel="Held-out LLM model",
-        annotation_note="Cell values: mean across LR and RF; n/a = single-class fold",
-        figsize=(9.5, 6.0),
+        ylabel="Held-out synthesis source (model)",
+        figsize=(10.0, 6.5),
     )
 
 

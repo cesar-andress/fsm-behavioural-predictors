@@ -19,7 +19,6 @@ from figure_style import (
     FIG_BASE_SIZE,
     FIG_CHANCE_LINEWIDTH,
     FIG_LEGEND_SIZE,
-    FIG_TITLE_SIZE,
     FIG_TICK_SIZE,
     GRAY_DASH,
     MODEL_LEGEND_ORDER,
@@ -27,6 +26,7 @@ from figure_style import (
     MODEL_STYLES,
     PREDICTOR_SET_ORDER,
     _gray,
+    add_panel_label,
     apply_figure_style,
     model_label,
     predictor_set_label,
@@ -398,8 +398,9 @@ def plot_curves(
     path: Path,
 ) -> None:
     apply_figure_style()
-    fig, axes = plt.subplots(2, 2, figsize=(12.0, 10.0))
-    for ax, set_name in zip(axes.ravel(), PREDICTOR_SET_ORDER):
+    panel_letters = ["A", "B", "C", "D"]
+    fig, axes = plt.subplots(2, 2, figsize=(12.5, 10.5))
+    for ax, set_name, panel in zip(axes.ravel(), PREDICTOR_SET_ORDER, panel_letters):
         for model_name in MODEL_PLOT_ORDER:
             curves = curve_data[set_name]
             if model_name not in curves:
@@ -407,18 +408,28 @@ def plot_curves(
             x, y = curves[model_name]
             style = MODEL_STYLES.get(model_name, {})
             ax.plot(x, y, **style)
-        ax.set_title(predictor_set_label(set_name), fontsize=FIG_TITLE_SIZE, fontweight="bold", pad=10)
+        add_panel_label(ax, panel)
+        ax.set_title(
+            predictor_set_label(set_name),
+            fontsize=FIG_TICK_SIZE,
+            fontweight="bold",
+            pad=6,
+            loc="center",
+            color=_gray(0.08),
+        )
         if curve_fn is roc_curve:
-            ax.set_xlabel("False positive rate (FPR)", fontsize=FIG_BASE_SIZE)
-            ax.set_ylabel("True positive rate (TPR)", fontsize=FIG_BASE_SIZE)
+            ax.set_xlabel("False positive rate among non-passes", fontsize=FIG_BASE_SIZE)
+            ax.set_ylabel("True positive rate among full passes", fontsize=FIG_BASE_SIZE)
         else:
-            ax.set_xlabel("Recall", fontsize=FIG_BASE_SIZE)
-            ax.set_ylabel("Precision", fontsize=FIG_BASE_SIZE)
+            ax.set_xlabel("Recall (fraction of full passes ranked above threshold)", fontsize=FIG_BASE_SIZE)
+            ax.set_ylabel("Precision (fraction flagged that full-pass)", fontsize=FIG_BASE_SIZE)
         style_axes(ax)
         ax.tick_params(labelsize=FIG_TICK_SIZE)
-        ax.grid(True, linestyle=":", linewidth=0.6, alpha=0.25)
+        ax.grid(True, linestyle=":", linewidth=0.6, alpha=0.22)
         ax.set_xlim(0, 1)
         ax.set_ylim(0, 1)
+        ax.set_xticks([0, 0.25, 0.5, 0.75, 1.0])
+        ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
     if curve_fn is roc_curve:
         for ax in axes.ravel():
             ax.plot(
@@ -448,12 +459,15 @@ def plot_curves(
     fig.legend(
         handles=legend_handles,
         loc="lower center",
-        ncol=len(legend_handles),
-        bbox_to_anchor=(0.5, 0.02),
+        ncol=min(3, len(legend_handles)),
+        bbox_to_anchor=(0.5, 0.01),
         frameon=True,
+        fancybox=False,
+        edgecolor=_gray(GRAY_DASH),
         fontsize=FIG_LEGEND_SIZE,
+        columnspacing=1.2,
     )
-    fig.subplots_adjust(left=0.09, right=0.98, top=0.96, bottom=0.14, hspace=0.34, wspace=0.28)
+    fig.subplots_adjust(left=0.10, right=0.98, top=0.97, bottom=0.16, hspace=0.38, wspace=0.30)
     save_figure(fig, path)
 
 

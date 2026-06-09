@@ -277,13 +277,9 @@ def plot_heatmap(detail_df: pd.DataFrame, path: Path) -> None:
     plot_transfer_heatmap(
         pivot,
         path,
-        title="LOSO ROC-AUC by held-out system",
-        subtitle="Cross-system transfer is weak",
-        ylabel="Held-out requirement system",
-        imbalance_note="Many held-out systems contain a single outcome class.",
+        ylabel="Held-out requirement system (system_id)",
         show_transfer_legend=True,
-        annotation_note="Cell values: mean held-out ROC-AUC across LR, DT, and RF",
-        figsize=(11.0, 10.5),
+        figsize=(11.5, 10.8),
     )
 
 
