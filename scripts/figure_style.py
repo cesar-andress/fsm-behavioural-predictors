@@ -32,16 +32,18 @@ INK_MID = "#222222"
 INK_LIGHT = "#444444"
 
 FIG_DPI = 300
-FIG_BASE_SIZE = 12
-FIG_TITLE_SIZE = 12
-FIG_TICK_SIZE = 11
-FIG_LEGEND_SIZE = 11
-FIG_PANEL_LABEL_SIZE = 13
-FIG_HEATMAP_CELL_SIZE = 12
-FIG_HEATMAP_NA_SIZE = 11
-FIG_HEATMAP_SUBTITLE_SIZE = 11
-FIG_HEATMAP_CBAR_SIZE = 11
-FIG_LINEWIDTH = 2.6
+# Match manuscript figure typography (~footnotesize / scriptsize at print width).
+FIG_BASE_SIZE = 9.5
+FIG_TITLE_SIZE = 10.0
+FIG_TICK_SIZE = 9.0
+FIG_LEGEND_SIZE = 8.5
+FIG_PANEL_LABEL_SIZE = 10.0
+FIG_SUBTITLE_SIZE = 9.0
+FIG_HEATMAP_CELL_SIZE = 9.5
+FIG_HEATMAP_NA_SIZE = 8.5
+FIG_HEATMAP_SUBTITLE_SIZE = 9.0
+FIG_HEATMAP_CBAR_SIZE = 9.0
+FIG_LINEWIDTH = 2.2
 FIG_CHANCE_LINEWIDTH = 1.0
 FIG_CHANCE_COLOR = "#999999"
 FIG_AXES_LINEWIDTH = 1.0
@@ -79,6 +81,23 @@ HEATMAP_FAMILY_LABELS: dict[str, str] = {
     "B_basic_structural": "B: graph tallies",
     "C_reference_difference": "C: ref.-diff.",
     "D_combined": "D: combined",
+}
+
+# One-line gate and family gloss (manuscript Legend; repeated on empirical figures).
+GATES_ONE_LINER = "G2 schema integrity; G3 determinism; G3a guard-aware determinism"
+
+FAMILY_ONE_LINERS: dict[str, str] = {
+    "A_gate_only": "Gates only (G2, G3, G3a)",
+    "B_basic_structural": "Graph tallies (pre-oracle)",
+    "C_reference_difference": "Ref-diff counts (post-reference)",
+    "D_combined": "Combined retrospective (A--C + coverage)",
+}
+
+FAMILY_COLUMN_LABELS: dict[str, str] = {
+    "A_gate_only": "A: gates\n(G2--G3a)",
+    "B_basic_structural": "B: graph tallies\n(pre-oracle)",
+    "C_reference_difference": "C: ref-diff\n(post-ref.)",
+    "D_combined": "D: combined\n(post-ref.)",
 }
 
 MODEL_LABELS: dict[str, str] = {
@@ -249,6 +268,19 @@ def heatmap_text_color(value: float) -> str:
 
 def heatmap_family_label(name: str) -> str:
     return HEATMAP_FAMILY_LABELS.get(name, name.replace("_", " "))
+
+
+def family_one_liner(name: str) -> str:
+    return FAMILY_ONE_LINERS.get(name, "")
+
+
+def heatmap_family_column_label(name: str) -> str:
+    return FAMILY_COLUMN_LABELS.get(name, heatmap_family_label(name))
+
+
+def predictor_panel_header(set_name: str) -> tuple[str, str]:
+    """Panel title + one-line family gloss for ROC/PR figures."""
+    return predictor_set_label(set_name), family_one_liner(set_name)
 
 
 def predictor_set_label(name: str) -> str:
@@ -426,10 +458,10 @@ def plot_transfer_heatmap(
     ax.tick_params(which="minor", size=0)
     ax.set_xticks(range(len(pivot.columns)))
     ax.set_xticklabels(
-        [heatmap_family_label(c) for c in pivot.columns],
-        rotation=25,
-        ha="right",
-        fontsize=FIG_TICK_SIZE,
+        [heatmap_family_column_label(c) for c in pivot.columns],
+        rotation=0,
+        ha="center",
+        fontsize=FIG_TICK_SIZE - 0.5,
     )
     ax.set_yticks(range(len(pivot.index)))
     ax.set_yticklabels(pivot.index, fontsize=FIG_TICK_SIZE)
@@ -495,14 +527,14 @@ def plot_transfer_heatmap(
     )
     cbar = fig.colorbar(im, ax=ax, fraction=0.035, pad=0.03)
     cbar.set_label(
-        "Held-out ROC-AUC (0 = chance, 1 = perfect)",
+        "Held-out ROC-AUC (ranking quality; 0 = random, 0.5 = chance, 1 = perfect)",
         fontsize=FIG_HEATMAP_CBAR_SIZE,
         labelpad=10,
         color=INK,
         fontweight="medium",
     )
     cbar.set_ticks([0.0, 0.5, 1.0])
-    cbar.set_ticklabels(["0", "0.5\n(chance)", "1"])
+    cbar.set_ticklabels(["0\n(poor)", "0.5\n(chance)", "1\n(perfect)"])
     cbar.ax.tick_params(labelsize=FIG_TICK_SIZE, colors=INK)
     cbar.outline.set_edgecolor(INK_MID)
     if show_transfer_legend:
@@ -527,8 +559,9 @@ def _draw_cv_loso_bars(
     cv_auc: float,
     loso_auc: float,
     label: str,
+    holdout_label: str = "LOSO",
 ) -> None:
-    """Mini horizontal bars for CV versus LOSO in the annotation panel."""
+    """Mini horizontal bars for pooled CV versus grouped hold-out mean."""
     ax.set_xlim(0, 1.05)
     ax.set_ylim(-0.5, 2.2)
     ax.axis("off")
@@ -537,7 +570,7 @@ def _draw_cv_loso_bars(
     ax.barh(y_cv, cv_auc, height=bar_h, color=_gray(GRAY_FILL_DARK), edgecolor=INK, linewidth=0.8)
     ax.barh(y_loso, loso_auc, height=bar_h, color=_gray(GRAY_FILL_MID), edgecolor=INK, linewidth=0.8)
     ax.text(-0.02, y_cv, "CV", ha="right", va="center", fontsize=FIG_HEATMAP_SUBTITLE_SIZE, color=INK)
-    ax.text(-0.02, y_loso, "LOSO", ha="right", va="center", fontsize=FIG_HEATMAP_SUBTITLE_SIZE, color=INK)
+    ax.text(-0.02, y_loso, holdout_label, ha="right", va="center", fontsize=FIG_HEATMAP_SUBTITLE_SIZE, color=INK)
     ax.text(cv_auc + 0.02, y_cv, f"{cv_auc:.2f}", ha="left", va="center", fontsize=FIG_HEATMAP_SUBTITLE_SIZE, fontweight="bold", color=INK)
     ax.text(loso_auc + 0.02, y_loso, f"{loso_auc:.2f}", ha="left", va="center", fontsize=FIG_HEATMAP_SUBTITLE_SIZE, fontweight="bold", color=INK)
     ax.text(0.0, 2.05, label, ha="left", va="bottom", fontsize=FIG_HEATMAP_SUBTITLE_SIZE, fontweight="bold", color=INK)
@@ -565,26 +598,33 @@ def plot_loso_system_heatmap(
     family_b_cv: float,
     family_b_loso: float,
     ylabel: str = "Held-out requirement system (system_id)",
-    xlabel: str = "Predictor family (A--D)",
+    xlabel: str = "",
 ) -> None:
-    """Communication-first LOSO heatmap for SQJ Figure 9 (fig:loso-heatmap)."""
+    """Single-message LOSO figure: Family B ranks high under CV but degrades under LOSO."""
     from matplotlib import gridspec
 
     apply_figure_style()
-    pivot = _reorder_loso_pivot(pivot)
-    data = pivot.to_numpy(dtype=float)
+    col = "B_basic_structural"
+    if col not in pivot.columns:
+        col = pivot.columns[0]
+    pivot_b = pivot[[col]].copy()
+    pivot_b = _reorder_loso_pivot(pivot_b)
+    data = pivot_b.to_numpy(dtype=float)
     n_rows, n_cols = data.shape
     dual_mask = _dual_class_row_mask(data)
-    dual_systems = [str(s) for s, ok in zip(pivot.index, dual_mask) if ok]
-    dual_list = ", ".join(dual_systems) if dual_systems else "—"
     n_dual = int(dual_mask.sum())
-    n_single = n_rows - n_dual
 
-    fig = plt.figure(figsize=(12.6, 9.6))
-    gs = gridspec.GridSpec(1, 2, width_ratios=[1.0, 0.32], wspace=0.05)
-    ax = fig.add_subplot(gs[0])
-    ax_ann = fig.add_subplot(gs[1])
-    ax_ann.axis("off")
+    fig = plt.figure(figsize=(7.4, 8.4))
+    gs = gridspec.GridSpec(2, 1, height_ratios=[0.24, 0.76], hspace=0.34)
+    ax_bar = fig.add_subplot(gs[0])
+    ax = fig.add_subplot(gs[1])
+
+    _draw_cv_loso_bars(
+        ax_bar,
+        cv_auc=family_b_cv,
+        loso_auc=family_b_loso,
+        label="Family B / RF",
+    )
 
     cmap = heatmap_cmap()
     cmap.set_bad(color="white")
@@ -599,356 +639,55 @@ def plot_loso_system_heatmap(
                     1,
                     facecolor=_gray(GRAY_FILL_MID),
                     edgecolor="none",
-                    alpha=0.38,
+                    alpha=0.35,
                     zorder=0,
-                )
-            )
-            ax.add_patch(
-                Rectangle(
-                    (-0.62, i - 0.5),
-                    0.12,
-                    1,
-                    facecolor=_gray(GRAY_FILL_DARK),
-                    edgecolor=INK,
-                    linewidth=0.8,
-                    zorder=4,
                 )
             )
 
     im = ax.imshow(masked_data, aspect="auto", vmin=0, vmax=1, cmap=cmap, zorder=1)
 
     if n_dual and n_dual < n_rows:
-        divider_y = n_dual - 0.5
-        ax.axhline(divider_y, color=INK, linewidth=2.4, zorder=6)
-        ax.text(
-            n_cols - 0.42,
-            divider_y + 0.18,
-            f"{n_dual} dual-class",
-            ha="right",
-            va="bottom",
-            fontsize=FIG_HEATMAP_SUBTITLE_SIZE,
-            fontweight="bold",
-            color=INK,
-            bbox=dict(boxstyle="round,pad=0.2", facecolor="white", edgecolor=INK, linewidth=0.8),
-            zorder=7,
-        )
-        ax.text(
-            n_cols - 0.42,
-            divider_y - 0.18,
-            f"{n_single} single-class (n/a)",
-            ha="right",
-            va="top",
-            fontsize=FIG_HEATMAP_SUBTITLE_SIZE,
-            fontweight="bold",
-            color=INK_MID,
-            bbox=dict(boxstyle="round,pad=0.2", facecolor="white", edgecolor=INK_MID, linewidth=0.7),
-            zorder=7,
-        )
+        ax.axhline(n_dual - 0.5, color=INK, linewidth=2.0, zorder=6)
 
     ax.set_xticks(np.arange(-0.5, n_cols, 1), minor=True)
     ax.set_yticks(np.arange(-0.5, n_rows, 1), minor=True)
     ax.grid(which="minor", color="white", linestyle="-", linewidth=1.8)
     ax.tick_params(which="minor", size=0)
     ax.set_xticks(range(n_cols))
-    family_labels = [heatmap_family_label(c) for c in pivot.columns]
-    ax.set_xticklabels(family_labels, rotation=22, ha="right", fontsize=FIG_TICK_SIZE)
+    b_label = heatmap_family_column_label(col)
+    ax.set_xticklabels([b_label], rotation=0, ha="center", fontsize=FIG_TICK_SIZE)
     ax.set_yticks(range(n_rows))
-    ylabels = ax.set_yticklabels(pivot.index, fontsize=FIG_TICK_SIZE)
+    ylabels = ax.set_yticklabels(pivot_b.index, fontsize=FIG_TICK_SIZE)
     for i, label in enumerate(ylabels):
         if dual_mask[i]:
             label.set_fontweight("bold")
-            label.set_color(INK)
-    ax.set_xlabel(xlabel, fontsize=FIG_BASE_SIZE, labelpad=8)
+    if xlabel:
+        ax.set_xlabel(xlabel, fontsize=FIG_BASE_SIZE, labelpad=8)
     ax.set_ylabel(ylabel, fontsize=FIG_BASE_SIZE, labelpad=8)
-
-    if "B_basic_structural" in pivot.columns:
-        b_j = list(pivot.columns).index("B_basic_structural")
-        ax.add_patch(
-            Rectangle(
-                (b_j - 0.5, -0.5),
-                1,
-                n_rows,
-                fill=False,
-                edgecolor=INK,
-                linewidth=2.2,
-                zorder=5,
-            )
-        )
-        ax.text(
-            b_j,
-            -0.88,
-            "Family B\n(CV→LOSO collapse)",
-            ha="center",
-            va="top",
-            fontsize=FIG_HEATMAP_SUBTITLE_SIZE,
-            fontweight="bold",
-            color=INK,
-            bbox=dict(boxstyle="round,pad=0.25", facecolor="white", edgecolor=INK, linewidth=0.9),
-        )
 
     annotate_heatmap(ax, data, na_hatch="//", mark_transfer_tiers=False)
     style_axes(ax, ink=True)
 
-    if n_dual:
-        mid_dual = (n_dual - 1) / 2.0
-        ax.text(
-            -0.72,
-            mid_dual,
-            "dual-class\nfolds",
-            ha="center",
-            va="center",
-            rotation=90,
-            fontsize=FIG_HEATMAP_SUBTITLE_SIZE,
-            fontweight="bold",
-            color=INK,
-            bbox=dict(boxstyle="round,pad=0.2", facecolor="white", edgecolor=INK, linewidth=0.8),
-        )
-
-    cbar = fig.colorbar(im, ax=ax, fraction=0.028, pad=0.02)
-    cbar.set_label(
-        "Held-out ROC-AUC",
-        fontsize=FIG_HEATMAP_CBAR_SIZE,
-        labelpad=8,
-        color=INK,
-        fontweight="medium",
-    )
+    cbar = fig.colorbar(im, ax=ax, fraction=0.08, pad=0.06)
+    cbar.set_label("Held-out ROC-AUC", fontsize=FIG_HEATMAP_CBAR_SIZE, labelpad=6, color=INK)
     cbar.set_ticks([0.0, 0.5, 1.0])
     cbar.set_ticklabels(["0", "0.5", "1"])
     cbar.ax.tick_params(labelsize=FIG_TICK_SIZE - 1, colors=INK)
     cbar.outline.set_edgecolor(INK_MID)
 
-    ax.text(
-        0.0,
-        1.03,
-        f"Only {n_dual}/12 held-out systems are dual-class; {n_single}/12 are single-class (hatched n/a).",
-        transform=ax.transAxes,
-        fontsize=FIG_HEATMAP_SUBTITLE_SIZE,
-        fontweight="bold",
-        color=INK,
-        ha="left",
-        va="bottom",
-    )
-
-    # --- Annotation panel ---
-    ann_box = dict(boxstyle="round,pad=0.55", facecolor=_fill(), edgecolor=INK, linewidth=1.0)
-    ax_ann.text(
-        0.0,
-        0.98,
-        "Key reading",
-        transform=ax_ann.transAxes,
-        fontsize=FIG_TITLE_SIZE,
-        fontweight="bold",
-        color=INK,
-        ha="left",
-        va="top",
-        bbox=ann_box,
-    )
-    summary_lines = [
-        f"Dual-class folds: {n_dual}/12",
-        dual_list,
-        "Only these rows support",
-        "stable ROC-AUC under LOSO.",
-        "",
-        f"Single-class: {n_single}/12 systems",
-        "(undefined ranking; hatched n/a)",
-        "",
-        "Family B (graph tallies), RF:",
-        f"CV {family_b_cv:.3f}  →  LOSO μ {family_b_loso:.3f}",
-        f"Δ ≈ {family_b_cv - family_b_loso:.2f}",
-    ]
-    ax_ann.text(
-        0.04,
-        0.86,
-        "\n".join(summary_lines),
-        transform=ax_ann.transAxes,
-        fontsize=FIG_HEATMAP_SUBTITLE_SIZE,
-        color=INK,
-        ha="left",
-        va="top",
-        linespacing=1.25,
-    )
-
-    bar_ax = ax_ann.inset_axes([0.06, 0.34, 0.88, 0.22])
-    _draw_cv_loso_bars(
-        bar_ax,
-        cv_auc=family_b_cv,
-        loso_auc=family_b_loso,
-        label="Family B / RF",
-    )
-
-    ax_ann.text(
-        0.04,
-        0.28,
-        "Cell value = mean held-out ROC-AUC\nacross LR, DT, and RF.",
-        transform=ax_ann.transAxes,
-        fontsize=FIG_HEATMAP_SUBTITLE_SIZE - 0.5,
-        color=INK_MID,
-        ha="left",
-        va="top",
-        fontstyle="italic",
-    )
-
     na_patch = Patch(facecolor="white", edgecolor=INK, hatch="//", linewidth=0.9, label="n/a (single-class)")
-    leg = ax_ann.legend(
-        handles=[na_patch],
-        loc="lower left",
-        bbox_to_anchor=(0.0, 0.0),
-        frameon=True,
-        fancybox=False,
-        edgecolor=INK_MID,
-        fontsize=FIG_HEATMAP_SUBTITLE_SIZE - 0.5,
-        handlelength=1.4,
-        handleheight=1.0,
-    )
-    for text in leg.get_texts():
-        text.set_color(INK)
-
-    if "B_basic_structural" in pivot.columns and n_dual:
-        b_j = list(pivot.columns).index("B_basic_structural")
-        dual_rows = list(range(n_dual))
-        loso_vals = [data[i, b_j] for i in dual_rows if not np.isnan(data[i, b_j])]
-        if loso_vals:
-            spread_txt = f"Family B spread: {min(loso_vals):.2f}–{max(loso_vals):.2f}"
-            ax.text(
-                0.0,
-                -0.12,
-                spread_txt,
-                transform=ax.transAxes,
-                fontsize=FIG_HEATMAP_SUBTITLE_SIZE - 0.5,
-                color=INK_MID,
-                ha="left",
-                va="top",
-                fontstyle="italic",
-            )
-
-    fig.subplots_adjust(left=0.20, right=0.92, top=0.90, bottom=0.12)
-    save_figure(fig, path)
-
-
-def _draw_lomo_spread_panel(
-    ax: plt.Axes,
-    *,
-    model_labels: list[str],
-    rf_values: list[float],
-    spread_lo: float,
-    spread_hi: float,
-    mean_values: list[float],
-) -> None:
-    """Per-model strip chart for Family B held-out spread (LOMO Figure 10)."""
-    n = len(model_labels)
-    ax.set_xlim(0.48, 1.02)
-    ax.set_ylim(-0.65, n - 0.35)
-    ax.axvspan(
-        spread_lo,
-        spread_hi,
-        ymin=0,
-        ymax=1,
-        facecolor=_gray(GRAY_FILL_MID),
-        edgecolor=INK,
-        linewidth=0.9,
-        alpha=0.55,
-        zorder=0,
-    )
-    ax.axvline(spread_lo, color=INK, linewidth=1.2, linestyle=(0, (4, 3)), zorder=1)
-    ax.axvline(spread_hi, color=INK, linewidth=1.2, linestyle=(0, (4, 3)), zorder=1)
-    ax.text(
-        spread_lo,
-        n - 0.05,
-        f"{spread_lo:.2f}",
-        ha="center",
-        va="bottom",
-        fontsize=FIG_HEATMAP_SUBTITLE_SIZE,
-        fontweight="bold",
-        color=INK,
-    )
-    ax.text(
-        spread_hi,
-        n - 0.05,
-        f"{spread_hi:.2f}",
-        ha="center",
-        va="bottom",
-        fontsize=FIG_HEATMAP_SUBTITLE_SIZE,
-        fontweight="bold",
-        color=INK,
-    )
-    ax.text(
-        (spread_lo + spread_hi) / 2,
-        n - 0.05,
-        "Family B RF spread",
-        ha="center",
-        va="bottom",
-        fontsize=FIG_HEATMAP_SUBTITLE_SIZE,
-        fontweight="bold",
-        color=INK,
-    )
-
-    for i, (label, rf, mean) in enumerate(zip(model_labels, rf_values, mean_values)):
-        y = n - 1 - i
-        ax.hlines(y, 0.5, 1.0, colors=_gray(GRAY_DASH), linewidth=0.6, zorder=1)
-        ax.plot(rf, y, "o", color=INK, markersize=9, zorder=3, label="RF" if i == 0 else None)
-        ax.plot(
-            mean,
-            y,
-            "s",
-            color=_gray(GRAY_FILL_DARK),
-            markersize=6,
-            zorder=3,
-            label="mean LR+RF" if i == 0 else None,
-        )
-        ax.text(0.47, y, label, ha="right", va="center", fontsize=FIG_HEATMAP_SUBTITLE_SIZE - 0.5, color=INK)
-        if not np.isnan(rf):
-            ax.text(
-                rf + 0.025,
-                y,
-                f"{rf:.2f}",
-                ha="left",
-                va="center",
-                fontsize=FIG_HEATMAP_SUBTITLE_SIZE - 0.5,
-                fontweight="bold",
-                color=INK,
-                zorder=4,
-            )
-
-    worst_i = int(np.nanargmin(rf_values))
-    best_i = int(np.nanargmax(rf_values))
-    y_worst = n - 1 - worst_i
-    y_best = n - 1 - best_i
-    ax.annotate(
-        "worst held-out",
-        xy=(rf_values[worst_i], y_worst),
-        xytext=(max(rf_values[worst_i] + 0.14, 0.62), y_worst + 0.55),
-        fontsize=FIG_HEATMAP_SUBTITLE_SIZE - 0.5,
-        fontweight="bold",
-        color=INK,
-        ha="center",
-        arrowprops=dict(arrowstyle="-|>", color=INK, lw=0.9),
-        bbox=dict(boxstyle="round,pad=0.12", facecolor="white", edgecolor=INK, linewidth=0.7),
-    )
-    best_x = rf_values[best_i]
-    ax.annotate(
-        "best held-out",
-        xy=(best_x, y_best),
-        xytext=(min(best_x - 0.18, 0.82), y_best + 0.55),
-        fontsize=FIG_HEATMAP_SUBTITLE_SIZE - 0.5,
-        fontweight="bold",
-        color=INK,
-        ha="center",
-        arrowprops=dict(arrowstyle="-|>", color=INK, lw=0.9),
-        bbox=dict(boxstyle="round,pad=0.12", facecolor="white", edgecolor=INK, linewidth=0.7),
-    )
     ax.legend(
-        loc="lower right",
-        fontsize=FIG_HEATMAP_SUBTITLE_SIZE - 1,
-        frameon=True,
-        edgecolor=INK_MID,
-        facecolor="white",
+        handles=[na_patch],
+        loc="upper center",
+        bbox_to_anchor=(0.5, -0.06),
+        frameon=False,
+        fontsize=FIG_HEATMAP_SUBTITLE_SIZE - 0.5,
+        handlelength=1.2,
+        ncol=1,
     )
-    ax.set_yticks([])
-    ax.set_xlabel("Held-out ROC-AUC", fontsize=FIG_HEATMAP_SUBTITLE_SIZE, color=INK)
-    ax.tick_params(axis="x", labelsize=FIG_TICK_SIZE - 1, colors=INK)
-    for spine in ("top", "right", "left"):
-        ax.spines[spine].set_visible(False)
-    ax.spines["bottom"].set_color(INK_MID)
+
+    fig.subplots_adjust(left=0.32, right=0.88, top=0.96, bottom=0.14)
+    save_figure(fig, path)
 
 
 def plot_lomo_model_heatmap(
@@ -960,136 +699,59 @@ def plot_lomo_model_heatmap(
     family_b_cv: float,
     family_b_lomo_mean: float,
     ylabel: str = "Held-out synthesis source (model)",
-    xlabel: str = "Predictor family (A, B, D)",
+    xlabel: str = "",
 ) -> None:
-    """Communication-first LOMO heatmap for SQJ Figure 10 (fig:lomo-heatmap)."""
+    """Single-message LOMO figure: Family B retains partial cross-model signal with fold variance."""
     from matplotlib import gridspec
 
     apply_figure_style()
-    data = pivot.to_numpy(dtype=float)
+    col = "B_basic_structural"
+    if col not in pivot.columns:
+        col = pivot.columns[0]
+    pivot_b = pivot[[col]].copy()
+    data = pivot_b.to_numpy(dtype=float)
     n_rows, n_cols = data.shape
-    spread_lo, spread_hi = family_b_rf_spread
 
-    fig = plt.figure(figsize=(11.6, 8.0))
-    gs = gridspec.GridSpec(
-        2,
-        1,
-        height_ratios=[1.0, 0.62],
-        hspace=0.42,
+    fig = plt.figure(figsize=(7.4, 6.6))
+    gs = gridspec.GridSpec(2, 1, height_ratios=[0.26, 0.74], hspace=0.34)
+    ax_bar = fig.add_subplot(gs[0])
+    ax = fig.add_subplot(gs[1])
+
+    _draw_cv_loso_bars(
+        ax_bar,
+        cv_auc=family_b_cv,
+        loso_auc=family_b_lomo_mean,
+        label="Family B / RF",
+        holdout_label="LOMO",
     )
-    ax = fig.add_subplot(gs[0])
-    ax_spread = fig.add_subplot(gs[1])
 
     cmap = heatmap_cmap()
     im = ax.imshow(data, aspect="auto", vmin=0, vmax=1, cmap=cmap, zorder=1)
     ax.set_xticks(np.arange(-0.5, n_cols, 1), minor=True)
     ax.set_yticks(np.arange(-0.5, n_rows, 1), minor=True)
-    ax.grid(which="minor", color="white", linestyle="-", linewidth=2.0)
+    ax.grid(which="minor", color="white", linestyle="-", linewidth=1.8)
     ax.tick_params(which="minor", size=0)
     ax.set_xticks(range(n_cols))
-    ax.set_xticklabels(
-        [heatmap_family_label(c) for c in pivot.columns],
-        rotation=0,
-        ha="center",
-        fontsize=FIG_TICK_SIZE,
-    )
-    row_labels = [model_display(str(m)) for m in pivot.index]
+    b_label = heatmap_family_column_label(col)
+    ax.set_xticklabels([b_label], rotation=0, ha="center", fontsize=FIG_TICK_SIZE)
     ax.set_yticks(range(n_rows))
+    row_labels = [model_display(str(m)) for m in pivot_b.index]
     ax.set_yticklabels(row_labels, fontsize=FIG_TICK_SIZE)
-    ax.set_xlabel(xlabel, fontsize=FIG_BASE_SIZE, labelpad=8)
+    if xlabel:
+        ax.set_xlabel(xlabel, fontsize=FIG_BASE_SIZE, labelpad=8)
     ax.set_ylabel(ylabel, fontsize=FIG_BASE_SIZE, labelpad=8)
-
-    if "B_basic_structural" in pivot.columns:
-        b_j = list(pivot.columns).index("B_basic_structural")
-        col_vals = data[:, b_j]
-        ax.add_patch(
-            Rectangle(
-                (b_j - 0.5, -0.5),
-                1,
-                n_rows,
-                fill=False,
-                edgecolor=INK,
-                linewidth=2.0,
-                linestyle=(0, (6, 4)),
-                zorder=4,
-            )
-        )
-        worst_i = int(np.nanargmin(col_vals))
-        best_i = int(np.nanargmax(col_vals))
-        for i, tag in ((worst_i, "min"), (best_i, "max")):
-            ax.add_patch(
-                Rectangle(
-                    (b_j - 0.5, i - 0.5),
-                    1,
-                    1,
-                    fill=False,
-                    edgecolor=INK,
-                    linewidth=2.4 if tag == "min" else 1.6,
-                    linestyle="-" if tag == "max" else (0, (2, 2)),
-                    zorder=5,
-                )
-            )
-        # Shade cells in the Family B RF spread interval
-        for i in range(n_rows):
-            rf = family_b_rf_by_model.get(str(pivot.index[i]), float("nan"))
-            if not np.isnan(rf) and spread_lo <= rf <= spread_hi:
-                ax.add_patch(
-                    Rectangle(
-                        (b_j - 0.5, i - 0.5),
-                        1,
-                        1,
-                        facecolor=_gray(GRAY_FILL),
-                        edgecolor="none",
-                        alpha=0.45,
-                        zorder=2,
-                    )
-                )
 
     annotate_heatmap(ax, data, mark_transfer_tiers=False)
     style_axes(ax, ink=True)
 
-    ax.text(
-        0.0,
-        1.05,
-        f"All 4/4 folds dual-class; Family B/RF held-out spread {spread_lo:.2f}–{spread_hi:.2f} "
-        f"(CV {family_b_cv:.2f} → LOMO μ {family_b_lomo_mean:.2f}; high fold-wise variance).",
-        transform=ax.transAxes,
-        fontsize=FIG_HEATMAP_SUBTITLE_SIZE,
-        fontweight="bold",
-        color=INK,
-        ha="left",
-        va="bottom",
-    )
-
-    cbar = fig.colorbar(im, ax=ax, orientation="horizontal", fraction=0.046, pad=0.10)
-    cbar.set_label(
-        "Held-out ROC-AUC",
-        fontsize=FIG_HEATMAP_CBAR_SIZE,
-        labelpad=6,
-        color=INK,
-        fontweight="medium",
-    )
+    cbar = fig.colorbar(im, ax=ax, fraction=0.08, pad=0.06)
+    cbar.set_label("Held-out ROC-AUC", fontsize=FIG_HEATMAP_CBAR_SIZE, labelpad=6, color=INK)
     cbar.set_ticks([0.0, 0.5, 1.0])
     cbar.set_ticklabels(["0", "0.5", "1"])
     cbar.ax.tick_params(labelsize=FIG_TICK_SIZE - 1, colors=INK)
     cbar.outline.set_edgecolor(INK_MID)
 
-    if "B_basic_structural" in pivot.columns:
-        b_j = list(pivot.columns).index("B_basic_structural")
-        models = [str(m) for m in pivot.index]
-        rf_vals = [family_b_rf_by_model.get(m, float("nan")) for m in models]
-        mean_vals = list(data[:, b_j])
-        short = [model_display(m).split(":")[0] for m in models]
-        _draw_lomo_spread_panel(
-            ax_spread,
-            model_labels=short,
-            rf_values=rf_vals,
-            spread_lo=spread_lo,
-            spread_hi=spread_hi,
-            mean_values=mean_vals,
-        )
-
-    fig.subplots_adjust(left=0.22, right=0.96, top=0.88, bottom=0.12)
+    fig.subplots_adjust(left=0.28, right=0.92, top=0.96, bottom=0.10)
     save_figure(fig, path)
 
 

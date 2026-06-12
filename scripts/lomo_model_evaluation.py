@@ -14,7 +14,7 @@ from typing import Any
 
 import numpy as np
 
-from figure_style import plot_transfer_heatmap
+from figure_style import plot_lomo_model_heatmap
 import pandas as pd
 from sklearn.base import clone
 
@@ -300,7 +300,12 @@ def write_lomo_summary(
     path.write_text("\n".join(lines), encoding="utf-8")
 
 
-def plot_heatmap(detail_df: pd.DataFrame, path: Path) -> None:
+def plot_heatmap(
+    detail_df: pd.DataFrame,
+    path: Path,
+    comparison_df: pd.DataFrame,
+    summary_df: pd.DataFrame,
+) -> None:
     """Heatmap: held-out models × predictor sets, ROC-AUC averaged across classifiers."""
     long_df = detail_df[
         ["held_out_model", "predictor_set", "classifier", "roc_auc"]
@@ -316,15 +321,35 @@ def plot_heatmap(detail_df: pd.DataFrame, path: Path) -> None:
     col_order = [c for c in LOMO_PREDICTOR_SETS if c in pivot.columns]
     pivot = pivot[col_order]
 
-    plot_transfer_heatmap(
+    rf_b = detail_df[
+        (detail_df["predictor_set"] == "B_basic_structural")
+        & (detail_df["classifier"] == "random_forest")
+    ]
+    family_b_rf_by_model = {
+        str(row["held_out_model"]): float(row["roc_auc"])
+        for _, row in rf_b.iterrows()
+    }
+    b_rf_summary = summary_df[
+        (summary_df["predictor_set"] == "B_basic_structural")
+        & (summary_df["model"] == "random_forest")
+    ]
+    spread_lo = float(b_rf_summary["roc_auc_min"].iloc[0]) if len(b_rf_summary) else 0.53
+    spread_hi = float(b_rf_summary["roc_auc_max"].iloc[0]) if len(b_rf_summary) else 1.0
+
+    b_rf_cmp = comparison_df[
+        (comparison_df["predictor_set"] == "B_basic_structural")
+        & (comparison_df["model"] == "random_forest")
+    ]
+    family_b_cv = float(b_rf_cmp["random_cv_roc_auc_mean"].iloc[0]) if len(b_rf_cmp) else float("nan")
+    family_b_lomo_mean = float(b_rf_cmp["lomo_roc_auc_mean"].iloc[0]) if len(b_rf_cmp) else float("nan")
+
+    plot_lomo_model_heatmap(
         pivot,
         path,
-        ylabel="Held-out synthesis source (model)",
-        xlabel="Predictor family (A, B, D)",
-        subtitle="Cell value = mean held-out ROC-AUC across LR and RF",
-        annotation_note="Hatched n/a: undefined ROC-AUC when the held-out fold lacks both outcome classes.",
-        show_transfer_legend=True,
-        figsize=(10.0, 6.5),
+        family_b_rf_by_model=family_b_rf_by_model,
+        family_b_rf_spread=(spread_lo, spread_hi),
+        family_b_cv=family_b_cv,
+        family_b_lomo_mean=family_b_lomo_mean,
     )
 
 
@@ -396,7 +421,7 @@ def main() -> None:
 
     write_lomo_results(detail_out, TABLES_DIR / "lomo_results.md")
     write_lomo_summary(summary_df, comparison_df, TABLES_DIR / "lomo_summary.md")
-    plot_heatmap(detail_df, FIGURES_DIR / "lomo_heatmap.png")
+    plot_heatmap(detail_df, FIGURES_DIR / "lomo_heatmap.png", comparison_df, summary_df)
 
     print(f"Wrote {TABLES_DIR / 'lomo_results.md'}")
     print(f"Wrote {TABLES_DIR / 'lomo_summary.md'}")

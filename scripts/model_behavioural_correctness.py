@@ -16,16 +16,16 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from figure_style import (
-    FIG_BASE_SIZE,
     FIG_CHANCE_LINEWIDTH,
     FIG_LEGEND_SIZE,
     FIG_TICK_SIZE,
-    GRAY_DASH,
+    FIG_CHANCE_COLOR,
+    INK,
+    INK_MID,
     MODEL_LEGEND_ORDER,
     MODEL_PLOT_ORDER,
     MODEL_STYLES,
     PREDICTOR_SET_ORDER,
-    _gray,
     add_panel_label,
     apply_figure_style,
     model_label,
@@ -399,7 +399,7 @@ def plot_curves(
 ) -> None:
     apply_figure_style()
     panel_letters = ["A", "B", "C", "D"]
-    fig, axes = plt.subplots(2, 2, figsize=(12.5, 10.5))
+    fig, axes = plt.subplots(2, 2, figsize=(10.2, 8.8))
     for ax, set_name, panel in zip(axes.ravel(), PREDICTOR_SET_ORDER, panel_letters):
         for model_name in MODEL_PLOT_ORDER:
             curves = curve_data[set_name]
@@ -413,19 +413,19 @@ def plot_curves(
             predictor_set_label(set_name),
             fontsize=FIG_TICK_SIZE,
             fontweight="bold",
-            pad=6,
+            pad=8,
             loc="center",
-            color=_gray(0.08),
+            color=INK,
         )
         if curve_fn is roc_curve:
-            ax.set_xlabel("False positive rate (proportion; 0--1)", fontsize=FIG_BASE_SIZE)
-            ax.set_ylabel("True positive rate (proportion; 0--1)", fontsize=FIG_BASE_SIZE)
+            ax.set_xlabel("False positive rate", fontsize=FIG_TICK_SIZE)
+            ax.set_ylabel("True positive rate", fontsize=FIG_TICK_SIZE)
         else:
-            ax.set_xlabel("Recall (proportion of full passes; 0--1)", fontsize=FIG_BASE_SIZE)
-            ax.set_ylabel("Precision (proportion flagged full-pass; 0--1)", fontsize=FIG_BASE_SIZE)
-        style_axes(ax)
+            ax.set_xlabel("Recall", fontsize=FIG_TICK_SIZE)
+            ax.set_ylabel("Precision", fontsize=FIG_TICK_SIZE)
+        style_axes(ax, ink=True)
         ax.tick_params(labelsize=FIG_TICK_SIZE)
-        ax.grid(True, linestyle=":", linewidth=0.6, alpha=0.22)
+        ax.grid(True, linestyle=":", linewidth=0.5, color="#cccccc", alpha=0.55)
         ax.set_xlim(0, 1)
         ax.set_ylim(0, 1)
         ax.set_xticks([0, 0.25, 0.5, 0.75, 1.0])
@@ -436,24 +436,13 @@ def plot_curves(
                 [0, 1],
                 [0, 1],
                 linestyle="--",
-                color=_gray(GRAY_DASH),
+                color=FIG_CHANCE_COLOR,
                 linewidth=FIG_CHANCE_LINEWIDTH,
-                alpha=0.75,
+                alpha=1.0,
                 zorder=0,
             )
-    _legend_names = {
-        "logistic_regression": "LR (black solid)",
-        "decision_tree": "DT (gray dashed)",
-        "random_forest": "RF (gray dash-dot)",
-        "dummy_stratified": "Dummy strat. (gray dotted)",
-    }
     legend_handles = [
-        Line2D(
-            [0],
-            [0],
-            label=_legend_names.get(model_name, model_label(model_name)),
-            **MODEL_STYLES[model_name],
-        )
+        Line2D([0], [0], label=model_label(model_name), **MODEL_STYLES[model_name])
         for model_name in MODEL_LEGEND_ORDER
     ]
     if curve_fn is roc_curve:
@@ -461,24 +450,27 @@ def plot_curves(
             Line2D(
                 [0],
                 [0],
-                color=_gray(GRAY_DASH),
+                color=FIG_CHANCE_COLOR,
                 linestyle="--",
                 linewidth=FIG_CHANCE_LINEWIDTH,
-                label="Chance diagonal (AUC = 0.5)",
+                label="Chance (0.5)",
             )
         )
-    fig.legend(
+    leg = fig.legend(
         handles=legend_handles,
         loc="lower center",
-        ncol=min(3, len(legend_handles)),
-        bbox_to_anchor=(0.5, 0.01),
+        ncol=len(legend_handles),
+        bbox_to_anchor=(0.5, 0.02),
         frameon=True,
         fancybox=False,
-        edgecolor=_gray(GRAY_DASH),
+        edgecolor=INK_MID,
         fontsize=FIG_LEGEND_SIZE,
-        columnspacing=1.2,
+        columnspacing=1.0,
+        handletextpad=0.5,
     )
-    fig.subplots_adjust(left=0.10, right=0.98, top=0.97, bottom=0.16, hspace=0.38, wspace=0.30)
+    for text in leg.get_texts():
+        text.set_color(INK)
+    fig.subplots_adjust(left=0.10, right=0.98, top=0.96, bottom=0.12, hspace=0.36, wspace=0.28)
     save_figure(fig, path)
 
 

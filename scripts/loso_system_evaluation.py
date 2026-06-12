@@ -14,7 +14,7 @@ from typing import Any
 
 import numpy as np
 
-from figure_style import plot_transfer_heatmap
+from figure_style import plot_loso_system_heatmap
 import pandas as pd
 from sklearn.base import clone
 
@@ -249,7 +249,11 @@ def write_loso_summary(
     path.write_text("\n".join(lines), encoding="utf-8")
 
 
-def plot_heatmap(detail_df: pd.DataFrame, path: Path) -> None:
+def plot_heatmap(
+    detail_df: pd.DataFrame,
+    path: Path,
+    comparison_df: pd.DataFrame,
+) -> None:
     """Heatmap: systems × predictor sets, ROC-AUC averaged across models."""
     pivot_rows = []
     for (set_name, model), group in detail_df.groupby(["predictor_set", "model"]):
@@ -274,16 +278,18 @@ def plot_heatmap(detail_df: pd.DataFrame, path: Path) -> None:
     col_order = list(PREDICTOR_SETS.keys())
     pivot = pivot[[c for c in col_order if c in pivot.columns]]
 
-    plot_transfer_heatmap(
+    b_rf = comparison_df[
+        (comparison_df["predictor_set"] == "B_basic_structural")
+        & (comparison_df["model"] == "random_forest")
+    ]
+    family_b_cv = float(b_rf["random_cv_roc_auc_mean"].iloc[0]) if len(b_rf) else float("nan")
+    family_b_loso = float(b_rf["loso_roc_auc_mean"].iloc[0]) if len(b_rf) else float("nan")
+
+    plot_loso_system_heatmap(
         pivot,
         path,
-        ylabel="Held-out requirement system (system_id)",
-        xlabel="Predictor family (A--D)",
-        subtitle="Cell value = mean held-out ROC-AUC across LR, DT, and RF",
-        annotation_note="Hatched n/a: undefined ROC-AUC (single-class held-out system).",
-        imbalance_note="Ten of twelve held-out systems are single-class for most families.",
-        show_transfer_legend=True,
-        figsize=(11.5, 10.8),
+        family_b_cv=family_b_cv,
+        family_b_loso=family_b_loso,
     )
 
 
@@ -346,7 +352,7 @@ def main() -> None:
 
     write_loso_results(detail_df, TABLES_DIR / "loso_system_results.md")
     write_loso_summary(summary_df, comparison_df, TABLES_DIR / "loso_system_summary.md")
-    plot_heatmap(detail_df, FIGURES_DIR / "loso_system_heatmap.png")
+    plot_heatmap(detail_df, FIGURES_DIR / "loso_system_heatmap.png", comparison_df)
 
     print(f"Wrote {TABLES_DIR / 'loso_system_results.md'}")
     print(f"Wrote {TABLES_DIR / 'loso_system_summary.md'}")

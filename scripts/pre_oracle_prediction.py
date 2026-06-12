@@ -15,7 +15,7 @@ from typing import Any
 import matplotlib.pyplot as plt
 import numpy as np
 
-from figure_style import GRAY_DASH, GRAY_FILL_DARK, MODEL_STYLES, _gray, apply_figure_style, save_figure, style_axes
+from figure_style import FIG_CHANCE_COLOR, INK, MODEL_STYLES, apply_figure_style, save_figure, style_axes
 import pandas as pd
 from sklearn.metrics import precision_recall_curve, roc_curve
 
@@ -282,15 +282,16 @@ def plot_curve(
             x,
             y,
             label=ref_name,
-            linestyle="--",
-            color=_gray(GRAY_FILL_DARK if idx % 2 else GRAY_DASH),
+            color=INK,
+            linestyle=(0, (6, 3)) if idx % 2 else (0, (1, 2.5)),
+            linewidth=2.0,
         )
     if is_roc:
-        ax.plot([0, 1], [0, 1], linestyle="--", color=_gray(GRAY_DASH))
+        ax.plot([0, 1], [0, 1], linestyle="--", color=FIG_CHANCE_COLOR, linewidth=1.0)
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
     ax.set_title(title)
-    style_axes(ax)
+    style_axes(ax, ink=True)
     ax.legend(loc="best")
     fig.tight_layout()
     save_figure(fig, path)
