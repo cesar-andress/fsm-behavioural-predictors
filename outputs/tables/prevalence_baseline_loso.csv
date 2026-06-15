@@ -1,0 +1,13 @@
+held_out_system,n_test,n_positive,n_negative,global_train_prevalence,roc_auc,pr_auc,balanced_accuracy,f1,mcc
+access_control,20,0,20,0.15873015873015872,,,,,
+atm,14,0,14,0.15384615384615385,,,,,
+bike_rental,5,0,5,0.14705882352941177,,,,,
+elevator,15,0,15,0.15463917525773196,,,,,
+hotel_booking,20,5,15,0.13227513227513227,0.5,0.25,0.5,0.0,0.0
+login_system,20,5,15,0.13227513227513227,0.5,0.25,0.5,0.0,0.0
+package_locker,20,0,20,0.15873015873015872,,,,,
+parking_gate,15,0,15,0.15463917525773196,,,,,
+smart_thermostat,20,20,0,0.05291005291005291,,,,,
+train_ticket_booking,20,0,20,0.15873015873015872,,,,,
+vending_machine,20,0,20,0.15873015873015872,,,,,
+warehouse_inventory,20,0,20,0.15873015873015872,,,,,

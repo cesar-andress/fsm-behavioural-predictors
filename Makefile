@@ -4,7 +4,7 @@
 PYTHON ?= python3.11
 SCRIPTS = scripts
 
-.PHONY: all check-env build-master reproduce tables figures profile-signals model-correctness loso-systems pre-oracle lomo-models risk-toolkit verify-manuscript clean help
+.PHONY: all check-env build-master reproduce tables figures profile-signals model-correctness loso-systems pre-oracle lomo-models risk-toolkit verify-manuscript strengthen-stats clean help
 
 all: reproduce
 
@@ -21,6 +21,7 @@ help:
 	@echo "  make pre-oracle         Pre-oracle behavioural prediction (strict features)"
 	@echo "  make lomo-models        Leave-one-model-out cross-LLM generalization"
 	@echo "  make risk-toolkit       Pre-oracle BRS triage and health reports"
+	@echo "  make strengthen-stats   Strengthened CV/LOSO/bootstrap outputs under outputs/"
 	@echo "  make figures            Regenerate figures only"
 	@echo "  make clean       Remove generated outputs under results/"
 
@@ -69,6 +70,10 @@ risk-toolkit: build-master
 	@$(PYTHON) $(SCRIPTS)/risk_toolkit.py \
 		--input data/processed/master_analysis_dataset.csv \
 		--output results/tables/risk_toolkit_predictions.csv
+
+strengthen-stats: build-master
+	@echo "Running strengthened-stats pipeline..."
+	@$(PYTHON) $(SCRIPTS)/run_strengthened_stats.py
 
 clean:
 	rm -rf results/tables/*

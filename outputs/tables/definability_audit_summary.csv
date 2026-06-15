@@ -1,0 +1,6 @@
+metric,value
+n_systems,12
+n_dual_class_systems,2
+ndc_over_total_systems,2/12
+pct_systems_loso_roc_auc_definable,16.666666666666668
+pct_rows_in_definable_systems,19.138755980861244

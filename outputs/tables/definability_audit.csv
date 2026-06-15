@@ -1,0 +1,13 @@
+system_id,n_rows,n_positive,n_negative,prevalence,labels_present,loso_roc_auc_definable,family_b_rf_loso_roc_auc
+access_control,20,0,20,0.0,single-class,False,n/a
+atm,14,0,14,0.0,single-class,False,n/a
+bike_rental,5,0,5,0.0,single-class,False,n/a
+elevator,15,0,15,0.0,single-class,False,n/a
+hotel_booking,20,5,15,0.25,dual-class,True,0.5
+login_system,20,5,15,0.25,dual-class,True,0.6666666666666667
+package_locker,20,0,20,0.0,single-class,False,n/a
+parking_gate,15,0,15,0.0,single-class,False,n/a
+smart_thermostat,20,20,0,1.0,single-class,False,n/a
+train_ticket_booking,20,0,20,0.0,single-class,False,n/a
+vending_machine,20,0,20,0.0,single-class,False,n/a
+warehouse_inventory,20,0,20,0.0,single-class,False,n/a

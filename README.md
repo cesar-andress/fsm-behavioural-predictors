@@ -1,259 +1,224 @@
-# Predicting Behavioural Correctness from Structural Signals in LLM-Generated Finite State Machines
+# Definibility-First Evaluation of Pre-Oracle Ranking for LLM-Generated Finite State Machines
 
-**Canonical public artefact repository** for the SQJ 2026 study. This GitHub repository (`cesar-andress/fsm-behavioural-predictors`) is the sole public release target for replication materials and the corresponding **Zenodo** deposit ([10.5281/zenodo.20598129](https://doi.org/10.5281/zenodo.20598129)).
+**Canonical public artefact repository** for the SQJ 2026 study on structural predictors of behavioural correctness in LLM-generated finite state machines (FSMs).
 
-**Archived release:** [v0.1.0-pre-submission](https://github.com/cesar-andress/fsm-behavioural-predictors/tree/v0.1.0-pre-submission) (2026-06-08). See [docs/zenodo_record.md](docs/zenodo_record.md) for citation and scope.
+| Resource | Identifier |
+|----------|------------|
+| GitHub | [cesar-andress/fsm-behavioural-predictors](https://github.com/cesar-andress/fsm-behavioural-predictors) |
+| Zenodo (concept) | [10.5281/zenodo.20598128](https://doi.org/10.5281/zenodo.20598128) |
+| Zenodo (version archive) | [10.5281/zenodo.20598129](https://doi.org/10.5281/zenodo.20598129) (prior deposit; update at release) |
 
-**Private manuscript (not in this repository):** the LaTeX sources live outside this tree at `~/papers/sqj2026/paper`. They are not included here and must not be committed to this repository.
+**Target release tag:** `v0.3.0-revision-candidate` (revision pass; not yet published).
 
-This repository accompanies a manuscript submitted to the *Software Quality Journal* (2026). It is archived on **GitHub** and **Zenodo** as a self-contained replication package: frozen study data and analysis scripts sufficient to reproduce descriptive and predictive analyses, and to regenerate the tables and figures reported in the paper, **without re-running LLM inference**.
-
-> **Scope note.** This README describes the artefact as it will be released at publication time. Datasets and outputs are not yet finalised; neutral wording is used throughout. No empirical findings are reported here.
-
-## Privacy and scope
-
-This repository is the **public** replication artefact only. The following materials are maintained separately and **must not** appear in this repository, a GitHub release, or a Zenodo deposit:
-
-- The private **LaTeX manuscript** at `~/papers/sqj2026/paper` (sibling directory in the local workspace; not part of this repository).
-- **Internal drafts**, working notes, and scratch files produced during writing.
-- **Reviewer correspondence**, decision letters, rebuttals, and other peer-review records.
-
-The `.gitignore` file lists patterns that block common leak paths. Before any public release, complete [docs/release_checklist.md](docs/release_checklist.md).
+**Private manuscript:** LaTeX sources live at `~/papers/sqj2026/paper` (sibling directory). They are **not** included in this repository.
 
 ---
 
-## 1. Overview
+## 1. Project overview
 
-Large language models (LLMs) are increasingly used to synthesise software artefacts, including finite state machines (FSMs). A central open question is whether the **structural properties** of an LLM-generated FSM relate to its **behavioural correctness** when assessed against an independent oracle.
+This replication package supports a **definibility-first** evaluation of pre-oracle ranking for behavioural correctness on a frozen merge of LLM-generated FSM campaign exports:
 
-This artefact will contain the materials needed to audit and reproduce the empirical study underlying the paper *Predicting Behavioural Correctness from Structural Signals in LLM-Generated Finite State Machines*. Specifically, it will provide:
+- **209** oracle-scored episodes from **12** requirement systems (`system_id`) and **4** LLM synthesis sources (`model`)
+- **Primary constraint:** under leave-one-`system_id`-out (LOSO) grouped hold-out, cross-system ROC-AUC is largely undefined (`n_dc = 2/12` dual-class withheld systems)
+- **Secondary evidence:** repeated-seed stratified cross-validation (100 fold seeds) for in-corpus Family B graph-tally ranking
+- **Associational checks:** fold-contained prevalence baseline and Spearman correlation between out-of-fold scores and training-fold system prevalence
+- **Exploratory contrast:** nominal pooled-CV versus LOSO Δ with cluster bootstrap by `system_id` (5000 iterations)
 
-- **Frozen campaign records** documenting each generation episode (specification, model identity, prompt context, and related metadata).
-- **Derived structural metrics** computed from the serialised FSM representations.
-- **Behavioural outcomes** assigning oracle-based correctness labels to each generated model.
-- **Scripts** for reproducing descriptive summaries and predictive analyses reported in the manuscript.
+The package contains frozen data, analysis scripts, legacy outputs under `results/`, and **strengthened statistics** under `outputs/`. **No LLM inference or oracle re-execution** is required for reproduction.
 
-The LaTeX manuscript sources are **private** and are **not** part of this public artefact. Raw private notes, working drafts, and reviewer correspondence are likewise excluded.
-
----
-
-## 2. Research objective
-
-The study investigates whether structural signals extracted from LLM-generated FSMs can serve as predictors of behavioural correctness.
-
-| Aspect | Description |
-|--------|-------------|
-| **Independent variable(s)** | Structural metrics of generated FSMs (e.g., graph-theoretic and syntactic properties of the state-transition system). |
-| **Dependent variable** | Behavioural correctness as determined by an independent oracle aligned with the originating specification. |
-| **Analyses** | Descriptive characterisation of the dataset; predictive models relating structural features to correctness outcomes. |
-
-The artefact supports verification of the study protocol and reproduction of reported tables and figures once the final datasets are deposited. It does **not** presuppose or report final empirical conclusions in this document.
+See [ARTIFACT_MANIFEST.md](ARTIFACT_MANIFEST.md) for manuscript-to-output mapping and [REPRODUCIBILITY.md](REPRODUCIBILITY.md) for exact commands, seeds, and expected outputs.
 
 ---
 
-## 3. Artefact contents
+## 2. Dataset description
 
-The released version will contain the following component classes:
+| Dataset | Location | Description |
+|---------|----------|-------------|
+| Frozen campaign records | `data/raw/` | Immutable primary inputs: generated FSM serialisations, campaign metadata, oracle labels |
+| Master analysis table | `data/processed/master_analysis_dataset.csv` | One row per episode; structural features, gate booleans, behavioural outcomes |
+| Derived profiles | `data/processed/profile_*.csv` | Offline structural metric summaries |
 
-| Component | Location (planned) | Role |
-|-----------|-------------------|------|
-| Frozen campaign records | `data/raw/` | Immutable primary inputs: generated FSM serialisations, campaign metadata, and oracle labels. |
-| Processed analysis tables | `data/processed/` | Derived structural metrics and analysis-ready feature matrices. |
-| Reproduction scripts | `scripts/` | Command-line tools for descriptive and predictive analyses; table and figure generation. |
-| Behavioural risk toolkit | `scripts/risk_toolkit.py`, `docs/risk_toolkit.md` | Pre-oracle BRS scoring, AutoReject triage, and FSM health reports. |
-| Supplementary notebooks | `notebooks/` | Optional exploratory or supplementary material (not on the critical reproduction path unless stated otherwise). |
-| Generated outputs | `results/tables/`, `results/figures/` | Publication-ready tables and figures reproducible from frozen data. |
-| Documentation | `docs/` | Data dictionary, reproducibility guide, and structural conventions. |
-| Environment specification | `requirements.txt`, `environment.yml` | Pinned dependencies for reproducible execution. |
-| Citation metadata | `CITATION.cff`, `zenodo.json` | Machine-readable metadata for GitHub and Zenodo. |
+**Cohort facts (frozen merge):**
 
-Behavioural outcomes and structural metrics will be distributed as frozen files; the default reproduction workflow reads these files and does **not** invoke external LLM APIs.
+| Metric | Value |
+|--------|------:|
+| Total generation episodes | 240 |
+| Oracle-scored episodes | 209 (87.1%) |
+| `full_behavioural_pass` (scored) | 30 (14.4%) |
+| Requirement systems (`system_id`) | 12 |
+| LLM synthesis sources (`model`) | 4 |
+
+Column definitions: [docs/data_dictionary.md](docs/data_dictionary.md).
 
 ---
 
-## 4. Directory structure
+## 3. Directory layout
 
 ```
 .
-├── README.md                 # This file
-├── LICENSE                   # SPDX licence text
-├── CITATION.cff              # Machine-readable citation metadata
-├── zenodo.json               # Zenodo deposit metadata (archived: 10.5281/zenodo.20598129)
-├── requirements.txt          # Python dependencies (pip)
-├── environment.yml           # Conda environment specification
-├── Makefile                  # Standardised reproduction targets
+├── README.md                    # This file
+├── ARTIFACT_MANIFEST.md         # Manuscript table/figure → script/data/output mapping
+├── REPRODUCIBILITY.md             # Exact reproduction commands and expected outputs
+├── RELEASE_NOTES_v0.3.0.md      # Changes since v0.2.0-submission-candidate
+├── RELEASE_READINESS_REPORT.md  # Pre-release audit (Go/No-Go)
+├── LICENSE
+├── CITATION.cff                   # Update version/DOI at release
+├── zenodo.json                    # Update version/DOI at release
+├── requirements.txt
+├── environment.yml
+├── Makefile
 ├── data/
-│   ├── raw/                  # Frozen campaign records and primary inputs
-│   └── processed/            # Derived structural metrics and analysis tables
-├── scripts/                  # Descriptive and predictive analysis scripts
-├── notebooks/                # Optional supplementary notebooks
-├── results/
-│   ├── tables/               # Regenerated paper tables
-│   └── figures/              # Regenerated paper figures
-└── docs/
-    ├── reproducibility.md    # Step-by-step reproduction guide
-    ├── zenodo_record.md      # Zenodo DOI, citation, and archive metadata
-    ├── data_dictionary.md    # Variable and file semantics
-    └── artifact_structure.md # Detailed layout and conventions
+│   ├── raw/                       # Frozen primary inputs (immutable)
+│   └── processed/                 # Analysis-ready tables (immutable after release)
+├── scripts/                       # Analysis and reproduction scripts
+├── results/                       # Legacy single-seed pipeline outputs
+│   ├── tables/
+│   └── figures/
+├── outputs/                       # Strengthened-stats layer (100 seeds, bootstrap)
+│   ├── tables/
+│   ├── figures/
+│   └── stats/
+├── notebooks/                     # Optional exploratory material
+└── docs/                          # Data dictionary, legacy reproducibility notes
 ```
-
-See [docs/artifact_structure.md](docs/artifact_structure.md) for component-level conventions and the release checklist.
 
 ---
 
-## 5. Reproducibility workflow
+## 4. Software requirements
 
-The artefact is designed so that a reader can reproduce analyses from frozen data alone. **LLM inference does not need to be re-run** at any stage of the published workflow.
+| Requirement | Version |
+|-------------|---------|
+| Python | 3.11 (recommended; `Makefile` default) |
+| numpy | ≥1.24, <3 |
+| pandas | ≥2.0, <3 |
+| scipy | ≥1.10, <2 |
+| scikit-learn | ≥1.3, <2 |
+| matplotlib | ≥3.7, <4 |
+| seaborn | ≥0.13, <1 (listed in `requirements.txt`; required by `make check-env`) |
 
-### Installation
-
-**Option A — Conda (recommended)**
+**Installation (Conda, recommended):**
 
 ```bash
 conda env create -f environment.yml
 conda activate fsm-behavioural-predictors
-```
-
-**Option B — pip**
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate          # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-```
-
-**Verify the environment**
-
-```bash
 make check-env
 ```
 
-### Reproduction steps
-
-1. Clone the repository, or download the [Zenodo archive](https://doi.org/10.5281/zenodo.20598129).
-2. Create and activate the Python environment as above.
-3. Confirm that `data/raw/` and `data/processed/` are present and complete.
-4. Run the reproduction targets described in Section 6.
-5. Compare outputs under `results/` with those archived at publication time.
-
-For a detailed walkthrough, see [docs/reproducibility.md](docs/reproducibility.md). Variable definitions and file formats are documented in [docs/data_dictionary.md](docs/data_dictionary.md).
-
-### Local execution and LLM inference policy
-
-**Default rule for SQJ 2026:** prefer **frozen existing campaign records**. The published reproduction path (`make reproduce`) does not call cloud APIs and does not require a GPU.
-
-| Priority | Rule |
-|----------|------|
-| 1 | Use archived campaign outputs in `data/raw/` and derived tables in `data/processed/`. |
-| 2 | Do **not** re-run LLM inference unless a specific missing variable cannot be reconstructed from archived artefacts. |
-| 3 | If re-execution becomes necessary, it is **out of scope** for the public artefact until privacy and reproducibility checks pass (see [docs/release_checklist.md](docs/release_checklist.md)). |
-
-**Hardware note (authors only):** the study workstation has an **NVIDIA RTX 4090** and **local Ollama / Llama-style inference** is available for optional re-execution during data preparation. That environment is **not** required for readers reproducing tables and figures from frozen data.
-
-Any optional re-execution during study development must be:
-
-- **Local only** — no cloud LLM APIs;
-- **Reproducible** — scripted, versioned, and documented;
-- **Logged** — per-run logs retained with the campaign export;
-- **Temperature 0.0** unless a protocol explicitly documents a different setting;
-- **Manifest-linked** — tied to a campaign `manifest.json` (model IDs, prompts, timestamps, checksums).
-
-Optional re-execution scripts must document GPU assumptions (e.g., RTX 4090, Ollama) but must **not** require cloud APIs. Outputs from re-execution remain **excluded from this public repository** until manifest review, privacy review, and reproducibility verification are complete.
-
----
-
-## 6. How to regenerate tables and figures
-
-From the repository root:
+**Installation (pip):**
 
 ```bash
-make reproduce          # full pipeline: all manuscript tables and figures from frozen data
-make verify-manuscript  # confirm Appendix table/figure paths exist
-make tables             # descriptive profiling tables (CSV) only
-make profile-signals    # target + predictor signal profiling (Markdown + figures)
-make model-correctness  # exploratory CV models for full behavioural pass
-make loso-systems       # leave-one-system-out generalization by system_id
-make pre-oracle         # pre-oracle prediction (strict feature allowlist)
-make lomo-models        # leave-one-model-out cross-LLM generalization
-make risk-toolkit       # pre-oracle BRS triage (see docs/risk_toolkit.md)
-make figures            # figures only
-make clean            # remove generated outputs under results/ (preserves data/)
+python3.11 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+make check-env
 ```
 
-| Target | Script | Output directory |
-|--------|--------|------------------|
-| `make tables` | `scripts/generate_tables.py` | `results/tables/` |
-| `make profile-signals` | `scripts/profile_predictive_signals.py` | `results/tables/`, `results/figures/` |
-| `make model-correctness` | `scripts/model_behavioural_correctness.py` | `results/tables/`, `results/figures/` |
-| `make loso-systems` | `scripts/loso_system_evaluation.py` | `results/tables/`, `results/figures/` |
-| `make pre-oracle` | `scripts/pre_oracle_prediction.py` | `results/tables/`, `results/figures/` |
-| `make lomo-models` | `scripts/lomo_model_evaluation.py` | `results/tables/`, `results/figures/` |
-| `make risk-toolkit` | `scripts/risk_toolkit.py` | `results/tables/` |
-| `make figures` | `scripts/generate_figures.py` | verifies `results/figures/` (figures are written by analysis scripts above) |
-| `make verify-manuscript` | `scripts/verify_manuscript_outputs.py` | exit 0 when all manuscript-mapped outputs exist |
-
-These scripts will read from `data/processed/` (and `data/raw/` where required). They will **not** call LLM APIs or regenerate FSMs from prompts. Descriptive and predictive analyses executed by the scripts will be documented in `docs/reproducibility.md` as they are finalised.
-
-At publication, regenerated outputs should match the tables and figures archived in this repository and cited in the paper. Any intentional deviation will be noted in the release documentation.
+No GPU, Ollama, or cloud LLM API access is required.
 
 ---
 
-## 7. Data provenance
+## 5. Replication instructions
 
-| Dataset | Provenance | Mutability after release |
-|---------|------------|--------------------------|
-| Campaign records | Outputs of a controlled LLM generation campaign over a defined set of specifications; frozen at study completion. | Immutable (`data/raw/`) |
-| Structural metrics | Computed offline from frozen FSM serialisations using documented extraction procedures. | Immutable once deposited (`data/processed/`) |
-| Behavioural outcomes | Assigned by independent oracles; stored alongside campaign records. | Immutable (`data/raw/` or `data/processed/` as documented) |
+### Full legacy pipeline (supporting tables and appendix figures)
 
-The released version will document:
+```bash
+make reproduce          # ~13 s on reference workstation (2026-06-15)
+make verify-manuscript  # checks 24 files under results/ and data/
+```
 
-- LLM model identifier(s) and prompt templates used during data collection.
-- Oracle construction and labelling protocol.
-- Version identifiers and checksums for frozen data files.
-- The date on which data were frozen for publication.
+Regenerates descriptive profiles, single-seed Families A–D CV, LOSO/LOMO hold-out studies, pre-oracle screen, risk toolkit, and appendix figures under `results/`. Syncs seven legacy PNG/PDF pairs to `../paper/figures/` when invoked via `make figures --sync`.
 
-Full column-level definitions are in [docs/data_dictionary.md](docs/data_dictionary.md).
+### Strengthened statistics (primary Results tables and figures)
+
+```bash
+make strengthen-stats   # ~3 min 27 s on reference workstation (2026-06-15)
+```
+
+Regenerates 34 files under `outputs/` including:
+
+- Definibility audit (`definibility_audit.csv`, `definibility_map.png`)
+- Repeated-seed CV summaries (`table5_strengthened.csv`, `cv_seed_distribution_family_b.png`)
+- Prevalence association and baseline (`prevalence_correlation.csv`, `prevalence_baseline_comparison.png`)
+- Cluster-bootstrap Δ (`table6_strengthened.csv`, `bootstrap_delta_distribution.png`)
+
+Manifest written to `outputs/stats/strengthened_stats_manifest.json`.
+
+### Recommended release verification sequence
+
+```bash
+make check-env
+make reproduce
+make verify-manuscript
+make strengthen-stats
+# Compare outputs/tables/table5_strengthened.csv and table6_strengthened.csv
+# against manuscript Sections 5.1–5.4
+```
 
 ---
 
-## 8. Data and code availability
+## 6. Manuscript mapping (summary)
 
-| Material | Location | Persistent identifier |
-|----------|----------|----------------------|
-| Frozen datasets | `data/raw/`, `data/processed/` | [10.5281/zenodo.20598129](https://doi.org/10.5281/zenodo.20598129) |
-| Analysis scripts and reproduction workflow | `scripts/`, `Makefile` | [10.5281/zenodo.20598129](https://doi.org/10.5281/zenodo.20598129) |
-| Generated tables and figures | `results/tables/`, `results/figures/` | Regenerated by `make reproduce`; baseline outputs archived in the Zenodo deposit |
-| Source repository | GitHub | [cesar-andress/fsm-behavioural-predictors](https://github.com/cesar-andress/fsm-behavioural-predictors) (tag `v0.1.0-pre-submission`) |
+| Manuscript section | Primary artefact outputs |
+|--------------------|-------------------------|
+| §5.1 Definibility audit | `outputs/tables/definibility_audit.csv`, `outputs/figures/definibility_map.png` |
+| §5.2 In-corpus ranking | `outputs/tables/table5_strengthened.csv`, `outputs/figures/cv_seed_distribution_family_b.png` |
+| §5.3 Prevalence association | `outputs/tables/prevalence_correlation.csv`, `outputs/figures/prevalence_baseline_comparison.png` |
+| §5.4 Exploratory CV–LOSO Δ | `outputs/tables/table6_strengthened.csv`, `outputs/figures/bootstrap_delta_distribution.png` |
+| §5.5 Supporting / Appendix | `results/tables/`, `results/figures/` (BPR panels, ROC/PR, LOMO, toolkit) |
 
-All data and code required to reproduce the reported analyses are included in the Zenodo deposit. No live LLM inference or external credentials are required for the published reproduction path.
+Full mapping: [ARTIFACT_MANIFEST.md](ARTIFACT_MANIFEST.md). Cross-repo alignment audit: `../paper/paper_notes/MANUSCRIPT_ARTIFACT_ALIGNMENT.md`.
+
+---
+
+## 7. Strengthened analysis description
+
+The strengthened layer (`make strengthen-stats`) implements the protocol cited in the manuscript Results section:
+
+| Parameter | Value | Source |
+|-----------|-------|--------|
+| CV fold seeds | 0–99 (100 seeds) | `scripts/repro_config.py` → `STRENGTHEN_SEEDS` |
+| Classifier | Random forest only | `STRENGTHEN_CLASSIFIER` |
+| Bootstrap iterations | 5000 | `N_BOOTSTRAP_ITERATIONS` |
+| Bootstrap unit | Cluster resample by `system_id` | `scripts/cluster_bootstrap_delta.py` |
+| Legacy single-seed CV | `random_state=42`, 5 folds | `RANDOM_STATE`, `N_SPLITS` |
+| RF hyperparameters | 50 trees, max depth 5 | `RF_N_ESTIMATORS`, `RF_MAX_DEPTH` |
+| Parallelism | `n_jobs=1` (deterministic) | `SKLEARN_N_JOBS` |
+
+Orchestrator: `scripts/run_strengthened_stats.py`.
+
+---
+
+## 8. Expected runtime
+
+Measured on the author workstation (2026-06-15, Python 3.11):
+
+| Target | Elapsed time | Output location |
+|--------|-------------|-----------------|
+| `make reproduce` | ~13 s | `results/` (+ sync to `paper/figures/` for legacy figures) |
+| `make strengthen-stats` | ~3 min 27 s | `outputs/` (34 files) |
+| Combined | ~3 min 40 s | Both trees |
+
+Runtime scales linearly with bootstrap iterations and seed count; no GPU acceleration is used.
 
 ---
 
 ## 9. What is not included
 
-The following materials are **deliberately excluded** from this public artefact:
-
-| Excluded material | Reason |
-|-------------------|--------|
-| LaTeX manuscript sources | Maintained privately at `~/papers/sqj2026/paper`; not part of this repository. |
-| Live LLM inference | All generation outputs are frozen; reproduction does not require API keys, cloud APIs, or model re-execution. Optional local Ollama re-runs (RTX 4090) are author-only and excluded until release checks pass. |
-| Raw private notes and working drafts | Internal research records with no replication value. |
-| Reviewer correspondence and submission metadata | Confidential peer-review materials. |
-| Credentials, API keys, or environment secrets | Must never be committed; see `.gitignore`. |
-
-If supplementary material beyond this package is required, it will be referenced explicitly in the paper and linked from the [Zenodo record](docs/zenodo_record.md).
+| Excluded | Reason |
+|----------|--------|
+| LaTeX manuscript | Private at `~/papers/sqj2026/paper` |
+| Live LLM inference | All generation outputs frozen in `data/raw/` |
+| Reviewer correspondence | Confidential |
+| Credentials / API keys | Never committed (see `.gitignore`) |
 
 ---
 
 ## 10. Citation
 
-If you use this artefact, please cite both the journal article (when available) and the Zenodo deposit:
-
 ```bibtex
 @software{sqj2026_artifact,
-  author       = {Andr\'es, C.},
-  title        = {Replication Package: Predicting Behavioural Correctness from Structural Signals in LLM-Generated Finite State Machines},
+  author       = {Andr\'es, C\'esar},
+  title        = {Replication Package: Definibility-First Evaluation of Pre-Oracle Ranking for LLM-Generated Finite State Machines},
   year         = {2026},
   publisher    = {Zenodo},
   doi          = {10.5281/zenodo.20598129},
@@ -261,24 +226,14 @@ If you use this artefact, please cite both the journal article (when available) 
 }
 ```
 
-A machine-readable citation file is provided in [CITATION.cff](CITATION.cff). Full archive metadata is in [docs/zenodo_record.md](docs/zenodo_record.md).
+Machine-readable metadata: [CITATION.cff](CITATION.cff). Update version and DOI when publishing `v0.3.0-revision-candidate`.
 
 ---
 
-## 11. License
+## 11. License and contact
 
-This artefact is released under the [MIT License](LICENSE). See the `LICENSE` file for the full text.
+MIT License — see [LICENSE](LICENSE).
 
-Individual data files may carry additional terms if required by upstream sources; any such restrictions will be stated in [docs/data_dictionary.md](docs/data_dictionary.md) at release time.
+**Corresponding author:** César Andrés — [cesar.andress@ucjc.edu](mailto:cesar.andress@ucjc.edu) — ORCID [0009-0001-8968-3404](https://orcid.org/0009-0001-8968-3404)
 
----
-
-## 12. Contact
-
-For questions about this replication package:
-
-- **Corresponding author:** César Andrés — [cesar.andress@ucjc.edu](mailto:cesar.andress@ucjc.edu) — ORCID [0009-0001-8968-3404](https://orcid.org/0009-0001-8968-3404)
-- **Issue tracker:** [GitHub Issues](https://github.com/cesar-andress/fsm-behavioural-predictors/issues)
-- **Zenodo record:** [10.5281/zenodo.20598129](https://doi.org/10.5281/zenodo.20598129)
-
-For manuscript-related enquiries, refer to the *Software Quality Journal* submission.
+**Issue tracker:** [GitHub Issues](https://github.com/cesar-andress/fsm-behavioural-predictors/issues)

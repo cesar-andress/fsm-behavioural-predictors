@@ -1,0 +1,2 @@
+predictor_set,comparison,mean,std,median,p025,p975,n_valid
+B_basic_structural,Family B RF OOF score vs training-fold system prevalence,0.5835392993606895,0.02504643431878143,0.5826653532111512,0.5342298218698217,0.628531081400769,100.0

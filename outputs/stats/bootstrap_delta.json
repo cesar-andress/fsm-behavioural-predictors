@@ -1,0 +1,82 @@
+{
+  "n_bootstrap_iterations": 5000,
+  "random_state": 42,
+  "classifier": "random_forest",
+  "families": [
+    {
+      "predictor_set": "A_gate_only",
+      "family_label": "Family A gates",
+      "cv_roc_auc_mean_across_seeds": 0.6138212290502794,
+      "loso_roc_auc_mean_definable_folds": 0.8333333333333334,
+      "ndc": 2,
+      "n_systems": 12,
+      "delta_point_estimate": -0.219512104283054,
+      "delta_median_bootstrap": 0.0556603773584905,
+      "delta_p025": -0.19268454818454817,
+      "delta_p975": 0.27608889518012575,
+      "n_valid_bootstrap_iterations": 4837,
+      "n_bootstrap_iterations": 5000,
+      "bootstrap_definability_rate": 0.9674
+    },
+    {
+      "predictor_set": "B_basic_structural",
+      "family_label": "Family B graph tallies",
+      "cv_roc_auc_mean_across_seeds": 0.98069739292365,
+      "loso_roc_auc_mean_definable_folds": 0.5833333333333334,
+      "ndc": 2,
+      "n_systems": 12,
+      "delta_point_estimate": 0.3973640595903166,
+      "delta_median_bootstrap": 0.28795180722891567,
+      "delta_p025": -0.026448064605959398,
+      "delta_p975": 0.7717391304347826,
+      "n_valid_bootstrap_iterations": 4843,
+      "n_bootstrap_iterations": 5000,
+      "bootstrap_definability_rate": 0.9686
+    },
+    {
+      "predictor_set": "C_reference_difference",
+      "family_label": "Family C ref-diff",
+      "cv_roc_auc_mean_across_seeds": 1.0,
+      "loso_roc_auc_mean_definable_folds": 1.0,
+      "ndc": 2,
+      "n_systems": 12,
+      "delta_point_estimate": 0.0,
+      "delta_median_bootstrap": 0.0,
+      "delta_p025": 0.0,
+      "delta_p975": 0.0,
+      "n_valid_bootstrap_iterations": 4864,
+      "n_bootstrap_iterations": 5000,
+      "bootstrap_definability_rate": 0.9728
+    },
+    {
+      "predictor_set": "D_combined",
+      "family_label": "Family D combined",
+      "cv_roc_auc_mean_across_seeds": 1.0,
+      "loso_roc_auc_mean_definable_folds": 1.0,
+      "ndc": 2,
+      "n_systems": 12,
+      "delta_point_estimate": 0.0,
+      "delta_median_bootstrap": 0.0073260073260072445,
+      "delta_p025": -1.1102230246251565e-16,
+      "delta_p975": 0.03628301776531086,
+      "n_valid_bootstrap_iterations": 4846,
+      "n_bootstrap_iterations": 5000,
+      "bootstrap_definability_rate": 0.9692
+    },
+    {
+      "predictor_set": "prevalence_only",
+      "family_label": "prevalence-only baseline",
+      "cv_roc_auc_mean_across_seeds": 0.9579776536312852,
+      "loso_roc_auc_mean_definable_folds": 0.5,
+      "ndc": 2,
+      "n_systems": 12,
+      "delta_point_estimate": 0.4579776536312852,
+      "delta_median_bootstrap": 0.8928571428571429,
+      "delta_p025": 0.4920815677966102,
+      "delta_p975": 1.0,
+      "n_valid_bootstrap_iterations": 4851,
+      "n_bootstrap_iterations": 5000,
+      "bootstrap_definability_rate": 0.9702
+    }
+  ]
+}
