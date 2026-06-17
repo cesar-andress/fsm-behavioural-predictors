@@ -5,7 +5,7 @@
   "families": [
     {
       "predictor_set": "A_gate_only",
-      "family_label": "Family A gates",
+      "family_label": "Family A gates (legacy deposit)",
       "cv_roc_auc_mean_across_seeds": 0.6138212290502794,
       "loso_roc_auc_mean_definable_folds": 0.8333333333333334,
       "ndc": 2,
@@ -20,7 +20,7 @@
     },
     {
       "predictor_set": "B_basic_structural",
-      "family_label": "Family B graph tallies",
+      "family_label": "fixed audit predictor contract",
       "cv_roc_auc_mean_across_seeds": 0.98069739292365,
       "loso_roc_auc_mean_definable_folds": 0.5833333333333334,
       "ndc": 2,
@@ -35,7 +35,7 @@
     },
     {
       "predictor_set": "C_reference_difference",
-      "family_label": "Family C ref-diff",
+      "family_label": "Family C ref-diff (legacy deposit)",
       "cv_roc_auc_mean_across_seeds": 1.0,
       "loso_roc_auc_mean_definable_folds": 1.0,
       "ndc": 2,
@@ -50,7 +50,7 @@
     },
     {
       "predictor_set": "D_combined",
-      "family_label": "Family D combined",
+      "family_label": "Family D combined (legacy deposit)",
       "cv_roc_auc_mean_across_seeds": 1.0,
       "loso_roc_auc_mean_definable_folds": 1.0,
       "ndc": 2,

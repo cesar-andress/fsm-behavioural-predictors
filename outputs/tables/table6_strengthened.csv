@@ -1,6 +1,6 @@
 predictor_family,classifier,cv_roc_auc_mean,cv_roc_auc_interval,loso_roc_auc,ndc,delta,delta_bootstrap_interval,delta_bootstrap_definability_rate
-Family A gates,random_forest,0.6138212290502794,"0.614 [0.599, 0.629]",0.8333333333333334,2/12,-0.219512104283054,"0.056 [-0.193, 0.276]",0.9674
-Family B graph tallies,random_forest,0.98069739292365,"0.981 [0.976, 0.985]",0.5833333333333334,2/12,0.3973640595903166,"0.288 [-0.026, 0.772]",0.9686
-Family C ref-diff,random_forest,1.0,"1.000 [1.000, 1.000]",1.0,2/12,0.0,"0.000 [0.000, 0.000]",0.9728
-Family D combined,random_forest,1.0,"1.000 [1.000, 1.000]",1.0,2/12,0.0,"0.007 [-0.000, 0.036]",0.9692
+Family A gates (legacy deposit),random_forest,0.6138212290502794,"0.614 [0.599, 0.629]",0.8333333333333334,2/12,-0.219512104283054,"0.056 [-0.193, 0.276]",0.9674
+fixed audit predictor contract,random_forest,0.98069739292365,"0.981 [0.976, 0.985]",0.5833333333333334,2/12,0.3973640595903166,"0.288 [-0.026, 0.772]",0.9686
+Family C ref-diff (legacy deposit),random_forest,1.0,"1.000 [1.000, 1.000]",1.0,2/12,0.0,"0.000 [0.000, 0.000]",0.9728
+Family D combined (legacy deposit),random_forest,1.0,"1.000 [1.000, 1.000]",1.0,2/12,0.0,"0.007 [-0.000, 0.036]",0.9692
 prevalence-only baseline,prevalence_only,0.9579776536312852,"0.958 [0.951, 0.964]",0.5,2/12,0.4579776536312852,"0.893 [0.492, 1.000]",0.9702
