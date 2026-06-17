@@ -18,10 +18,10 @@ STATS_DIR = OUTPUTS_DIR / "stats"
 MASTER_CSV = ROOT / "data" / "processed" / "master_analysis_dataset.csv"
 
 PREDICTOR_FAMILY_LABELS: dict[str, str] = {
-    "A_gate_only": "Family A gates",
-    "B_basic_structural": "Family B graph tallies",
-    "C_reference_difference": "Family C ref-diff",
-    "D_combined": "Family D combined",
+    "A_gate_only": "Family A gates (legacy deposit)",
+    "B_basic_structural": "fixed audit predictor contract",
+    "C_reference_difference": "Family C ref-diff (legacy deposit)",
+    "D_combined": "Family D combined (legacy deposit)",
     "dummy_stratified": "stratified dummy",
     "prevalence_only": "prevalence-only baseline",
 }

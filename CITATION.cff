@@ -1,8 +1,8 @@
 cff-version: 1.2.0
 message: "If you use this artefact, please cite it as below."
-title: "Replication Package: Predicting Behavioural Correctness from Structural Signals in LLM-Generated Finite State Machines"
-version: v0.1.0-pre-submission
-date-released: 2026-06-08
+title: "Replication Package: RAP-AQ Reportability Audit for LLM-Generated Finite State Machines"
+version: v1.0.0-submission
+date-released: 2026-06-17
 doi: 10.5281/zenodo.20598129
 authors:
   - family-names: "Andrés"
@@ -14,15 +14,16 @@ license: MIT
 keywords:
   - finite state machines
   - large language models
+  - reportability audit
   - software quality
   - behavioural correctness
   - replication package
 preferred-citation:
   type: article
-  title: "Predicting Behavioural Correctness from Structural Signals in LLM-Generated Finite State Machines"
+  title: "RAP-AQ: A Reportability Audit Protocol for Bounded Cross-Group Ranking in LLM-Generated Finite State Machines"
   authors:
     - family-names: "Andrés"
       given-names: "César"
-  journal: "Software Quality Journal"
+  journal: "Empirical Software Engineering"
   year: 2026
   doi: 10.1007/PLACEHOLDER

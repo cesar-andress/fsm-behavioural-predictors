@@ -69,6 +69,7 @@ TODO_PRIVATE.md
 README_PRIVATE.md
 
 # --- Temporary and backup files ---
+*.log
 *.tmp
 *.temp
 *.bak

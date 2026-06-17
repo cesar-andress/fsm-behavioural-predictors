@@ -31,7 +31,7 @@ STEPS: list[tuple[str, object]] = [
     ("Repeated-seed pooled CV", repeated_seed_cv.main),
     ("LOSO definability audit", definability_audit.main),
     ("Prevalence-only baseline", prevalence_baseline.main),
-    ("Family B vs prevalence correlation", prevalence_correlation.main),
+    ("Fixed audit predictor vs prevalence correlation", prevalence_correlation.main),
     ("Cluster bootstrap Δ", cluster_bootstrap_delta.main),
     ("Strengthened summary tables", strengthened_tables.main),
     ("Strengthened figures", strengthened_figures.main),

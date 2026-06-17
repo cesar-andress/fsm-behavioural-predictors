@@ -1,9 +1,9 @@
 {
-  "title": "Replication Package: Predicting Behavioural Correctness from Structural Signals in LLM-Generated Finite State Machines",
-  "description": "Frozen datasets, analysis scripts, and reproduction instructions for the Software Quality Journal (2026) paper on predicting behavioural correctness from structural signals in LLM-generated finite state machines. All tables and figures can be reproduced without re-running LLM inference.",
+  "title": "Replication Package: RAP-AQ Reportability Audit for LLM-Generated Finite State Machines",
+  "description": "Frozen datasets, analysis scripts, and reproduction instructions for the EMSE (2026) RAP-AQ manuscript: a reportability audit of bounded cross-group ranking metrics on LLM-generated finite state machines. Primary outputs regenerate under outputs/ via make submission-freeze without re-running LLM inference.",
   "upload_type": "software",
-  "publication_date": "2026-06-08",
-  "version": "v0.1.0-pre-submission",
+  "publication_date": "2026-06-17",
+  "version": "v1.0.0-submission",
   "creators": [
     {
       "name": "César Andrés",
@@ -14,17 +14,13 @@
   "keywords": [
     "finite state machines",
     "large language models",
+    "reportability audit",
     "software quality",
     "behavioural correctness",
     "replication package"
   ],
   "license": "mit",
   "access_right": "open",
-  "communities": [
-    {
-      "identifier": "software-quality"
-    }
-  ],
   "related_identifiers": [
     {
       "relation": "isPublishedIn",
@@ -34,7 +30,7 @@
     },
     {
       "relation": "isSupplementTo",
-      "identifier": "https://github.com/cesar-andress/fsm-behavioural-predictors/tree/v0.1.0-pre-submission",
+      "identifier": "https://github.com/cesar-andress/fsm-behavioural-predictors/tree/v1.0.0-submission",
       "resource_type": "software",
       "scheme": "url"
     },
@@ -45,5 +41,5 @@
       "scheme": "doi"
     }
   ],
-  "notes": "Archived on Zenodo as 10.5281/zenodo.20598129 (v0.1.0-pre-submission, 2026-06-08). See docs/zenodo_record.md for citation and reproducibility scope."
+  "notes": "Submission freeze v1.0.0-submission. Legacy predictor-study outputs under results/ are deposit-only; see docs/legacy_deposit.md."
 }

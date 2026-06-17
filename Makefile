@@ -1,30 +1,24 @@
-# SQJ 2026 public artefact — reproduction targets
+# RAP-AQ public artefact — reproduction targets
 # Prerequisites: Python environment (see README.md)
 
 PYTHON ?= python3.11
 SCRIPTS = scripts
 
-.PHONY: all check-env build-master reproduce tables figures profile-signals model-correctness loso-systems pre-oracle lomo-models risk-toolkit verify-manuscript strengthen-stats methodological-upgrade clean help
+.PHONY: all check-env build-master reproduce legacy-reproduce tables figures profile-signals model-correctness loso-systems pre-oracle lomo-models risk-toolkit verify-manuscript verify-submission strengthen-stats methodological-upgrade submission-freeze clean help
 
-all: reproduce
+all: submission-freeze
 
 help:
 	@echo "Targets:"
-	@echo "  make check-env      Verify Python and core dependencies"
-	@echo "  make build-master   Build data/processed/master_analysis_dataset.csv"
-	@echo "  make reproduce        Regenerate all manuscript tables and figures from frozen data"
-	@echo "  make verify-manuscript  Check manuscript table/figure paths exist"
-	@echo "  make tables           Regenerate descriptive profiling tables"
-	@echo "  make profile-signals    Descriptive and predictive-signal profiling"
-	@echo "  make model-correctness  Exploratory CV models for full behavioural pass"
-	@echo "  make loso-systems       Leave-one-system-out generalization study"
-	@echo "  make pre-oracle         Pre-oracle behavioural prediction (strict features)"
-	@echo "  make lomo-models        Leave-one-model-out cross-LLM generalization"
-	@echo "  make risk-toolkit       Pre-oracle BRS triage and health reports"
-	@echo "  make strengthen-stats   Strengthened CV/LOSO/bootstrap outputs under outputs/"
-	@echo "  make methodological-upgrade  Pair-partition AUC diagnostics + simulation (requires outputs/stats/)"
-	@echo "  make figures            Regenerate figures only"
-	@echo "  make clean       Remove generated outputs under results/"
+	@echo "  make submission-freeze   RAP-AQ submission freeze (recommended)"
+	@echo "  make check-env           Verify Python and core dependencies"
+	@echo "  make build-master        Build data/processed/master_analysis_dataset.csv"
+	@echo "  make strengthen-stats    RAP-AQ strengthened outputs under outputs/"
+	@echo "  make methodological-upgrade  Pair-partition diagnostics + simulation"
+	@echo "  make verify-submission   Check RAP-AQ manuscript output paths"
+	@echo "  make legacy-reproduce    Legacy predictor-study pipeline under results/ (deposit only)"
+	@echo "  make verify-manuscript   Check legacy results/ paths"
+	@echo "  make clean               Remove generated outputs under results/"
 
 check-env:
 	@$(PYTHON) -c "import numpy, pandas, scipy, sklearn, matplotlib, seaborn; print('Environment OK')"
@@ -32,8 +26,14 @@ check-env:
 build-master:
 	@$(PYTHON) $(SCRIPTS)/build_master_dataset.py
 
-reproduce: build-master tables profile-signals model-correctness loso-systems pre-oracle lomo-models risk-toolkit figures verify-manuscript
-	@echo "Reproduction complete. Outputs in results/"
+submission-freeze: build-master strengthen-stats methodological-upgrade verify-submission
+	@echo "RAP-AQ submission freeze complete. Primary outputs in outputs/"
+
+legacy-reproduce: build-master tables profile-signals model-correctness loso-systems pre-oracle lomo-models risk-toolkit figures verify-manuscript
+	@echo "Legacy reproduction complete. Outputs in results/ (deposit-only analyses)."
+
+reproduce: legacy-reproduce
+	@echo "Note: 'make reproduce' is an alias for legacy-reproduce; use 'make submission-freeze' for RAP-AQ."
 
 tables:
 	@echo "Generating tables..."
@@ -45,6 +45,9 @@ figures:
 
 verify-manuscript:
 	@$(PYTHON) $(SCRIPTS)/verify_manuscript_outputs.py
+
+verify-submission:
+	@$(PYTHON) $(SCRIPTS)/verify_submission_outputs.py
 
 profile-signals: build-master
 	@echo "Profiling predictive signals..."
@@ -63,7 +66,7 @@ pre-oracle: build-master model-correctness
 	@$(PYTHON) $(SCRIPTS)/pre_oracle_prediction.py
 
 lomo-models: build-master model-correctness
-	@echo "Running leave-one-model-out evaluation..."
+	@echo "Running leave-one-model-out evaluation (legacy deposit)..."
 	@$(PYTHON) $(SCRIPTS)/lomo_model_evaluation.py
 
 risk-toolkit: build-master
