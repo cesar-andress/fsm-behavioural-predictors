@@ -4,7 +4,7 @@
 PYTHON ?= python3.11
 SCRIPTS = scripts
 
-.PHONY: all check-env build-master reproduce tables figures profile-signals model-correctness loso-systems pre-oracle lomo-models risk-toolkit verify-manuscript strengthen-stats clean help
+.PHONY: all check-env build-master reproduce tables figures profile-signals model-correctness loso-systems pre-oracle lomo-models risk-toolkit verify-manuscript strengthen-stats methodological-upgrade clean help
 
 all: reproduce
 
@@ -22,6 +22,7 @@ help:
 	@echo "  make lomo-models        Leave-one-model-out cross-LLM generalization"
 	@echo "  make risk-toolkit       Pre-oracle BRS triage and health reports"
 	@echo "  make strengthen-stats   Strengthened CV/LOSO/bootstrap outputs under outputs/"
+	@echo "  make methodological-upgrade  Pair-partition AUC diagnostics + simulation (requires outputs/stats/)"
 	@echo "  make figures            Regenerate figures only"
 	@echo "  make clean       Remove generated outputs under results/"
 
@@ -74,6 +75,12 @@ risk-toolkit: build-master
 strengthen-stats: build-master
 	@echo "Running strengthened-stats pipeline..."
 	@$(PYTHON) $(SCRIPTS)/run_strengthened_stats.py
+
+methodological-upgrade:
+	@echo "Running methodological-upgrade analyses..."
+	@$(PYTHON) $(SCRIPTS)/grouped_auc_decomposition.py
+	@$(PYTHON) $(SCRIPTS)/grouped_auc_bootstrap.py
+	@$(PYTHON) $(SCRIPTS)/simulate_grouped_reportability.py
 
 clean:
 	rm -rf results/tables/*

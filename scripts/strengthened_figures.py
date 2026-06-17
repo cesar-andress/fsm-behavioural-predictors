@@ -31,7 +31,7 @@ def plot_definability_map() -> Path:
     ax.barh(audit["system_id"], audit["prevalence"], color=colors, edgecolor=INK, linewidth=0.6)
     ax.set_xlabel("Positive-class prevalence (full_behavioural_pass)")
     ax.set_ylabel("system_id")
-    ax.set_title("LOSO ROC-AUC definability by system", loc="left", fontweight="bold")
+    ax.set_title("RAP-AQ Step 2: definability by system_id", loc="left", fontweight="bold")
     style_axes(ax, ink=True)
     ax.text(
         0.99,
@@ -62,7 +62,7 @@ def plot_bootstrap_delta_distribution() -> Path:
     ax.axvline(row["delta_p975"], color=INK, linestyle="--", linewidth=1.0)
     ax.set_xlabel("Bootstrap Δ = CV ROC-AUC − LOSO ROC-AUC")
     ax.set_ylabel("Count")
-    ax.set_title("Family B / RF cluster-bootstrap Δ", loc="left", fontweight="bold")
+    ax.set_title("RAP-AQ optional step: cluster-bootstrap Δ", loc="left", fontweight="bold")
     ax.legend(frameon=True, fontsize=8.5)
     style_axes(ax, ink=True)
     fig.tight_layout()
@@ -92,7 +92,7 @@ def plot_cv_seed_distribution_family_b() -> Path:
     ax.axvline(seed_aucs.median(), color=INK, linestyle="-", linewidth=1.2, label=f"median={seed_aucs.median():.3f}")
     ax.set_xlabel("Pooled OOF ROC-AUC")
     ax.set_ylabel("Seed count")
-    ax.set_title("Family B / RF repeated-seed CV distribution", loc="left", fontweight="bold")
+    ax.set_title("Repeated-seed CV ROC-AUC distribution (fixed audit predictor contract)", loc="left", fontweight="bold")
     ax.legend(frameon=True, fontsize=8.5)
     style_axes(ax, ink=True)
     fig.tight_layout()
@@ -117,10 +117,15 @@ def plot_prevalence_baseline_comparison() -> Path:
     ax.bar(x - width / 2, cv_vals, width, label="CV mean", color="#333333", edgecolor=INK)
     ax.bar(x + width / 2, loso_vals, width, label="LOSO μ", color="#999999", edgecolor=INK)
     ax.set_xticks(x)
-    ax.set_xticklabels(subset["predictor_family"], rotation=15, ha="right")
+    label_map = {
+        "Family B graph tallies": "Fixed audit predictor contract",
+        "prevalence-only baseline": "Prevalence-only baseline",
+    }
+    display_labels = [label_map.get(lbl, lbl) for lbl in subset["predictor_family"]]
+    ax.set_xticklabels(display_labels, rotation=15, ha="right")
     ax.set_ylim(0, 1.05)
     ax.set_ylabel("ROC-AUC")
-    ax.set_title("Family B vs prevalence-only baseline", loc="left", fontweight="bold")
+    ax.set_title("RAP-AQ Step 3: fixed audit predictor contract vs prevalence-only baseline", loc="left", fontweight="bold")
     ax.legend(frameon=True, fontsize=8.5)
     style_axes(ax, ink=True)
     fig.tight_layout()
