@@ -1,5 +1,7 @@
 # Release readiness report — v0.3.0-revision-candidate
 
+> **Superseded** by [RELEASE_CHECKLIST_v1.0.0-submission.md](RELEASE_CHECKLIST_v1.0.0-submission.md).
+
 **Audit date:** 2026-06-15  
 **Auditor:** release-preparation pass (documentation and verification only)  
 **Repositories audited:**

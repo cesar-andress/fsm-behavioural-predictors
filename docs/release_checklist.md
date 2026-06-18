@@ -1,10 +1,12 @@
 # Release Checklist
 
+> **Superseded** by [RELEASE_CHECKLIST_v1.0.0-submission.md](../RELEASE_CHECKLIST_v1.0.0-submission.md).
+
 Complete this checklist before publishing the artefact on **GitHub** or depositing it on **Zenodo**. Each item must be verified by a project author.
 
-## Zenodo deposit (v0.1.0-pre-submission)
+## Zenodo deposit (v1.0.0-submission)
 
-- [x] **Zenodo record published** — [10.5281/zenodo.20598129](https://doi.org/10.5281/zenodo.20598129) (2026-06-08).
+- [x] **Zenodo record published** — [10.5281/zenodo.20738203](https://doi.org/10.5281/zenodo.20738203).
 - [x] **zenodo_record.md created** — DOI, citation, version, and reproducibility scope documented.
 - [x] **CITATION.cff updated** — Zenodo DOI, release date, and version match the published record.
 - [x] **zenodo.json updated** — creators, version, publication date, and related identifiers align with the deposit.
@@ -23,7 +25,7 @@ Future releases should repeat the documentation and metadata checks below before
 
 - [x] **All scripts run from frozen data** — `make reproduce` completes without LLM API calls or network access to generation endpoints (verified 2026-06-08).
 - [ ] **Risk toolkit tested** — `make risk-toolkit` completes; `risk_toolkit_validation.md` matches published triage audit.
-- [x] **Reproducibility command tested** — `make check-env`, `make reproduce`, and `make verify-manuscript` run cleanly (verified 2026-06-08).
+- [x] **Reproducibility command tested** — `make check-env`, `make reproduce`, and `make verify-submission` run cleanly.
 - [x] Regenerated outputs under `results/` match the tables and figures cited in the paper (`docs/manuscript_outputs.md`; `make verify-manuscript`).
 
 ## LLM inference and local execution

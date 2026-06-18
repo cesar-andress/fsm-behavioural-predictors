@@ -1,25 +1,25 @@
-# Zenodo Record
+# Zenodo record — EMSE submission freeze
 
-Permanent archive of the SQJ 2026 public replication artefact.
+Permanent archive of the RAP-AQ replication package for the EMSE submission manuscript.
 
 ## DOI
 
-- **Version DOI:** [10.5281/zenodo.20598129](https://doi.org/10.5281/zenodo.20598129)
+- **Version DOI (this release):** [10.5281/zenodo.20738203](https://doi.org/10.5281/zenodo.20738203)
 - **Concept DOI (all versions):** [10.5281/zenodo.20598128](https://doi.org/10.5281/zenodo.20598128)
-- **Record URL:** https://zenodo.org/records/20598129
+- **Record URL:** https://zenodo.org/records/20738203
 
 ## Citation
 
-Andrés, C. (2026). *Replication Package: Predicting Behavioural Correctness from Structural Signals in LLM-Generated Finite State Machines* (Version v0.1.0-pre-submission) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.20598129
+Andrés, C. (2026). *Replication Package: RAP-AQ Reportability Audit for LLM-Generated Finite State Machines* (Version v1.0.0-submission) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.20738203
 
 ```bibtex
-@software{sqj2026_artifact,
-  author       = {Andr\'es, C.},
-  title        = {Replication Package: Predicting Behavioural Correctness from Structural Signals in LLM-Generated Finite State Machines},
+@software{rap_aq_artifact_2026,
+  author       = {Andr\'es, C\'esar},
+  title        = {Replication Package: RAP-AQ Reportability Audit for LLM-Generated Finite State Machines},
   year         = {2026},
-  version      = {v0.1.0-pre-submission},
+  version      = {v1.0.0-submission},
   publisher    = {Zenodo},
-  doi          = {10.5281/zenodo.20598129},
+  doi          = {10.5281/zenodo.20738203},
   url          = {https://github.com/cesar-andress/fsm-behavioural-predictors}
 }
 ```
@@ -28,28 +28,36 @@ Machine-readable metadata: [CITATION.cff](../CITATION.cff).
 
 ## Release version
 
-**v0.1.0-pre-submission** — pre-submission release prepared for journal evaluation.
+**v1.0.0-submission** — EMSE submission freeze.
 
-Git tag: [v0.1.0-pre-submission](https://github.com/cesar-andress/fsm-behavioural-predictors/tree/v0.1.0-pre-submission)
-
-## Archive date
-
-**2026-06-08** (published on Zenodo)
-
-## Repository URL
-
-- **GitHub:** https://github.com/cesar-andress/fsm-behavioural-predictors
-- **Release tag:** https://github.com/cesar-andress/fsm-behavioural-predictors/tree/v0.1.0-pre-submission
+Git tag: [v1.0.0-submission](https://github.com/cesar-andress/fsm-behavioural-predictors/tree/v1.0.0-submission)
 
 ## Reproducibility scope
 
-This deposit supports independent verification of the pre-submission artefact without re-running LLM inference. From frozen campaign records in `data/raw/` and `data/processed/`, a reader can reproduce:
+This deposit supports independent verification of all results reported in the submission manuscript without re-running LLM inference.
 
-- descriptive profiling tables and figures;
-- predictive modelling results (random CV, LOSO, LOMO, pre-oracle);
-- behavioural risk toolkit outputs (BRS, AutoReject, FSM health reports);
-- validation reports under `results/tables/`.
+**Primary entry point:**
 
-The default workflow is `make reproduce` (see [reproducibility.md](reproducibility.md)). The LaTeX manuscript is **not** included in this archive.
+```bash
+make reproduce
+```
 
-**Status:** Pre-submission release. Results, documentation, and metadata may be refined in future Zenodo versions associated with peer-review feedback.
+From frozen campaign records in `data/raw/` and `data/processed/`, a reader can reproduce:
+
+- RAP-AQ reportability audit workflow
+- grouped-hold-out definability audit (`n_dc`)
+- prevalence-only baseline analysis
+- fixed audit predictor contract
+- pair-partition diagnostics
+- simulation and methodological-support artefacts
+- manuscript tables and figures under `outputs/`
+
+The LaTeX manuscript is **not** included in this archive. **No post-submission analyses are included in this release.**
+
+See [REPRODUCIBILITY.md](../REPRODUCIBILITY.md) and [ARTIFACT_MANIFEST.md](../ARTIFACT_MANIFEST.md).
+
+## Prior version
+
+| Version | DOI |
+|---------|-----|
+| v0.1.0-pre-submission | [10.5281/zenodo.20598129](https://doi.org/10.5281/zenodo.20598129) |

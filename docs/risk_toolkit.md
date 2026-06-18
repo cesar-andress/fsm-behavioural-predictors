@@ -128,7 +128,7 @@ See `results/tables/risk_toolkit_validation.md` after `make risk-toolkit`.
 
 The toolkit is part of the archived replication package:
 
-- **Zenodo:** [10.5281/zenodo.20598129](https://doi.org/10.5281/zenodo.20598129)
-- **GitHub:** https://github.com/cesar-andress/fsm-behavioural-predictors (tag `v0.1.0-pre-submission`)
+- **Zenodo:** [10.5281/zenodo.20738203](https://doi.org/10.5281/zenodo.20738203)
+- **GitHub:** https://github.com/cesar-andress/fsm-behavioural-predictors (tag `v1.0.0-submission`)
 
 See [zenodo_record.md](zenodo_record.md) for citation and reproducibility scope.

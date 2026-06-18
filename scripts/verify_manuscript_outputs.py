@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-Cross-check manuscript table/figure anchors against archived package outputs.
+Cross-check legacy deposit outputs under results/ (Families A–D, LOMO, appendix).
 
+For RAP-AQ primary outputs under outputs/, use verify_submission_outputs.py.
 Exits 0 when every mapped artefact path exists under the repository root.
 """
 
@@ -104,7 +105,7 @@ def main() -> None:
 
     total = sum(len(paths) for _, paths in EXPECTED)
     print(f"Manuscript output verification OK ({total} files across {len(EXPECTED)} anchors)")
-    print(f"Zenodo DOI: https://doi.org/10.5281/zenodo.20598129")
+    print(f"Zenodo DOI: https://doi.org/10.5281/zenodo.20738203")
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 {
   "title": "Replication Package: RAP-AQ Reportability Audit for LLM-Generated Finite State Machines",
-  "description": "Frozen datasets, analysis scripts, and reproduction instructions for the EMSE (2026) RAP-AQ manuscript: a reportability audit of bounded cross-group ranking metrics on LLM-generated finite state machines. Primary outputs regenerate under outputs/ via make submission-freeze without re-running LLM inference.",
+  "description": "Frozen reproducibility artefact for the RAP-AQ manuscript submitted to Empirical Software Engineering (EMSE). Contains the RAP-AQ reportability audit workflow, grouped-hold-out definability audit (n_dc), prevalence-only baseline, fixed audit predictor contract, pair-partition diagnostics, simulation artefacts, manuscript tables and figures, and reproducibility scripts. Primary entry point: make reproduce. No post-submission analyses. DOI 10.5281/zenodo.20738203.",
   "upload_type": "software",
   "publication_date": "2026-06-17",
   "version": "v1.0.0-submission",
@@ -23,12 +23,6 @@
   "access_right": "open",
   "related_identifiers": [
     {
-      "relation": "isPublishedIn",
-      "identifier": "10.1007/PLACEHOLDER",
-      "resource_type": "publication-journal",
-      "scheme": "doi"
-    },
-    {
       "relation": "isSupplementTo",
       "identifier": "https://github.com/cesar-andress/fsm-behavioural-predictors/tree/v1.0.0-submission",
       "resource_type": "software",
@@ -41,5 +35,5 @@
       "scheme": "doi"
     }
   ],
-  "notes": "Submission freeze v1.0.0-submission. Legacy predictor-study outputs under results/ are deposit-only; see docs/legacy_deposit.md."
+  "notes": "EMSE submission freeze v1.0.0-submission. Reproduce with: make reproduce. Legacy predictor-study outputs under results/ are deposit-only; see docs/legacy_deposit.md."
 }

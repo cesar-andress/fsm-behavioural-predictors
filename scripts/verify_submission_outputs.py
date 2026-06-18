@@ -22,9 +22,9 @@ EXPECTED: list[tuple[str, list[Path]]] = [
     (
         "RAP-AQ Step 2 definability audit",
         [
-            OUTPUTS_TABLES / "definibility_audit.csv",
-            OUTPUTS_TABLES / "definibility_audit_summary.csv",
-            OUTPUTS_FIGURES / "definibility_map.png",
+            OUTPUTS_TABLES / "definability_audit.csv",
+            OUTPUTS_TABLES / "definability_audit_summary.csv",
+            OUTPUTS_FIGURES / "definability_map.png",
         ],
     ),
     (
@@ -60,26 +60,35 @@ EXPECTED: list[tuple[str, list[Path]]] = [
 ]
 
 
+def _check_path(path: Path) -> str | None:
+    if not path.is_file():
+        return f"missing: {path.relative_to(ROOT)}"
+    if path.suffix.lower() == ".png" and path.stat().st_size == 0:
+        return f"empty PNG: {path.relative_to(ROOT)}"
+    return None
+
+
 def main() -> None:
     missing: list[str] = []
     for anchor, paths in EXPECTED:
         for path in paths:
-            if not path.is_file():
-                missing.append(f"{anchor}: {path.relative_to(ROOT)}")
+            issue = _check_path(path)
+            if issue:
+                missing.append(f"{anchor}: {issue}")
 
     if missing:
         print("RAP-AQ submission output verification FAILED. Missing files:", file=sys.stderr)
         for line in missing:
             print(f"  - {line}", file=sys.stderr)
         print(
-            "\nRun: make submission-freeze",
+            "\nRun: make reproduce",
             file=sys.stderr,
         )
         raise SystemExit(1)
 
     total = sum(len(paths) for _, paths in EXPECTED)
     print(f"RAP-AQ submission output verification OK ({total} files across {len(EXPECTED)} anchors)")
-    print("Zenodo DOI: https://doi.org/10.5281/zenodo.20598129")
+    print("Zenodo DOI: https://doi.org/10.5281/zenodo.20738203")
 
 
 if __name__ == "__main__":

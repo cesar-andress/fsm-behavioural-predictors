@@ -9,7 +9,7 @@ Conventions and layout for the SQJ 2026 public replication package.
 | `README.md` | Entry point: overview, installation, reproduction, citation |
 | `LICENSE` | SPDX licence text (MIT) |
 | `CITATION.cff` | Citation metadata for software archives and reference managers |
-| `zenodo.json` | Metadata for Zenodo deposit (archived as 10.5281/zenodo.20598129) |
+| `zenodo.json` | Metadata for Zenodo deposit ([10.5281/zenodo.20738203](https://doi.org/10.5281/zenodo.20738203)) |
 | `requirements.txt` | pip dependency specification |
 | `environment.yml` | Conda environment specification |
 | `Makefile` | Standardised reproduction commands |

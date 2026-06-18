@@ -3,7 +3,7 @@ message: "If you use this artefact, please cite it as below."
 title: "Replication Package: RAP-AQ Reportability Audit for LLM-Generated Finite State Machines"
 version: v1.0.0-submission
 date-released: 2026-06-17
-doi: 10.5281/zenodo.20598129
+doi: 10.5281/zenodo.20738203
 authors:
   - family-names: "Andrés"
     given-names: "César"

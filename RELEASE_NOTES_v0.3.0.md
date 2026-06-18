@@ -1,5 +1,7 @@
 # Release notes — v0.3.0-revision-candidate
 
+> **Superseded** by [RELEASE_NOTES_v1.0.0-submission.md](RELEASE_NOTES_v1.0.0-submission.md) (`v1.0.0-submission`, RAP-AQ framing).
+
 **Comparison baseline:** [v0.2.0-submission-candidate](https://github.com/cesar-andress/fsm-behavioural-predictors/tree/v0.2.0-submission-candidate)  
 **Prior public archive:** [v0.1.0-pre-submission](https://github.com/cesar-andress/fsm-behavioural-predictors/tree/v0.1.0-pre-submission) (Zenodo [10.5281/zenodo.20598129](https://doi.org/10.5281/zenodo.20598129))  
 **Status:** revision-candidate documentation pass — tag not yet published.

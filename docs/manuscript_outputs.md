@@ -3,7 +3,7 @@
 Maps SQJ 2026 manuscript tables and empirical figures to files in this replication package.
 TikZ figures (`fig:running-example`, `fig:repair-loop`, `fig:reproducibility-arch`) are authored in the private LaTeX manuscript, not regenerated here.
 
-**Zenodo DOI:** [10.5281/zenodo.20598129](https://doi.org/10.5281/zenodo.20598129) (verified accessible; pre-submission release `v0.1.0-pre-submission`).
+**Zenodo DOI:** [10.5281/zenodo.20738203](https://doi.org/10.5281/zenodo.20738203) (EMSE submission freeze `v1.0.0-submission`).
 
 | Manuscript anchor | Package output(s) | Regeneration target |
 |-------------------|-------------------|---------------------|

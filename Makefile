@@ -4,13 +4,13 @@
 PYTHON ?= python3.11
 SCRIPTS = scripts
 
-.PHONY: all check-env build-master reproduce legacy-reproduce tables figures profile-signals model-correctness loso-systems pre-oracle lomo-models risk-toolkit verify-manuscript verify-submission strengthen-stats methodological-upgrade submission-freeze clean help
+.PHONY: all check-env build-master reproduce submission-freeze legacy-reproduce tables figures profile-signals model-correctness loso-systems pre-oracle lomo-models risk-toolkit verify-manuscript verify-submission strengthen-stats methodological-upgrade clean help
 
-all: submission-freeze
+all: reproduce
 
 help:
 	@echo "Targets:"
-	@echo "  make submission-freeze   RAP-AQ submission freeze (recommended)"
+	@echo "  make reproduce           RAP-AQ EMSE submission freeze (primary)"
 	@echo "  make check-env           Verify Python and core dependencies"
 	@echo "  make build-master        Build data/processed/master_analysis_dataset.csv"
 	@echo "  make strengthen-stats    RAP-AQ strengthened outputs under outputs/"
@@ -26,14 +26,14 @@ check-env:
 build-master:
 	@$(PYTHON) $(SCRIPTS)/build_master_dataset.py
 
-submission-freeze: build-master strengthen-stats methodological-upgrade verify-submission
-	@echo "RAP-AQ submission freeze complete. Primary outputs in outputs/"
+reproduce: build-master strengthen-stats methodological-upgrade verify-submission
+	@echo "RAP-AQ reproduction complete. Primary outputs in outputs/"
+
+submission-freeze: reproduce
+	@echo "Note: submission-freeze is an alias for reproduce."
 
 legacy-reproduce: build-master tables profile-signals model-correctness loso-systems pre-oracle lomo-models risk-toolkit figures verify-manuscript
 	@echo "Legacy reproduction complete. Outputs in results/ (deposit-only analyses)."
-
-reproduce: legacy-reproduce
-	@echo "Note: 'make reproduce' is an alias for legacy-reproduce; use 'make submission-freeze' for RAP-AQ."
 
 tables:
 	@echo "Generating tables..."

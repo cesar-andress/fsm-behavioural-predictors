@@ -67,7 +67,7 @@ def main() -> None:
             "metrics_utils.py",
             "strengthen_io.py",
             "repeated_seed_cv.py",
-            "definibility_audit.py",
+            "definability_audit.py",
             "prevalence_baseline.py",
             "prevalence_correlation.py",
             "cluster_bootstrap_delta.py",
